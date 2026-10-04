@@ -1189,9 +1189,9 @@ under the old rule keeps it only if it passes the test below.
   comment.
 - **Never gets one**: a function written inline in JSX (an event handler,
   a `.map` callback rendering children); a function inside an ordinary
-  object literal (a config row, a small helper object like `emlTouObj` or
-  `window.__editGuard`); a trivial local wrapper or alias (`const
-  onTipMovFun = () => plaTipFun();`). Other anonymous functions (a hook's
+  object literal (a config row, a small helper object like `emlTouObj`); a
+  trivial local wrapper or alias (`const onTipMovFun = () =>
+  plaTipFun();`). Other anonymous functions (a hook's
   own body, an effect's cleanup, a `.sort` comparator, an IIFE, ...) are
   not exempt: most of them don't pass the test, but one that does gets a
   JSDoc like any other function.
