@@ -220,7 +220,14 @@ itself gets its own mandatory self-check.
 - Group non-destructured (default) imports separately from destructured
   (named, `{ ... }`) imports: all default imports first, then 2 blank lines,
   then all named imports.
-- Within each of those two groups, alphabetize by the imported binding's own
+- **TypeScript type imports form a third group** (decided 2026-10-05), after
+  the named imports and 2 blank lines apart from them, written `import type
+  { HolStaTyp } from './data-model.ts';` (never the inline `import { type
+  HolStaTyp }`, which our `verbatimModuleSyntax` leaves behind as an empty
+  import in the build). One binding per statement, alphabetized and padded
+  among themselves the same way the named group is, since the extra `type`
+  word shifts their columns.
+- Within each of those groups, alphabetize by the imported binding's own
   name (case-insensitive), not by source path, regardless of which source
   file each one came from.
 - Within the named-imports group, pad every specifier name (left-justify) so
@@ -364,9 +371,13 @@ can move code between files rather than just within one.
     wedged between its lines.
   - **Used by two or more declarations in the file**: the type moves to
     the Types section at the top.
-  - **Used by two or more files**: the type moves to a shared file, the
-    same way a shared sub-component does under "What a file holds", in the
-    folder the directory structure rules give it.
+  - **Used by two or more files**: the type lives in the module that owns
+    the data it describes and is exported from there, the same way callers
+    already import that module's functions (e.g. `core/holidays.ts`'s own
+    `HolRcdTyp`, the resolved holiday its functions return). A type no
+    single module owns, such as a saved record every layer reads, goes in a
+    shared types file instead (`core/data-model.ts`), placed by the
+    directory structure rules like any shared file.
 - **Section regions.** A file with at least 2 of the sections above wraps
   each of them in a `// #region <Section>` / `// #endregion <Section>`
   pair, whatever the file's length, using the section's own name from the list above (`// #region
