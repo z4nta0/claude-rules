@@ -35,9 +35,11 @@ explicitly says otherwise for that specific project.
   so nothing compiles it, and a `.ts` file there would reach the browser as
   raw TypeScript. They keep their `.js` extension and every other rule in
   this doc.
-- **Still to be decided**: compiler strictness, and how types themselves are
-  named and documented. Raise each with the user as it first comes up, per
-  "### Undefined cases: stop and ask", and record the answer here.
+- **Type names and their documentation** follow "TypeScript types" under
+  "### Naming conventions" (decided 2026-10-05).
+- **Still to be decided**: compiler strictness. Raise it with the user as it
+  first comes up, per "### Undefined cases: stop and ask", and record the
+  answer here.
 
 ## Commit messages
 
@@ -5137,6 +5139,21 @@ gradually alongside the whitespace rules above (started with `src/app.tsx`).
     every file that imports it, e.g. renaming `App` also required
     updating `main.tsx`'s import and its `<App />` JSX usage. Check for
     other importers before committing to a rename like this.
+- **TypeScript types** (decided 2026-10-05) get PascalCase like components
+  and follow the same 9-character/3-segment rule, with `Typ` (Type) as the
+  final segment, e.g. a type for one escape-stack entry is `EscEntTyp`
+  (Escape+Entry+Type), so a type never reads like a value: an `escEntObj`
+  holds an `EscEntTyp`. A shape is declared with `type` by default, and with
+  `interface` only where it's required (extending a built-in such as
+  `Window`, which merges only with an `interface`) or reads more logically.
+  A name TypeScript or a library already defines (`Window`, `CSSProperties`,
+  ...) is an external contract and stays as it is.
+  - **Documented like a variable**: a type gets the same one-line
+    What/Why/How comment a variable does, expanding its name (`What:
+    Escape Entry Type.`); a multi-line object type gets that comment on its
+    opening line and one per field, the same as an object literal; and a
+    type needing a longer design note gets the usual `/** ... */` block
+    under "### Large / design-rationale comments".
 - **Exemptions**: standard React/DOM convention names are left as-is,
   entirely exempt from the rule: `onChange`, `className`, `value` (a
   controlled component's own current value, always paired with
