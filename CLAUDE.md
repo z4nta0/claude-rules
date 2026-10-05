@@ -138,7 +138,7 @@ touched, not swept all at once.
 ## Code formatting rules
 
 Formatting, naming, and comment conventions for every project. They were
-developed in ease-my-life, whose `src/app.jsx` is the reference
+developed in ease-my-life, whose `src/app.tsx` is the reference
 implementation; consult it for worked examples of every rule below before
 guessing. "N blank lines" always
 means N visually-empty rows, i.e. N+1 newline characters between two lines
@@ -232,7 +232,7 @@ itself gets its own mandatory self-check.
   binding is needed. Remove any import that comes back unused, e.g. a
   stale default `import React from 'react';` left in a file whose JSX
   compiles under ease-my-life's automatic JSX runtime (`@vitejs/
-  plugin-react`'s default, confirmed in `vite.config.js`, meaning JSX
+  plugin-react`'s default, confirmed in `vite.config.ts`, meaning JSX
   never needs `React` in scope, unlike the older classic runtime) and
   never calls `React.*` directly elsewhere in the file. This check runs
   on every file touched regardless of what the edit itself was about,
@@ -255,7 +255,7 @@ itself gets its own mandatory self-check.
 - **Plain named exports all go in ONE `export { ... };` statement on a
   single line**, unlike the one-binding-per-`import` rule above, with
   one comment generalized to describe everything the statement exports
-  (not a separate comment per binding). See `ui/conditional-controls.jsx`'s own
+  (not a separate comment per binding). See `ui/conditional-controls.tsx`'s own
   `export { CodConCom, conDraFun };` for the reference example.
 
 ### Indentation
@@ -332,7 +332,7 @@ can move code between files rather than just within one.
   alphabetized (case-insensitive) as the tie-break. Decided 2026-09-27:
   define-before-use also wins over the section order itself and over the
   Components section's "private first" split. A constant built by
-  calling a helper at load time (e.g. `tabs/data/reminders-manager.jsx`'s
+  calling a helper at load time (e.g. `tabs/data/reminders-manager.tsx`'s
   own `REM_MAT_ARR`, built with `paiSubFun`) sits in Helpers right after
   the helper it calls, not in Constants, and an exported component that a
   private one renders comes before it; "private first, then exported" only
@@ -358,7 +358,7 @@ can move code between files rather than just within one.
   <Section>` line per section, then a bare ` *` line before `@author`. It
   lists only the file-level category sections above (Constants, Helpers,
   Components, ...), never the purpose-based sub-sections inside them or
-  the sections inside a function. See `constants.js` for the reference
+  the sections inside a function. See `constants.ts` for the reference
   example:
   ```
    * Sections:
@@ -369,15 +369,15 @@ can move code between files rather than just within one.
   ```
   - **A section-intro spanning more than one section** (decided
     2026-09-27): when a section-intro block introduces declarations that
-    belong to different sections (e.g. `tab-settings.jsx`'s own "Theme
+    belong to different sections (e.g. `tab-settings.tsx`'s own "Theme
     Picker Interface", which introduced 2 theme arrays and 3 theme
     components), the block and its region stay with the components it
     introduces, wrapping only those, and the other declarations move to
     their own sections (the arrays to Constants). The block's prose may
     still name the declarations that moved.
 - **Generated files.** Decided 2026-09-27. A file written by a script
-  (so far only `src/state/onboarding-stats-data.js`, from
-  `scripts/build-onboarding-stats.mjs`) gets its formatting from the
+  (so far only `src/state/onboarding-stats-data.ts`, from
+  `scripts/build-onboarding-stats.mts`) gets its formatting from the
   generator's own output template, never from hand edits: the
   file-level rules (naming, header table of contents, sections and
   regions, a shape JSDoc block, end-of-file export, sorted keys, a
@@ -394,11 +394,11 @@ can move code between files rather than just within one.
 - **Extension and naming.** A file uses `.jsx` only when it actually
   contains JSX, and `.js` otherwise (in TypeScript, `.tsx` and `.ts` the same
   way; see "## Language: TypeScript"). Every filename is kebab-case
-  (`tab-today.jsx`, `onboarding-seed-data.js`). Renaming a file means
+  (`tab-today.tsx`, `onboarding-seed-data.ts`). Renaming a file means
   updating every import of it in the same change.
 - **What a file holds.** A file is either one domain module (a family of
   related pure functions/constants, usually exported as one namespace
-  object, e.g. `cadence.js`) or one main component plus the private
+  object, e.g. `cadence.ts`) or one main component plus the private
   sub-components only it uses (e.g. a tab file). A sub-component used by 2
   or more files moves to a shared file instead of being exported from the
   file it happens to live in, the way `ui/` holds the app-wide
@@ -407,7 +407,7 @@ can move code between files rather than just within one.
 - **File size.** Whenever it makes logical sense for a block of code to
   live in its own file, it moves there: a self-contained sub-component
   (together with the constants, helpers, and hooks only it uses), a
-  distinct sub-concern of a domain module (e.g. one family of `store.js`'s
+  distinct sub-concern of a domain module (e.g. one family of `store.ts`'s
   own actions), or a distinct section of a large data catalog. This is a
   judgment call about cohesion, not a line count. Length is only a
   guideline for when to look: a file past roughly 2,000 lines is a strong
@@ -429,9 +429,9 @@ paths across the codebase. The layout ease-my-life uses (a new project
 adapts the folder names to its own features):
 ```
 src/
-  main.jsx               entry point
-  app.jsx                root component + tab bar
-  constants.js           app-wide constants
+  main.tsx               entry point
+  app.tsx                root component + tab bar
+  constants.ts           app-wide constants
   utils/                 app-agnostic pure helpers (see below)
   core/                  pure domain logic, no React
   state/                 app state and persistence (store, storage, seed,
@@ -455,32 +455,32 @@ src/
 - **`utils/` holds only app-agnostic pure helpers**: code that could be
   copied into a different project unchanged, with no domain knowledge, no
   app state, no React components, and no reliance on app globals. It's
-  grouped by kind (`utils/date.js`, `utils/format.js`, ...). Something
+  grouped by kind (`utils/date.ts`, `utils/format.ts`, ...). Something
   that merely looks generic but encodes this app's own vocabulary or
   globals goes elsewhere (e.g. `sorEntFun`, which encodes the Data tab's
-  sort keys, lives in `tabs/data/list-sorting.js`). In ease-my-life, the
-  date helpers once duplicated across `tasks.js`, `cadence.js`, and
+  sort keys, lives in `tabs/data/list-sorting.ts`). In ease-my-life, the
+  date helpers once duplicated across `tasks.ts`, `cadence.ts`, and
   several other files (`nwmDayFun`, `ordSufFun`, `dimCouFun`, the ISO date
-  formatter) live in one shared `utils/date.js`, alongside the old
-  `ui.jsx` date formatters, with `redMotFun` in `utils/motion.js`.
+  formatter) live in one shared `utils/date.ts`, alongside the old
+  `ui.jsx` date formatters, with `redMotFun` in `utils/motion.ts`.
 - **Dependency direction.** A folder imports only from itself or from
   folders below it in this order: `tabs/`, `onboarding/`, `help/` (top);
   then `ui/`; then `state/` and `platform/`; then `core/`; then `utils/`
   (bottom). `utils/` never imports anything from `src/`; `core/` never
-  imports React; no tab imports from another tab. `main.jsx`, `app.jsx`,
-  and `constants.js` sit outside the order: `app.jsx` may import from any
-  folder, and `constants.js` may be imported by any. Decided 2026-09-27:
+  imports React; no tab imports from another tab. `main.tsx`, `app.tsx`,
+  and `constants.ts` sit outside the order: `app.tsx` may import from any
+  folder, and `constants.ts` may be imported by any. Decided 2026-09-27:
   folders on the same tier may import each other (a tab uses `help/` and
-  `onboarding/`, `store.js` uses `pwa.js`), except that no tab imports from
+  `onboarding/`, `store.ts` uses `pwa.ts`), except that no tab imports from
   another tab's folder. The tour bus and the onboarding sample, stats, and
-  checklist data live in `state/`, since `store.js` and the shared
+  checklist data live in `state/`, since `store.ts` and the shared
   reminders editor in `ui/` both read them, and neither may import upward
   from `onboarding/`.
 - **No redundant prefixes.** A file inside a folder drops whatever prefix
   the folder already says (`onboarding/onboarding-tour-runner.jsx` becomes
-  `onboarding/tour-runner.jsx`), the same reasoning as the naming rule that
+  `onboarding/tour-runner.tsx`), the same reasoning as the naming rule that
   drops a word the import path already conveys. Exception: a tab's main
-  file keeps its `tab-` name (`tabs/today/tab-today.jsx`) so a search for
+  file keeps its `tab-` name (`tabs/today/tab-today.tsx`) so a search for
   a tab's file lands on it directly.
 - **Folder names** are lowercase kebab-case and short, plural only when
   the folder holds many of one kind of thing (`tabs/`).
@@ -602,9 +602,9 @@ src/
     explains something genuinely unique to that instance (e.g., why
     one particular item needs a specific pad-override amount): that
     stays exactly where it is, since it was never the repeated
-    boilerplate this exception targets. See `appearance.js`'s own
+    boilerplate this exception targets. See `appearance.ts`'s own
     `PAL_SET_OBJ` and `THE_PAI_OBJ` for the reference examples, and
-    `help/content.jsx`, whose "Help Catalogs Subsystem" section-intro
+    `help/content.tsx`, whose "Help Catalogs Subsystem" section-intro
     block documents its shared
     `{ bodEle, groStr?, ideStr, labStr?, mulBoo?, padXcoNum?, padYcoNum?,
     scrBoo?, selStr, shaStr?, titStr }` catalog-item shape once (its own
@@ -613,7 +613,7 @@ src/
     fields' own boilerplate comments.
     - **A shape shared by several declarations** (decided 2026-09-27):
       when more than one declaration holds literals of the same shape
-      (e.g. help/content.jsx's 5 per-page catalogs), the shape block
+      (e.g. help/content.tsx's 5 per-page catalogs), the shape block
       becomes one Section-intro block (see "### Large / design-rationale
       comments") whose region wraps every one of those declarations,
       rather than being attached to just one of them.
@@ -629,7 +629,7 @@ src/
       its enclosing scope it's hoisted to a module-level `ALL_CAPS`
       constant instead, gaining its own JSDoc shape block (and `#region`
       once it reaches 25 lines), the same treatment as any other one.
-      See `tabs/settings/contact-support.jsx`'s own `BRO_PAT_ARR`, moved
+      See `tabs/settings/contact-support.tsx`'s own `BRO_PAT_ARR`, moved
       out of `detBroFun`.
   - **Purely decorative banner comments** (e.g. `{ /* ── Appearance ──
     */ }` above a section) are deleted outright when the element they
@@ -679,7 +679,7 @@ src/
   as the topic-splitting case above. This keeps a line's real identity
   comment easy to spot on a quick scan (it's always first, right after
   the code) while still surfacing the extra context right there instead
-  of on a separate line above it. See `onboarding/app-features.jsx`'s
+  of on a separate line above it. See `onboarding/app-features.tsx`'s
   own GuidedTour step objects in `buiTesFun` for the reference example
   (e.g. the `Your Pickers Step`/`pulSelStr`/`runFun` lines): each one's
   own What/Why/How comes first, followed by its own extra design note,
@@ -694,7 +694,7 @@ src/
     target (the free-form block case above) still collapses to one
     physical line first, exactly as that case describes, before being
     moved into its own trailing `{ /* */ }` block. See
-    `onboarding/tour-runner.jsx`'s own Spotlight Element line for the
+    `onboarding/tour-runner.tsx`'s own Spotlight Element line for the
     reference example, whose leading multi-line comment about the
     ".ob-spot" box-shadow/is-dragging behavior moved into a second
     `{ /* */ }` block right after the element's own identity comment.
@@ -711,7 +711,7 @@ src/
   explains 2+ properties at once (e.g. one explanation covering why
   BOTH `titStr` and `bodEle` are functions), copy the identical comment
   text onto each of those properties' own lines rather than picking
-  just one. See `help/content.jsx`'s own `editMode` item for the
+  just one. See `help/content.tsx`'s own `editMode` item for the
   reference example: `padXcoNum`'s own override reasoning sits after
   `padXcoNum`'s own value, and the "title/body are functions..."
   explanation is copied verbatim after both `titStr` and `bodEle`.
@@ -747,7 +747,7 @@ src/
     covers rather than once. A `See <property>` pointer instead would
     send the reader on a jump to recover context a quick scan should
     already have; the small duplication cost is worth avoiding that.
-    See `onboarding/app-features.jsx`'s own `buiTesFun`, e.g. its Picker
+    See `onboarding/app-features.tsx`'s own `buiTesFun`, e.g. its Picker
     Selection/Manual Generation/Add To Todo List/Picker Items step
     objects: each one's own "Title/body copied verbatim..." note
     explains both `titStr` and `bodEle` together, so it's merged onto
@@ -766,9 +766,9 @@ src/
     construct distinct from the properties/entries already commented
     inside it. This rule makes no exception for it: found to be a
     systemic, recurring miss across multiple already-reviewed files
-    (conditionals.js, ui/conditional-controls.jsx, seed.js, pickers.js,
-    help/mode.jsx, tab-data.jsx, onboarding/page-tours.jsx,
-    onboarding/app-features.jsx, in one audit), the same recurring-bias
+    (conditionals.ts, ui/conditional-controls.tsx, seed.ts, pickers.ts,
+    help/mode.tsx, tab-data.tsx, onboarding/page-tours.tsx,
+    onboarding/app-features.tsx, in one audit), the same recurring-bias
     pattern as the other "Known blind spot" notes elsewhere in this doc.
     When auditing a file for comment completeness, explicitly grep
     `^\s*return \{$` and `^\s*return \[$` for hits with no trailing
@@ -780,7 +780,7 @@ src/
     top-level `const`/`return`) is just as easy to leave uncommented,
     for the same reason as the bare-return case above: it reads as "just
     a property" rather than as its own multi-line construct. Found live
-    in `onboarding/reminder-tours.jsx`'s own `VAR_COP_OBJ`, whose
+    in `onboarding/reminder-tours.tsx`'s own `VAR_COP_OBJ`, whose
     `once`/`recurring` entries (each a nested multi-line object) had no
     comment on their own opening `{` at all. When auditing a file for
     comment completeness, explicitly check every `<key> : {`/`<key> : [`
@@ -801,13 +801,13 @@ src/
     characters of each other still aligns among itself, and each outlier's
     own comment just sits one space after its own code instead. When two
     candidate groups are the same size, the one with the longer lines
-    aligns. E.g. `tab-picker.jsx`'s own draft `draActObj`: its short
+    aligns. E.g. `tab-picker.tsx`'s own draft `draActObj`: its short
     `delIteFun` line sits unaligned, while the four longer method lines
     below it still align with each other. This is most
     commonly found among a tightly-grouped run of one-line function
     declarations (see "### Variable declarations" above) whose own
     bodies happen to vary a lot in length, e.g. `padZerFun`/`locDayFun`
-    in `notify.js`, where forcing alignment would have padded
+    in `notify.ts`, where forcing alignment would have padded
     `padZerFun`'s own comment out by 73 extra spaces to reach
     `locDayFun`'s own, much longer line.
     - **Refinement: a single object literal's own properties reorder
@@ -827,9 +827,9 @@ src/
       propert(y/ies) at the end get natural one-space comment placement,
       unaligned, the same treatment the general exception above already
       gives an outlier. This was found live across the GuidedTour step
-      objects in `onboarding/welcome-tour.jsx`/`onboarding/picker-tours.jsx`/
-      `onboarding/page-steps.jsx`/`onboarding/app-features.jsx`/
-      `onboarding/reminder-tours.jsx`, where nearly every step object's
+      objects in `onboarding/welcome-tour.tsx`/`onboarding/picker-tours.tsx`/
+      `onboarding/page-steps.tsx`/`onboarding/app-features.tsx`/
+      `onboarding/reminder-tours.tsx`, where nearly every step object's
       own `bodEle` property was tripping the 100-char exception and
       silently killing alignment for every other property in the same
       object; reordering `bodEle` to the end and aligning the rest
@@ -840,10 +840,10 @@ src/
         enough that it wouldn't otherwise trip the 100-char threshold.**
         A GuidedTour step object (identified by its own `bodEle`+
         `tabStr`+`titStr` trio, the shape documented in `onboarding/
-        tour-runner.jsx`) is reused as dozens of near-identical sibling
-        objects across `onboarding/welcome-tour.jsx`/`onboarding/picker-
-        tours.jsx`/`onboarding/page-steps.jsx`/`onboarding/app-features.jsx`/
-        `onboarding/reminder-tours.jsx`, and `bodEle` is inherently this
+        tour-runner.tsx`) is reused as dozens of near-identical sibling
+        objects across `onboarding/welcome-tour.tsx`/`onboarding/picker-
+        tours.jsx`/`onboarding/page-steps.tsx`/`onboarding/app-features.tsx`/
+        `onboarding/reminder-tours.tsx`, and `bodEle` is inherently this
         shape's own prose field regardless of how long any one
         instance's own copy happens to be. Measuring its comment length
         case by case (the general rule just above) produces an
@@ -892,7 +892,7 @@ src/
         (1 blank line on each side, since none of them is the object's
         own true first/last entry once the final outlier claims that
         spot). See `buiNewFun`'s own returned step object in
-        `onboarding/picker-tours.jsx` for the reference example:
+        `onboarding/picker-tours.tsx` for the reference example:
         `bacBoo`/`cirBoo`/`priStr`/`selStr`/`sttBoo`/`tabStr`/`titStr`
         form one tight, aligned short group, followed by `bodEle` (a
         long single-line value), followed by `runFun` (a genuinely
@@ -1052,13 +1052,13 @@ src/
     (e.g. `{ groNamStr }` inside a button), since it just prints that
     value. Anything more than a bare variable (a ternary, a fallback like
     `a?.name || ' '`, a call) does get one, as a `{ /* */ }` block right
-    after it on the same line. See `tab-today.jsx`'s own Edit Mode rail
+    after it on the same line. See `tab-today.tsx`'s own Edit Mode rail
     button label.
   - **An attribute whose value is a multi-line construct** (a multi-line
     arrow function body, a multi-line array/object literal, ...) always
     gets a comment, following the ordinary "multi-line construct gets a
     comment right after its own opening bracket" treatment, the exact same
-    as anywhere else in this doc. See `onboarding/page-tours.jsx`'s own
+    as anywhere else in this doc. See `onboarding/page-tours.tsx`'s own
     `<GuiTouCom>` element for the reference example: `onBacTouFun`/
     `onSkiTouFun` (each a multi-line arrow function) and `steObjArr` (a
     multi-line array literal) all carry their own comment on the
@@ -1071,7 +1071,7 @@ src/
     a custom component. Signs it qualifies:
     1. **It branches or guards**: an `if`, a ternary, or `&&` inside means
        it only sometimes acts, or picks between values (e.g.
-       `ui/info-tip.jsx`'s InfTipCom `onPointerEnter`, which only opens for a mouse, and its
+       `ui/info-tip.tsx`'s InfTipCom `onPointerEnter`, which only opens for a mouse, and its
        `aria-label` ternary, which changes what a screen reader announces
        when the tip stands in for a disabled action).
     2. **It does something its name doesn't suggest**: stopping
@@ -1114,7 +1114,7 @@ src/
       line does. Only add one when something tricky or complicated is
       going on that a reader would genuinely need explained (e.g. a
       computed value with a non-obvious formula, or a shorthand/longhand
-      ordering that has to stay put). See `app.jsx`'s own uncommented
+      ordering that has to stay put). See `app.tsx`'s own uncommented
       `style={{` blocks for the reference examples.
     - **Token value comments in JavaScript** (decided 2026-10-02): any
       JS that reads a design token gets the same comment CSS does under
@@ -1198,7 +1198,7 @@ under the old rule keeps it only if it passes the test below.
 - **The test**: would someone calling this function, or relying on what it
   does, need to read its body to use or understand it correctly? If yes,
   it gets a JSDoc. Length never decides it on
-  its own: a one-line function hiding a non-obvious rule (e.g. `tasks.js`'s
+  its own: a one-line function hiding a non-obvious rule (e.g. `tasks.ts`'s
   `eveNthFun`, where an interval of 1 always qualifies and a negative count
   never does) can need one, while a long handler wired to a single button
   may not.
@@ -1206,7 +1206,7 @@ under the old rule keeps it only if it passes the test below.
   every component; every custom hook.
 - **Gets one when the test says yes**: any other function, named or
   anonymous, at module scope or declared inside another function or
-  component (e.g. `tabs/settings/announce.js`'s own announce-status setup
+  component (e.g. `tabs/settings/announce.ts`'s own announce-status setup
   IIFE, which builds the live region and assigns `annStaFun`'s real
   implementation). Typical
   signs the test says yes: parameters, a return value, or side effects
@@ -1227,12 +1227,12 @@ under the old rule keeps it only if it passes the test below.
 - **Naming an anonymous function's JSDoc**: since it has no name of its
   own, its name line uses the file's own name plus a descriptive name for
   what the function does, the same form an in-function design-rationale
-  block uses (`announce.js = Announce Status Setup`), and its region reuses that
+  block uses (`announce.ts = Announce Status Setup`), and its region reuses that
   descriptive name (`// #region Announce Status Setup`).
 - **Exception to the objects exclusion, a function-module object**: an
   object that is really a module of named functions (the themed-region
   "Object-literal variant" under "### Sectioning / fold regions", i.e.
-  `store.js`'s own `actStoObj`) has each entry judged by the test above,
+  `store.ts`'s own `actStoObj`) has each entry judged by the test above,
   exactly like a standalone function, since those entries are the app's
   own action API, called by name from every tab. The "Always gets one"
   bullet's own "called from another file" clause doesn't apply to these
@@ -1248,11 +1248,11 @@ under the old rule keeps it only if it passes the test below.
   that line. A component that takes a `ref` (React 19 passes it as an
   ordinary prop, so no `forwardRef` wrapper is needed) destructures it with
   its other props and documents it as `@param props.ref`, in its
-  alphabetical place; see `ui/button.jsx`'s own `ButBasCom`. A component
+  alphabetical place; see `ui/button.tsx`'s own `ButBasCom`. A component
   still wrapped in `React.forwardRef` (React 18 or older) documents its
   forwarded ref as a bare `@param` after the `props.` lines instead, since
   there it's a positional parameter. See `TabBarCom`/`AppRooCom` in
-  `src/app.jsx` for the reference implementation of every rule below.
+  `src/app.tsx` for the reference implementation of every rule below.
 - **Placement**: exactly 1 blank line before the opening `/**` (see
   "### Sectioning / fold regions" below for what comes before that blank
   line), exactly 1 blank line between the closing `*/` and the function's
@@ -1367,7 +1367,7 @@ for a callable's signature. Applies equally whether the comment already
 existed as a large prose block being reformatted, or is being newly
 written because the file/section genuinely warrants one; see the
 file-level comment and the `COL_WID_NUM`/`MIN_COL_NUM`/`BIG_CHA_NUM`
-comments in `src/ui/bg-flourish.jsx` for the reference examples.
+comments in `src/ui/bg-flourish.tsx` for the reference examples.
 - **Every file gets a file-level one of these, mandatory, regardless of
   whether the file's own design would otherwise "genuinely warrant" one
   under the general rule above.** This is a firm exception to that
@@ -1378,14 +1378,14 @@ comments in `src/ui/bg-flourish.jsx` for the reference examples.
   file's own purpose/role before they dive into its actual code. (The
   general judgment-call framing above still governs whether a SEPARATE
   comment attached to one specific declaration, like `COL_WID_NUM`'s own
-  in `bg-flourish.jsx`, is warranted; that part of the rule is
+  in `bg-flourish.tsx`, is warranted; that part of the rule is
   unaffected, and a file can have both its own mandatory file-level
   comment AND any number of these declaration-attached ones.) Placed
   right after the file's own imports, per "### Sectioning / fold
   regions" above: after the `// #endregion Imports` marker plus its own
   3-blank gap when the file has any imports, or as the very first real
   content (right after the file's own leading 3 blank lines) when it
-  has none. See `constants.js` (no imports) and `state/tour-bus.js` (has
+  has none. See `constants.ts` (no imports) and `state/tour-bus.ts` (has
   imports) for the two placement variants.
 - **Name/title line**: if the comment is attached to a specific
   declaration (the thing it immediately precedes), use that
@@ -1403,7 +1403,7 @@ comments in `src/ui/bg-flourish.jsx` for the reference examples.
     the genuinely-file-level case (both are substantial, header-style
     blocks, so both look the part), but names the SECTION instead of
     the file, alongside that same file's own single genuinely-file-level
-    header (`store.js = Store And Persisted-State Layer`) at the very
+    header (`store.ts = Store And Persisted-State Layer`) at the very
     top. A file may have any number of these, one per distinct subsystem
     it documents this way, on top of its own single mandatory file-level
     one. This case is ALWAYS wrapped in its own `// #region`/
@@ -1421,8 +1421,8 @@ comments in `src/ui/bg-flourish.jsx` for the reference examples.
       for a section implementing a specific behavioral pattern or
       invariant across several functions, or another word entirely when
       neither fits); this is a per-section judgment call, not a fixed
-      vocabulary. E.g. `store.js = Pick Log Subsystem` (introduces
-      state.pickLog's own data shape and its row-builder), `store.js =
+      vocabulary. E.g. `store.ts = Pick Log Subsystem` (introduces
+      state.pickLog's own data shape and its row-builder), `store.ts =
       Done-Gated Pick Mutations Mechanism` (introduces the pending/
       revert staging pattern spanning 5 functions, not any one piece of
       data). The region markers reuse this same full name, suffix
@@ -1474,7 +1474,7 @@ comments in `src/ui/bg-flourish.jsx` for the reference examples.
 - **A comment attached to a top-level declaration gets a `#region` once
   it reaches 25 lines**, measured together (the comment's own `/** ...
   */` plus every declaration it describes). Below 25 lines, no `#region`
-  is needed; every example in `src/ui/bg-flourish.jsx` currently falls under
+  is needed; every example in `src/ui/bg-flourish.tsx` currently falls under
   this (the longest, `COL_WID_NUM`'s, is around 20 lines total). A
   design-rationale comment inside a function body always gets one,
   regardless of length (see "### Sectioning / fold regions").
@@ -1526,7 +1526,7 @@ later, but don't invent one for anything else yet:
   function-body cluster rule and its 25-line/3-blank-gap conditions; applied
   during the final file-by-file pass. A manual, judgment-call process, never
   a mechanical scan; see `TabBarCom`'s "Active Tab Indicator" region in
-  `src/app.jsx` for an example.
+  `src/app.tsx` for an example.
   - **What a section is**: a run of consecutive statements that together
     serve one nameable purpose. Any kind of statement counts
     (declarations, local functions, `if` blocks, effects, calls), and there
@@ -1591,7 +1591,7 @@ later, but don't invent one for anything else yet:
   "unrelated" tier as two genuinely distinct top-level topics, since
   that's exactly what two different named sections are: `},` / blank /
   `#endregion Name A` / 3 blanks / `#region Name B` / blank / `{`. See
-  `help/content.jsx`'s own
+  `help/content.tsx`'s own
   `Create A Picker Form Step 1`/`Step 2` and `Appearance`/`Daily
   Generator`/`Holidays`/`Data Control`/`Account`/`About`/`Legal` regions
   for the reference examples. Not every array needs this: only apply it
@@ -1602,7 +1602,7 @@ later, but don't invent one for anything else yet:
     object literal whose entries genuinely split into distinct domains,
     as a deliberate exception to the object-property alphabetization
     rule under "### Arrays and objects" below. The reference (and so
-    far only) case is `store.js`'s own `actStoObj`, whose ~60 actions
+    far only) case is `store.ts`'s own `actStoObj`, whose ~60 actions
     group into real domains (Today entries, pickers, items, reminders,
     appearance, holidays, ...); a flat A to Z list would scatter every
     domain's actions across the whole object, while grouping them keeps
@@ -1612,7 +1612,7 @@ later, but don't invent one for anything else yet:
     name, and the entries inside each region are alphabetized among
     themselves. A domain whose summary comment introduces the whole
     region follows the Section-intro design-rationale treatment below
-    (its own `store.js = <Name> <Descriptor>` name line, 3 blank lines
+    (its own `store.ts = <Name> <Descriptor>` name line, 3 blank lines
     between its closing `*/` and the region's first entry); an entry
     carrying its own single-entry design-rationale comment keeps it as
     an attached comment instead, with its own name line using the
@@ -1630,7 +1630,7 @@ later, but don't invent one for anything else yet:
       region's `#endregion` and the next region's `#region`). The
       object's own opening and closing padding stays at 2 blank lines,
       like any other block. Smaller objects that merely contain a few
-      methods (e.g. `state/tour-bus.js`'s own `emlTouObj`) aren't covered
+      methods (e.g. `state/tour-bus.ts`'s own `emlTouObj`) aren't covered
       and keep the normal object-literal spacing.
 - **A section-intro design-rationale comment and everything it
   introduces**: the Section-intro variant of "### Large /
@@ -1646,7 +1646,7 @@ later, but don't invent one for anything else yet:
     Case name already used in the comment's own name line (the part
     after `<filename.ext> = `, descriptor suffix included), e.g.
     `// #region Pick Log Subsystem` / `// #endregion Pick Log Subsystem`
-    for a comment whose name line reads `store.js = Pick Log Subsystem`.
+    for a comment whose name line reads `store.ts = Pick Log Subsystem`.
   - **This supersedes the Section-intro comment's own placement rule**:
     the 3 blank lines that otherwise sit before the opening `/**` now
     sit before the `// #region` marker instead, the same supersession
@@ -1668,12 +1668,12 @@ later, but don't invent one for anything else yet:
     marker, if it has one) and this section's own `// #endregion`
     marker, then the normal 3 blank lines after `// #endregion` before
     whatever top-level thing comes next.
-  - See `store.js`'s own "Pick Log Subsystem" (wrapping `logRowFun`,
+  - See `store.ts`'s own "Pick Log Subsystem" (wrapping `logRowFun`,
     itself already its own nested `#region logRowFun`) and "Done-Gated
     Pick Mutations Mechanism" (wrapping `dropStalePendingUpdates`
     through `applyConditionalLog`, five nested function regions) for the
     reference examples; that same file's own genuinely-file-level
-    header at the very top (`store.js = Store And Persisted-State
+    header at the very top (`store.ts = Store And Persisted-State
     Layer`) is NOT wrapped in a region of its own, since the file
     itself is already that header's natural boundary.
 - **A design-rationale comment inside a function body, and everything it
@@ -1699,7 +1699,7 @@ later, but don't invent one for anything else yet:
     the `// #endregion` marker, followed by the same gap the described
     code originally had after it.
   - Regions nest normally: a summary describing a whole effect can wrap
-    another summary's region inside that effect. See `tab-today.jsx`'s
+    another summary's region inside that effect. See `tab-today.tsx`'s
     own `Completion Celebration` region (wrapping `Celebration
     Particles`, `Celebration Overlay Rect`, and the effect holding
     `Celebration Fire Sequence`) for the reference example.
@@ -1772,7 +1772,7 @@ one, whether the motion comes from CSS or from JS.
 - **JS**: any motion JS drives itself (an `Element.animate` call, a
   `requestAnimationFrame` tween, a smooth `scrollIntoView`/`scrollTo`, a
   timed class or step sequence, a canvas or particle effect) checks
-  `utils/motion.js`'s own `redMotFun()` first and, when it returns
+  `utils/motion.ts`'s own `redMotFun()` first and, when it returns
   true, skips the motion and jumps straight to its end state (an
   instant scroll, the final value, no particles), still running any
   follow-up the motion's own completion would have triggered. The CSS
@@ -1784,7 +1784,7 @@ one, whether the motion comes from CSS or from JS.
   reduced motion, since the press is consent to see it. Only the animation
   being previewed is exempt; ordinary transitions inside the preview (a
   hover fade, say) still get their reduced-motion variant. See `ui/
-  picker-strip.jsx`'s own `data-motion-force-active` and `tabs/settings/
+  picker-strip.tsx`'s own `data-motion-force-active` and `tabs/settings/
   previews.module.css`.
 - The modules migrated before this rule were brought in line in one
   pass; everything else is checked as its file is next touched.
@@ -1813,7 +1813,7 @@ animation and transition, CSS or JS-driven (an `Element.animate` call, a
     animation must start without a first-frame hitch on something that
     isn't on its own layer yet. Set it for the motion's duration only (JS
     adds it when the motion starts and clears it when it ends, the way
-    `tabs/today/reorder.js` does for a drag), or put it in CSS only on an
+    `tabs/today/reorder.ts` does for a drag), or put it in CSS only on an
     element that exists solely while it's moving (e.g. `ui/
     picker-strip.module.css`'s reel track).
   - **Leave it off** a plain CSS animation or transition, which the
@@ -1851,7 +1851,7 @@ still passes.
   recording state for something to read back.
   - **A trigger JS applies to another file's elements** (decided
     2026-09-28) is a presence-only `data-*` attribute instead, since a
-    file can only reach its own module's classes: e.g. `tab-today.jsx`'s
+    file can only reach its own module's classes: e.g. `tab-today.tsx`'s
     ripple celebration sets `data-card-exhale-active` on every card it
     finds by hook, entry cards and reminder cards alike, and each card's
     own module styles `.today-card[data-card-exhale-active]`. Removing and
@@ -1904,7 +1904,7 @@ still passes.
 - **A selector's top-level commas are fallbacks, not a union.** Help mode
   and the tour runner try a selector list's top-level alternatives in
   order and use the first one that matches anything, splitting the list
-  with `utils/selector.js`'s own `splSelFun`, which ignores commas inside
+  with `utils/selector.ts`'s own `splSelFun`, which ignores commas inside
   `:is()`, `:not()`, `:has()`, brackets, and quotes. A selector meant to
   match several different elements at once (e.g. a button that renders
   as an InfTipCom trigger span while disabled) joins them with `:is( a,
@@ -1942,7 +1942,7 @@ still passes.
   `data-row-edit-active`). This is expected to need refinement as the
   pass goes; record each refinement here.
 - **Module files** share their component file's own name, with a
-  `.module.css` extension, next to it (`tabs/today/group-header.jsx` →
+  `.module.css` extension, next to it (`tabs/today/group-header.tsx` →
   `tabs/today/group-header.module.css`).
 - **The import** is a default import named `cssModObj` (CSS Module
   Object), in the file's default-import group: `import cssModObj from
@@ -2174,7 +2174,7 @@ still passes.
     too many for readable ternaries, a module-level constant array lists
     each value's module class in order and the className indexes it
     instead, which still names every class explicitly. See
-    `tabs/stats/tab-stats.jsx`'s own `HEA_LEV_ARR` (`heat-${ levValNum }`
+    `tabs/stats/tab-stats.tsx`'s own `HEA_LEV_ARR` (`heat-${ levValNum }`
     became `HEA_LEV_ARR[ levValNum ]`).
 - **CSS file order follows the cascade**: a parent element's rules come
   first, then its first child's, then the next child's, and so on, in the
@@ -2215,7 +2215,7 @@ still passes.
     nested instance of the same child. Where a variant changes
     structure rather than values (decided 2026-09-28), the child takes
     a layout prop naming which layout it's in, e.g. `ui/
-    schedule-editor.jsx`'s own `layVarStr` (`'stacked'` on Today,
+    schedule-editor.tsx`'s own `layVarStr` (`'stacked'` on Today,
     `'rows'` in the Data tab), and its own module holds each layout as
     a modifier class on its root (`.rem-editor--stacked`,
     `.rem-editor--rows`) with that layout's descendant rules, so the
@@ -2346,7 +2346,7 @@ still passes.
       (`<IcoSvgCom icoNamStr='plus' sizSteStr='bas' />`), which the component
       turns into `calc( var( --ver-rhy-<step> ) * 1rem )`. Layout math that
       works in pixels (placing a tooltip or tour card, a scroll offset, a
-      sticky fallback) reads a step through `utils/rhythm.js`'s own
+      sticky fallback) reads a step through `utils/rhythm.ts`'s own
       `rhyPxlFun( '<step>' )`, which computes the step's pixel size from
       the root font size and the core design number with the same formula
       `styles.css` uses, so the two can never drift apart. A number that
@@ -2605,11 +2605,11 @@ are renamed to this as their files come up in the design-system pass.
   as is.
 - **JavaScript timing follows the same steps** (decided 2026-10-01). A
   timer that waits for a CSS animation or transition to finish reads that
-  animation's own step through `utils/rhythm.js`'s own `durMilFun(
+  animation's own step through `utils/rhythm.ts`'s own `durMilFun(
   '<step>' )` (plus the step of any delay it also waits through), so the
   two can never drift apart. Motion JavaScript plays itself (an
   `Element.animate` call, a `requestAnimationFrame` tween) takes its
-  duration from `durMilFun` too and its curve from `utils/motion.js`'s own
+  duration from `durMilFun` too and its curve from `utils/motion.ts`'s own
   `motEasFun( '<family>' )`, which reads the matching `--mot-*-eas`
   token. A timer that only paces behavior stays literal: loading and
   safety timeouts, how long a confirmation stays up, waits on a browser
@@ -2754,7 +2754,7 @@ never churns when a tool rewrites the file.
   throughout, with none of its keys alphabetized. Arrays always keep their
   authored order.
 - **No comments**: anything a JSON file needs explained lives where the file
-  is used or in this doc (e.g. `vite.config.js` explains why the manifest is
+  is used or in this doc (e.g. `vite.config.ts` explains why the manifest is
   hand-written).
 - **Check**: a JSON file passes when parsing and re-serializing it
   reproduces it byte for byte:
@@ -2814,7 +2814,7 @@ line, so only the rules that can't change what a tool reads apply.
   individual entry is; a short entry sitting next to other short entries
   is not an exception; the byte savings of "these all clearly fit
   together" is never worth the inconsistency of some entries getting
-  their own line while others don't. See `onboarding/picker-tours.jsx`'s
+  their own line while others don't. See `onboarding/picker-tours.tsx`'s
   own `steObjArr` for a fixed reference example: what used to be 4
   entries crammed onto a shared line (`NAV_STE_OBJ, buiNewFun(...),
   NAM_STE_OBJ, GRO_STE_OBJ,`) now gets one line per entry instead, each
@@ -2836,13 +2836,13 @@ line, so only the rules that can't change what a tool reads apply.
     own `parEleArr` body paragraphs) reads far more clearly with 1 blank
     line separating each paragraph, the same readability reasoning the
     object-property outlier exception already applies to a long `bodEle`-
-    style value. See `onboarding/welcome-tour.jsx`'s own `parEleArr` array (passed to
+    style value. See `onboarding/welcome-tour.tsx`'s own `parEleArr` array (passed to
     `IntModCom`) for the reference example: its 3 paragraph entries each
     get 1 blank line before and after, despite each being syntactically
     one physical line, not a genuinely multi-line entry.
 - **Exception, a large function-module object**: an object using the
   themed-region "Object-literal variant" under "### Sectioning / fold
-  regions" above (`store.js`'s own `actStoObj`) spaces its entries 3
+  regions" above (`store.ts`'s own `actStoObj`) spaces its entries 3
   blank lines apart instead, per that variant's own "Entry spacing"
   bullet; everything below still applies to every other object.
 - **A multi-line entry inside an array, or a multi-line property inside an
@@ -2931,7 +2931,7 @@ line, so only the rules that can't change what a tool reads apply.
     'numeric', month : 'short' }`, or a lookup table all follow the same
     case-insensitive order, unless their order genuinely matters (per the
     exception below). A stack of one-line rows keeps its position-based
-    column alignment after reordering. See `tab-stats.jsx`'s own
+    column alignment after reordering. See `tab-stats.tsx`'s own
     `STA_RAN_ARR`/`SOU_MET_ARR`/`TYP_MET_ARR` for the reference examples.
     The same applies to the field list in a Repeated-shape JSDoc block,
     which documents the shape's fields alphabetically. Earlier-reviewed
@@ -2940,7 +2940,7 @@ line, so only the rules that can't change what a tool reads apply.
       keys every row carries come first, alphabetized, then each row's
       own optional keys, alphabetized, so an optional key never shifts
       the shared columns out of line. The same order generated data rows
-      use. See `help/sample-data.js`'s own `TAS_SAM_ARR`.
+      use. See `help/sample-data.ts`'s own `TAS_SAM_ARR`.
   - **Object destructuring patterns are alphabetized the same way**,
     most commonly a component's own `function Foo ( { a, b } )` props,
     unless their order matters (a `...rest` element always stays last).
@@ -2948,7 +2948,7 @@ line, so only the rules that can't change what a tool reads apply.
     destructuring order and its `@example` shows the real call
     signature, both end up alphabetized along with it. Array
     destructuring (`const [ a, b ] = ...`) is positional, so it's never
-    reordered. See `tab-stats.jsx`'s own `BreBarCom`/`PagNavCom`/
+    reordered. See `tab-stats.tsx`'s own `BreBarCom`/`PagNavCom`/
     `TabStaCom` for the reference examples.
   - **`style={{ ... }}` objects are alphabetized too**, the same as any
     other multi-line object literal. Their keys are real CSS property
@@ -2965,7 +2965,7 @@ line, so only the rules that can't change what a tool reads apply.
       longhand's value. Alphabetize everything else normally around that
       pair.
     - **When it's applied**: this rule was written on 2026-09-24. From
-      `tab-data.jsx`'s review onward it's applied as part of each file's
+      `tab-data.tsx`'s review onward it's applied as part of each file's
       own manual review; files reviewed before that get it during the
       second, file-by-file pass that follows every manual review.
   - **Computed keys (`[ someVar ] : value`) form their own group, placed
@@ -2982,7 +2982,7 @@ line, so only the rules that can't change what a tool reads apply.
     doesn't matter: if a computed key could collide with a named key
     (an override relationship) or something reads the object's own key
     order, leave the authored order alone, the same exception every
-    other reordering here already has. E.g. `store.js`'s own
+    other reordering here already has. E.g. `store.ts`'s own
     `setCusFun` builds `nexAppObj` as its appearance spread, 1
     blank line, `[ keyNamStr ] : savColObj`, 1 blank line, then
     `theme : keyNamStr` (`keyNamStr` is always `'customLight'` or
@@ -3009,7 +3009,7 @@ line, so only the rules that can't change what a tool reads apply.
     judged per-object, not assumed from the object's shape alone.
   - **Exception, a large object deliberately grouped into themed
     regions**: see the "Object-literal variant" bullet under "###
-    Sectioning / fold regions" above (`store.js`'s own `actStoObj`),
+    Sectioning / fold regions" above (`store.ts`'s own `actStoObj`),
     where alphabetization applies to the regions and within each region
     rather than across the whole object at once.
   - **Object literals containing a spread (`...someObj`) are NOT
@@ -3027,7 +3027,7 @@ line, so only the rules that can't change what a tool reads apply.
     the `bodEle`-always-last refinement above where relevant); only the
     spread's own slot in the sequence is pinned. This refines an
     earlier, more conservative practice of skipping such an object
-    entirely: `onboarding/page-steps.jsx`'s own `buiTs1Fun` is the
+    entirely: `onboarding/page-steps.tsx`'s own `buiTs1Fun` is the
     reference example, where `...navTarObj` opens the returned step
     object and the explicit `bacBoo`/`cirBoo`/`priStr`/`tabStr`
     properties after it are alphabetized normally, with `bodEle` still
@@ -3049,7 +3049,7 @@ line, so only the rules that can't change what a tool reads apply.
       blank-line rule just below), and the CONTAINER's own close
       padding (2 blank lines) applies after it instead of that 1-blank
       rule if it lands as the object's own new last entry. See
-      `onboarding/reminder-tours.jsx`'s own `buiAddFun`, whose
+      `onboarding/reminder-tours.tsx`'s own `buiAddFun`, whose
       `emlTouObj.set()` prefill payload moved its own `daysOfWeek`-only
       conditional spread to the very end, after `createdFromSample`/
       `name`/`repeat` were alphabetized and tightly grouped, since
@@ -3101,7 +3101,7 @@ line, so only the rules that can't change what a tool reads apply.
         overlap, it keeps its authored position but still gets the 1
         blank line separation. 2+ multi-line spreads in the same run
         keep their own original relative order and are each separated
-        by 1 blank line. See `store.js`'s own `setEntFun` for
+        by 1 blank line. See `store.ts`'s own `setEntFun` for
         the reference example: its single-line `periodKey` spread comes
         first, then 1 blank line, then the multi-line day-off-card
         fields spread last (no key overlap between the two).
@@ -3137,9 +3137,9 @@ line, so only the rules that can't change what a tool reads apply.
     property's own `:` just gets its ordinary single space, no padding,
     even when every property involved is plainly a field of the same
     record. E.g. `emlTouObj`'s own `get`/`set`/`subscribe` properties in
-    `state/tour-bus.js` sit 1 blank line apart from each other and don't
+    `state/tour-bus.ts` sit 1 blank line apart from each other and don't
     align with each other, and a help-catalog item's own `id`/`sel`/
-    `title` in `help/content.jsx` do NOT pad to match a blank-separated
+    `title` in `help/content.tsx` do NOT pad to match a blank-separated
     `body` below them, even though all 4 are fields of the same item.
     - **Known blind spot**: this is easy to get backwards specifically
       when the blank-separated properties are themselves EACH a
@@ -3147,7 +3147,7 @@ line, so only the rules that can't change what a tool reads apply.
       nested objects sitting right next to each other can look like
       they "obviously" belong in one aligned table even though a blank
       line already separates them the same as any other multi-line
-      property. `onboarding/reminder-tours.jsx`'s own `VAR_COP_OBJ` was
+      property. `onboarding/reminder-tours.tsx`'s own `VAR_COP_OBJ` was
       found live padding its own `once`/`recurring` keys out to match
       each other's width (`once      : {` / `recurring : {`), even
       though each is its own multi-line entry separated by a blank line
@@ -3190,7 +3190,7 @@ line, so only the rules that can't change what a tool reads apply.
     table, not literally aligning identical keys. Finally, pad the
     closing `}` itself to a shared column the same way, so shorter rows
     get trailing spaces before their own `}`/`},`. See
-    `help/sample-data.js`'s own `TAS_SAM_ARR` for the reference example,
+    `help/sample-data.ts`'s own `TAS_SAM_ARR` for the reference example,
     where `id`/`name`/`repeat` line up across all 5 entries and each
     entry's own differently-named 4th field (`daysOfWeek`/`interval`/
     `dayOfMonth`/`day`+`month`) still lines up by position, closing `}`
@@ -3199,8 +3199,8 @@ line, so only the rules that can't change what a tool reads apply.
     trailing comment for free, since each row's code then ends at the
     same column; the last row, which has no trailing comma, gets one
     space in its place (`}  //` instead of `}, //`) so its comment still
-    lands in that same column. See `tab-data.jsx`'s own `SEC_SOR_ARR` and
-    `conditionals-manager.jsx`'s own `CIS_OPT_ARR` for further examples.
+    lands in that same column. See `tab-data.tsx`'s own `SEC_SOR_ARR` and
+    `conditionals-manager.tsx`'s own `CIS_OPT_ARR` for further examples.
     - **An entry of a different shape moves to the start or end of the
       stack**, whichever reads more naturally, when the array's order
       doesn't matter: a ternary choosing between two objects, a bare
@@ -3214,7 +3214,7 @@ line, so only the rules that can't change what a tool reads apply.
       pull the odd entry out into its own named `const` declared just
       above the array instead, and leave that short identifier in its
       real position; it no longer widens the comment column. See
-      `tab-stats.jsx`'s own `freSpeObj`/`metPilArr`.
+      `tab-stats.tsx`'s own `freSpeObj`/`metPilArr`.
     - **Exception, stop aligning before a long/paragraph-length
       property.** Once a row's own value for a given property is
       genuinely prose-length (a sentence or more, varying wildly in
@@ -3226,7 +3226,7 @@ line, so only the rules that can't change what a tool reads apply.
       one whose values stay short across every row, then leave that
       long property and the closing `}` completely unaligned/natural,
       each row ending wherever its own value happens to end. See
-      `help/mode.jsx`'s own `NAV_TAB_ARR` (`icoStr`/`labStr`/`desStr`,
+      `help/mode.tsx`'s own `NAV_TAB_ARR` (`icoStr`/`labStr`/`desStr`,
       the `NAV_HEL_OBJ` tip's own tab-description catalog): `icoStr`
       and `labStr` line up across all 5 rows, but
       `desStr` (a full sentence or more per row) and the closing `}`
@@ -3267,14 +3267,14 @@ line, so only the rules that can't change what a tool reads apply.
   object is a file's whole public API surface, likely to grow over time
   and worth keeping easy to scan/diff one property at a time, unlike a
   genuine fixed-shape config entry like `TAB_OBJ_ARR`'s own rows. See
-  `CAD_NAM_OBJ` (`cadence.js`), `CON_NAM_OBJ` (`conditionals.js`),
-  `TAS_NAM_OBJ` (`tasks.js`), `STORAGE` (`storage.js`), `NOT_NAM_OBJ`
-  (`notify.js`), and `PICKERS` (`pickers.js`) for the reference examples:
+  `CAD_NAM_OBJ` (`cadence.ts`), `CON_NAM_OBJ` (`conditionals.ts`),
+  `TAS_NAM_OBJ` (`tasks.ts`), `STORAGE` (`storage.ts`), `NOT_NAM_OBJ`
+  (`notify.ts`), and `PICKERS` (`pickers.ts`) for the reference examples:
   each property still gets its own specific What/Why/How comment (never
   one shared comment covering the whole object) and both its own
   property-name column (aligning the `:`) AND its own internal-name
   value column are padded to line up, the same two-column alignment
-  `holidays.js`'s own `HOL_NAM_OBJ` already used (there coincidentally
+  `holidays.ts`'s own `HOL_NAM_OBJ` already used (there coincidentally
   invisible since every property name equals its own value verbatim):
   pad the value column (plus its trailing comma, absent only on the
   last entry) to the width of the longest value in the object, the same
@@ -3502,7 +3502,7 @@ how short the body is.
   several independent `if`s specifically sitting next to EACH OTHER;
   this one is about the boundary right after ANY if/else-if/else
   construct ends, whatever comes after it. See `cloTouFun`'s own cleanup
-  dispatch for the reference example (`onboarding/page-tours.jsx`): its
+  dispatch for the reference example (`onboarding/page-tours.tsx`): its
   `if ( neeCopFun( pagIdeStr ) ) ... else if ( pagIdeStr ===
   'explore_stats' ) ...` chain is followed by a separate, standalone
   `if ( pagIdeStr === 'explore_data' ) cleTasFun( actStoObj );`, which is
@@ -3528,9 +3528,9 @@ the shortest's. An object literal sitting directly in a `?`/`:` branch
 stays on that branch's one line even when its values are non-trivial,
 an exemption from the "2+ properties with a non-trivial value go
 multi-line" rule under "### Arrays and objects" (decided 2026-09-27), so
-the ternary still reads as one unit; e.g. `store.js`'s own `togDonFun`
+the ternary still reads as one unit; e.g. `store.ts`'s own `togDonFun`
 live-row toggle. See
-`ui/conditional-controls.jsx`'s own `sooSubStr`/`latSubStr` for the reference
+`ui/conditional-controls.tsx`'s own `sooSubStr`/`latSubStr` for the reference
 example:
 ```
 const sooSubStr = isaDowBoo // What: ...
@@ -3558,7 +3558,7 @@ block's own body still gets the standard 2-blank-line padding from
   regardless of whether either block's own body is compact or
   multi-line: a compact `try { ... }` is still followed by `catch` on
   its own fresh line below, per the reference examples throughout
-  storage.js (e.g. `ownKeyFun`).
+  storage.ts (e.g. `ownKeyFun`).
 - **One `try`/`catch` statement is always separated from the next `try`/
   `catch` statement by 3 blank lines (the "unrelated" tier), regardless
   of what the general relatedness tiering would otherwise assign.** Two
@@ -3575,7 +3575,7 @@ block's own body still gets the standard 2-blank-line padding from
   and its OWN `catch` (still 1 blank line, per the intro above); the
   3-blank rule is specifically about the gap AFTER one statement's own
   `catch` and BEFORE the next statement's own `try`. See `genNotFun` in
-  `notify.js` for the reference example: its service-worker attempt's
+  `notify.ts` for the reference example: its service-worker attempt's
   `catch` and the page-level fallback's own `try` get 3 blank lines
   between them, and so do the `window.focus()`/`pagNotObj.close()`
   cleanup pair inside that fallback's own click handler.
@@ -3593,7 +3593,7 @@ block's own body still gets the standard 2-blank-line padding from
     try/catch/finally that is the very last thing before its own
     enclosing block's closing `}`/`)` gets that block's normal 2 blank
     lines after it instead, exactly like every other construct in this
-    doc. See `store.js`'s own `reset` action for the reference example:
+    doc. See `store.ts`'s own `reset` action for the reference example:
     its first `try` opens the action's own body (2 blank lines before
     it), while its second `try` follows ordinary code (3 blank lines
     before it), and both get 3 blank lines before whatever follows them.
@@ -3633,7 +3633,7 @@ block's own body still gets the standard 2-blank-line padding from
   a physical line with `do`'s own closing `}`, even when the block's own
   body stays compact: a compact `do { ... }` is still followed by
   `while ( cond );` on its own fresh line below, per `picLogFun`'s own
-  toss-draw loop in `seed.js` (the reference example this rule was
+  toss-draw loop in `seed.ts` (the reference example this rule was
   written from).
 ```
 do {
@@ -3687,7 +3687,7 @@ while ( condition );
   worth explaining (why THIS function, why these arguments), not merely
   "returning JSX", so it still gets a normal trailing/attached comment
   like any other multi-line construct. See `HelOveCom`'s own `return
-  createPortal(` in `help/mode.jsx` for the reference example.
+  createPortal(` in `help/mode.tsx` for the reference example.
 - A single-line exit guard (`if (!btn) { setInd(null); return; }`, or the
   fused one-liner form `if (cond) return;`) skips the standalone "3
   before" rule ONLY when it is the guard half of the "declare a value,
@@ -3734,7 +3734,7 @@ while ( condition );
   regardless of what it actually does next; this overrides whatever the
   General relatedness tiering below would otherwise assign. Example:
   `if ( logRowObj.date !== dayKeyStr || logRowObj.pickerId !==
-  picIdeStr ) continue;` in `day-log.jsx`'s own `dayFlaFun` gets 3 blank
+  picIdeStr ) continue;` in `day-log.tsx`'s own `dayFlaFun` gets 3 blank
   lines before the next line, not the 1 an ordinary relatedness guess
   might otherwise assign just because neighboring lines touch the same
   data.
@@ -3745,7 +3745,7 @@ while ( condition );
   `<span className='brand-name'>`, `<img src='x' />` all stay tight. (An
   earlier version of this doc required a space before a one-attribute
   element's closing `>` specifically; dropped as stale/superseded once
-  app.jsx's own actual practice (confirmed never applying it, including
+  app.tsx's own actual practice (confirmed never applying it, including
   at the exact element the old rule used as its own example) showed it
   wasn't really the intended convention.)
 - Every JSX expression container (an attribute value (`ref={navEleRef}`)
@@ -3877,7 +3877,7 @@ the same way object properties are, unless their order genuinely matters,
 e.g. a `{ ...spread }` attribute, whose position decides what it overrides
 and so stays exactly where it was written, or a form control whose prop
 order changes how React applies it. E.g. tier 7's `aria-label` comes before
-`role`, and tier 1's `key` before `ref`. See `tab-stats.jsx`'s own
+`role`, and tier 1's `key` before `ref`. See `tab-stats.tsx`'s own
 `<BreBarCom>`/`<PagNavCom>` call sites for the reference examples.
 
 On a multi-line attribute list, exactly 1 blank line separates each tier
@@ -3890,7 +3890,7 @@ its own internal spacing untouched, e.g. an arrow function body's usual
 component, so `name` is tier 5 only on a native element (where it's the
 real HTML `name` attribute); a custom component's own name-like prop, like
 `IcoSvgCom`'s own `icoNamStr`, is core data in tier 6. See
-`tabs/today/group-header.jsx`'s own GroHeaCom name `<input>` for the
+`tabs/today/group-header.tsx`'s own GroHeaCom name `<input>` for the
 reference example:
 
 ```
@@ -3994,7 +3994,7 @@ reference example:
   that one line, since splitting it would only scatter the sentence.
 - **Exception, a table of self-contained markup** (decided 2026-10-03): a
   lookup table whose entries are each one self-contained piece of markup,
-  such as `ui/icon.jsx`'s icon table, keeps each entry's markup on its own
+  such as `ui/icon.tsx`'s icon table, keeps each entry's markup on its own
   single line. The shapes inside an entry need no comments of their own and
   no multi-line attributes, since the entry's own comment covers the whole
   icon.
@@ -4065,7 +4065,7 @@ reference example:
     original, unreordered sequence, and preserve each cluster's own
     internal relative order from that original sequence; don't
     introduce a new ordering within a cluster that wasn't already
-    there. See `RemManCom` in `tabs/data/reminders-manager.jsx` for the
+    there. See `RemManCom` in `tabs/data/reminders-manager.tsx` for the
     reference example:
     its own `opeIdeStr`/`newAddRef`/`insIdeStr`/`opeEdiRef`/`froIndRef`/
     `preOpeRef` declarations were originally interleaved
@@ -4090,10 +4090,10 @@ reference example:
     Cancel/Save pair), 3 blank lines when they share no real data or
     purpose. The multi-line value's own body is a separate block of
     code, so the tighter 0/1-blank declaration-run tiers never apply
-    across it. E.g. `pwa.js`'s own `staGraNum`/`finProFun`: `const
+    across it. E.g. `pwa.ts`'s own `staGraNum`/`finProFun`: `const
     staGraNum = 2500;` followed by `const finProFun = () => { ... };`,
     which reads staGraNum in its own body, gets 2 blank lines; in
-    `tab-data.jsx`, `canNewFun`/`savNewFun` (sibling draft handlers)
+    `tab-data.tsx`, `canNewFun`/`savNewFun` (sibling draft handlers)
     get 2, while `savNewFun` followed by the unrelated `draCarRef` gets
     3. (An earlier version of this rule fixed every such transition at
     1 blank line; files reviewed before 2026-09-25 get corrected in the
@@ -4107,7 +4107,7 @@ reference example:
     sub-groups the same way as the other splits above: 1 blank line
     between the sub-groups, 0-blank internally within each, each
     sub-group's own alignment computed independently. E.g.
-    `utils/color.js`'s own `lmsLonPriNum`/`lmsMedPriNum`/`lmsShoPriNum` (3 non-standard,
+    `utils/color.ts`'s own `lmsLonPriNum`/`lmsMedPriNum`/`lmsShoPriNum` (3 non-standard,
     12-character Initialism-compression names) sit in their own group,
     followed by a blank line, then `lmsLonNum`/`lmsMedNum`/`lmsShoNum`
     (3 standard, 9-character names) in their own separately-aligned
@@ -4144,7 +4144,7 @@ reference example:
     Related (1 blank line) via its own "a value used on the very next
     line" case: e.g. `iteFlaObj = { autBoo : false, ... };` immediately
     followed by `iteFlaMap.set( logRowObj.itemId, iteFlaObj );` in
-    `dayFlaFun` (`day-log.jsx`) gets exactly 1 blank line between them,
+    `dayFlaFun` (`day-log.tsx`) gets exactly 1 blank line between them,
     not 0, since the reassignment and the `.set()` call are two
     genuinely different kinds of statement (an assignment, then a method
     call) even though they're tightly related.
@@ -4180,7 +4180,7 @@ chain mixing real expressions with bare names forces the reader to
 parse each real expression inline; naming them removes that burden
 without also demanding that already-simple bare identifiers get
 pointlessly wrapped in variables of their own. See `canBigBoo` and
-`diaOpeBoo` in `src/ui/bg-flourish.jsx` for the reference examples:
+`diaOpeBoo` in `src/ui/bg-flourish.tsx` for the reference examples:
 `canBigBoo` combines 6 bare identifiers and needs no further extraction
 despite having "more than 2" operands, while `diaOpeBoo` (`rowFitBoo &&
 colFitBoo && !bloGriArr[ rowIndNum + 1 ][ colIndNum + 1 ]`) has only 1
@@ -4218,7 +4218,7 @@ identifiers) and also stays inline as one line, for the same reason.
     before it, not this rule's own 2**, per "### Return and continue
     statements" below's own precedence modifier: that section's blank-
     line counts always win over this one's. E.g. `isaStaFun` in
-    `pwa.js`: `const isaStaBoo = disStaBoo || disFulBoo || navStaBoo;`
+    `pwa.ts`: `const isaStaBoo = disStaBoo || disFulBoo || navStaBoo;`
     followed by `return isaStaBoo;` gets 3 blank lines, not 2, even
     though `isaStaBoo` is exactly this rule's own "final combining
     boolean" shape (three bare identifiers ORed together).
@@ -4284,7 +4284,7 @@ Three tiers:
     one-line siblings: each one is a single-line exit guard, so "###
     Return and continue statements" gives it 3 blank lines before and
     after, even when every guard checks the same value (e.g.
-    `tasks.js`'s own `sumTasFun` `dowSetArr.length` checks). The same
+    `tasks.ts`'s own `sumTasFun` `dowSetArr.length` checks). The same
     holds when either sibling is a multi-line `if` block (decided
     2026-10-03, replacing an earlier 2-blank allowance): the line after any
     finished `if` construct always gets 3 blank lines, per "### if/else,
@@ -4306,7 +4306,7 @@ Three tiers:
 Applies to every named thing (variables, function/component declarations,
 function parameters, destructured bindings), no matter how short-lived or
 narrowly scoped, subject to the specific exemptions below. Being rolled out
-gradually alongside the whitespace rules above (started with `src/app.jsx`).
+gradually alongside the whitespace rules above (started with `src/app.tsx`).
 
 - **The 9-character/3-segment rule**: a name is built from exactly three
   3-character segments (9 characters total, camelCase for regular
@@ -4349,10 +4349,10 @@ gradually alongside the whitespace rules above (started with `src/app.jsx`).
   - `tsk` → `tas` (Task)
   - `fmt` → `for` (Format)
   - `frm` → `for` (Form: found in `onCloFrmFun`
-    (`onboarding/reminder-tours.jsx`), fixed to `onCloForFun`; note this
+    (`onboarding/reminder-tours.tsx`), fixed to `onCloForFun`; note this
     collides with `fmt` → `for` (Format) just above, and separately with
     `for`'s own already-correct existing use for Force (e.g. `forIdeStr`
-    in `pickers.js`); context disambiguates which of the three "for"
+    in `pickers.ts`); context disambiguates which of the three "for"
     stands for)
   - `pkr` → `pic` (Picker)
   - `ctl` → `con` (Control: note this collides with `cfg` → `con`
@@ -4384,7 +4384,7 @@ gradually alongside the whitespace rules above (started with `src/app.jsx`).
     status-chip renderer rather than anything about mounted children,
     disambiguates which word "chi" stands for in practice)
   - `rnd` → `rou` (Round/Rounded: note this collides with `rou` already
-    meaning Roulette (`rouRemNum` in `pickers.js`'s own weighted-pick
+    meaning Roulette (`rouRemNum` in `pickers.ts`'s own weighted-pick
     algorithm); a name's own surrounding context, e.g. `booRouNum`
     holding a rounded boost value rather than anything about a roulette
     wheel, disambiguates which word "rou" stands for in practice)
@@ -4399,79 +4399,79 @@ gradually alongside the whitespace rules above (started with `src/app.jsx`).
     "cla" stands for)
   - `cls` → `clo` (Close/Closing: a second, distinct miscorrection
     sharing the same wrong `cls` spelling as the Class case above, found
-    across `clsGroFun`/`clsIdeStr`/`savClsFun` (`tab-data.jsx`),
-    `clsImpFun`/`clsResFun` (`tab-settings.jsx`), `clsWayRef`
-    (`tab-today.jsx`), and `ediClsBoo` (`tab-picker.jsx`); `clo` is
+    across `clsGroFun`/`clsIdeStr`/`savClsFun` (`tab-data.tsx`),
+    `clsImpFun`/`clsResFun` (`tab-settings.tsx`), `clsWayRef`
+    (`tab-today.tsx`), and `ediClsBoo` (`tab-picker.tsx`); `clo` is
     already the established, heavily-used code for Close elsewhere
     (`cloAddFun`, `cloTimRef`, `onCloConFun`, ...), so these were
     renamed to match rather than left as a fourth "cls" variant)
   - `id` → `ide` (Identifier: this one drifts to a 2-letter segment
     instead of the usual wrong-3-letter case, since "id" is the common
     real-world abbreviation people reach for; found in `conIdArr`,
-    `pilIdStr`, `skiIdSet`, and `visIdSet` across `day-log.jsx` and
-    `tab-data.jsx`, all fixed to their own 3-letter `ide` segment)
+    `pilIdStr`, `skiIdSet`, and `visIdSet` across `day-log.tsx` and
+    `tab-data.tsx`, all fixed to their own 3-letter `ide` segment)
   - `grp` → `gro` (Group: found across 33 identifiers spanning 7 files;
     `gro` was already the established correct code for Group elsewhere
     in this codebase, e.g. `GroLogCom`, `GroHeaCom`, `curGroObj`)
   - `grp` → `gri` (Grip: a second, distinct miscorrection sharing the
     same wrong `grp` spelling as the Group case above, found in
-    `grpCurEle` (`tab-today.jsx`), a drag-handle grip element; `gri` is
+    `grpCurEle` (`tab-today.tsx`), a drag-handle grip element; `gri` is
     already the established code for Grip in that same file
     (`onGriDowFun`), though note `gri` also separately means Grid in
-    `bg-flourish.jsx` (`plaGriFun`), an unrelated multi-meaning segment
+    `bg-flourish.tsx` (`plaGriFun`), an unrelated multi-meaning segment
     in a different file with no collision risk between the two)
   - `ovf` → `ove` (Overflow: found in `ownOveStr`/`ancOveStr`/`oveRigBoo`
-    in `help/mode.jsx`, `oveBelNum`/`oveStyStr` across
-    `tab-settings.jsx` and `tab-picker.jsx`, and a third, distinct
-    recurrence in `onboarding/tour-runner.jsx`'s own `ownOveStr`/
+    in `help/mode.tsx`, `oveBelNum`/`oveStyStr` across
+    `tab-settings.tsx` and `tab-picker.tsx`, and a third, distinct
+    recurrence in `onboarding/tour-runner.tsx`'s own `ownOveStr`/
     `ancOveStr`/`ancOveYStr`, this last one caught during an automated
     Known-miscorrections sweep rather than a full manual review pass)
-  - `clp` → `cli` (Clip: found in `cliRecObj` across `help/mode.jsx` and
-    `onboarding/tour-runner.jsx`; `cli` was already the established code
+  - `clp` → `cli` (Clip: found in `cliRecObj` across `help/mode.tsx` and
+    `onboarding/tour-runner.tsx`; `cli` was already the established code
     for Clip elsewhere in this codebase, e.g. `cliHorFun`, `cliChrFun`)
   - `clp` → `cla` (Clamp: a second, distinct miscorrection sharing the
     same wrong `clp` spelling as the Clip case above, found in
-    `claValNum` (`tab-picker.jsx`), a clamped ease-drift value; `cla` is
+    `claValNum` (`tab-picker.tsx`), a clamped ease-drift value; `cla` is
     already the established code for Clamp elsewhere in this codebase
     (`claValFun`, `claPadFun`), though note `cla` also separately means
     Clause (`tutClaStr`) and Class (`extClaStr`); context disambiguates
     which of the three "cla" stands for)
   - `ovl` → `ove` (Overlap: found in `horOveBoo`/`verOveBoo`
-    (`help/mode.jsx`); note this collides with `ove` already meaning
+    (`help/mode.tsx`); note this collides with `ove` already meaning
     Overflow just above, and separately with `ove` meaning Overlay in
-    `HelOveCom` (`help/mode.jsx`, exported and used across every
+    `HelOveCom` (`help/mode.tsx`, exported and used across every
     tab-*.jsx file); context (a `Com`-suffixed component vs. a
     `Str`/`Boo`-suffixed value) disambiguates which of the three "ove"
     stands for)
   - `vp` → `vie` (Viewport: a 2-letter abbreviation rather than the
     usual wrong-3-letter case, since "vp" is the common real-world
     shorthand people reach for; found in `vpWidNum`/`vpHeiNum` across
-    `help/mode.jsx`, `ui.jsx`, and `onboarding/tour-runner.jsx`,
-    including `onboarding/tour-runner.jsx`'s own `coaLayFun` parameters)
+    `help/mode.tsx`, `ui.jsx`, and `onboarding/tour-runner.tsx`,
+    including `onboarding/tour-runner.tsx`'s own `coaLayFun` parameters)
   - `abv` → `abo` (Above: found in `aboAncNum`/`gapAboNum` in
-    `help/mode.jsx` and `ftsAboBoo` in `onboarding/tour-runner.jsx`)
+    `help/mode.tsx` and `ftsAboBoo` in `onboarding/tour-runner.tsx`)
   - `spc` → `spa` (Space: found in `spaAboNum`/`spaBelNum` across
-    `help/mode.jsx` and `onboarding/tour-runner.jsx`)
-  - `ctr` → `cen` (Center: found in `cenXNum` (`help/mode.jsx`); `cen`
+    `help/mode.tsx` and `onboarding/tour-runner.tsx`)
+  - `ctr` → `cen` (Center: found in `cenXNum` (`help/mode.tsx`); `cen`
     was already the established code for Center elsewhere in this
     codebase, e.g. `cenBadBoo`)
   - `arw` → `arr` (Arrow: found in `arrClaStr`/`arrXNum`/`arrClaVal`
-    across `help/mode.jsx` and `arrXFun`/`arrClaStr`/`arrXNum` in
-    `onboarding/tour-runner.jsx`)
+    across `help/mode.tsx` and `arrXFun`/`arrClaStr`/`arrXNum` in
+    `onboarding/tour-runner.tsx`)
   - `nxt` → `nex` (Next: a very widely recurring miscorrection, found in
-    `nexRecObj` (`help/mode.jsx`), `nexDayArr` (`tab-picker.jsx`),
-    `nexSetObj` (`tab-today.jsx`), and dozens of distinct `nexXxxArr`/
-    `nexXxxObj`/`nexXxxStr`/`nexXxxBoo` names throughout `store.js`,
+    `nexRecObj` (`help/mode.tsx`), `nexDayArr` (`tab-picker.tsx`),
+    `nexSetObj` (`tab-today.tsx`), and dozens of distinct `nexXxxArr`/
+    `nexXxxObj`/`nexXxxStr`/`nexXxxBoo` names throughout `store.ts`,
     where it is the file's own dominant convention for "the next state"
     passed to every action's own setter; `nex` was already the
     established correct code elsewhere in this codebase, e.g.
-    `nexMapObj` (`help/mode.jsx`, sitting right next to the wrong
+    `nexMapObj` (`help/mode.tsx`, sitting right next to the wrong
     `nxtRecObj` in the same file))
   - `cnd` → `con` (Conditional: another very widely recurring
     miscorrection, touching dozens of distinct `conXxxObj`/`conXxxArr`/
     `conXxxStr`/`conXxxBoo`/`conXxxFun` names plus 2 component aliases
-    across `store.js`, `tab-data.jsx`, `tab-picker.jsx`, `tab-today.jsx`,
-    `seed.js`, and `help/sample-data.js`. **Known blind spot**: a plain
+    across `store.ts`, `tab-data.tsx`, `tab-picker.tsx`, `tab-today.tsx`,
+    `seed.ts`, and `help/sample-data.ts`. **Known blind spot**: a plain
     substring/word-boundary grep for this one is easy to under-scope,
     since a name that begins DIRECTLY with `cnd`/`Cnd` (no other segment
     before it, e.g. `cndOnBoo`, `cndCurObj`, `CndEdiCom`) doesn't match a
@@ -4480,17 +4480,17 @@ gradually alongside the whitespace rules above (started with `src/app.jsx`).
     pattern that also allows zero characters before the target substring
     when auditing for this or any future miscorrection. `con` was
     already the established, deliberate code for Conditional in
-    `conditionals.js`'s own exported
+    `conditionals.ts`'s own exported
     `CON_NAM_OBJ` (originally `CONDITIONALS`), so this sweep brings
     every other file in line with that existing choice. Note `con`
     already carried 3 other meanings before this one (Config/
     Configuration via `cfg`→`con` above, Control via `ctl`→`con` above,
-    and Confirm, e.g. `tab-data.jsx`'s own `conDelBoo`/`setConDelBoo`),
+    and Confirm, e.g. `tab-data.tsx`'s own `conDelBoo`/`setConDelBoo`),
     making it a genuinely heavily-overloaded segment now; a name's own
     surrounding context (the other segments, and which file/module it
     sits in) disambiguates which of the 4 meanings "con" stands for in
     practice. **A single genuine self-collision surfaced from this
-    sweep**: `tab-data.jsx`'s own `CndConCom` (a local alias, `const
+    sweep**: `tab-data.tsx`'s own `CndConCom` (a local alias, `const
     CndConCom = ConditionalControls;`) already used `Con` for its own
     segment 2 (Control), so renaming segment 1 (Conditional) to `Con`
     the normal way would have produced `ConConCom`, the same code
@@ -4499,58 +4499,58 @@ gradually alongside the whitespace rules above (started with `src/app.jsx`).
     "Conditional"'s own 4th letter (`d`, since the 3rd letter `n` was
     already ruled out) instead of the literal first-3-letters `Con`,
     giving `CodConCom`. `cod` is otherwise used sparingly elsewhere
-    (`holidays.js`'s own `couCodStr`/`regCodStr`, meaning Code), with
+    (`holidays.ts`'s own `couCodStr`/`regCodStr`, meaning Code), with
     no collision risk against this file's own segments)
-  - `cpy` → `cop` (Copy: found in `cpyIdeStr` (`help/sample-data.js`)
-    and `cpyAdrFun`/`cpyDonFun` (`tab-settings.jsx`); `cop` was already
+  - `cpy` → `cop` (Copy: found in `cpyIdeStr` (`help/sample-data.ts`)
+    and `cpyAdrFun`/`cpyDonFun` (`tab-settings.tsx`); `cop` was already
     the established, heavily-used code for Copy elsewhere in this
     codebase, e.g. `copIdeStr`/`neeCopFun`/`picCopFun`/`tasCopFun`
-    (`onboarding/page-tours.jsx`), `datCopObj` (`seed.js`/`store.js`),
+    (`onboarding/page-tours.tsx`), `datCopObj` (`seed.ts`/`store.ts`),
     and `PAG_COP_OBJ`/`PIC_COP_OBJ`/`REP_COP_OBJ`/`VAR_COP_OBJ`)
   - `boot` → `boo` (Boot: a 4-letter word left untruncated instead of
     taking its own literal first 3 letters, found in `bootAppFun`
-    (`main.jsx`), fixed to `booAppFun`; note `boo` already carries 2
+    (`main.tsx`), fixed to `booAppFun`; note `boo` already carries 2
     other meanings in this codebase, Boolean (the universal type
     segment) and Boost (`booRouNum`, `BooResCom`), making this a third;
     context (the type segment always being literally `Boo` for
     Boolean, versus `boo` appearing as segment 1 or 2 for Boot/Boost)
     disambiguates which of the three it stands for)
   - `hdr` → `hea` (Header: found in `opeHdrEle`/`hdrButArr`
-    (`onboarding/app-features.jsx`), `hdrEle` (`onboarding-tour-
+    (`onboarding/app-features.tsx`), `hdrEle` (`onboarding-tour-
     runner.jsx`), and `hdrEleRef`/`hdrCurEle`/`hdrHeiNum`
-    (`tab-today.jsx`); `hea` was already the established, unambiguous
+    (`tab-today.tsx`); `hea` was already the established, unambiguous
     code for Header elsewhere in this codebase, e.g. `TabHeaCom`,
     `GroHeaCom`, `heaLabStr`)
   - `bld` → `bui` (Build, found across 9 functions spanning
-    `onboarding/page-tours.jsx`, `onboarding/app-features.jsx`,
-    `onboarding/picker-tours.jsx`, and `onboarding/reminder-tours.jsx`,
+    `onboarding/page-tours.tsx`, `onboarding/app-features.tsx`,
+    `onboarding/picker-tours.tsx`, and `onboarding/reminder-tours.tsx`,
     e.g. `bldAddFun`, `bldNewFun`, `bldModFun`, `bldSteFun`; `bld` is a
     common real-world abbreviation for "build" (build tooling, CI
     scripts, ...) that crept in over the word's own literal first 3
     letters the same way `btn`/`cfg` did elsewhere in this list)
   - `frq` → `fre` (Frequency: found in `buiFrqFun`
-    (`onboarding/reminder-tours.jsx`), fixed to `buiFreFun`; `fre` was
+    (`onboarding/reminder-tours.tsx`), fixed to `buiFreFun`; `fre` was
     already the established, correct code for this exact word elsewhere
     in this codebase, e.g. `freModStr`/`freGapMap`/`freKeyStr`/
-    `freEntObj` in `tab-stats.jsx`. Note `fre` is a heavily multi-meaning
+    `freEntObj` in `tab-stats.tsx`. Note `fre` is a heavily multi-meaning
     segment even before this fix, already carrying Fresh (dozens of
     uses, e.g. `isaFreBoo`/`freIndNum`/`freBoo` throughout
-    `reminders.jsx`/`tab-today.jsx`/`onboarding/tour-runner.jsx`) and
+    `reminders.jsx`/`tab-today.tsx`/`onboarding/tour-runner.tsx`) and
     Freeze (`freEdiFun` in `ui.jsx`) alongside Frequency; a name's own
     surrounding context disambiguates which of the three "fre" stands
     for in practice, the same reasoning already used for `con`/`sta`/
     `per` elsewhere in this list)
   - `tsp` → `tim` (Timestamp: found in `rowTspObj`
-    (`onboarding-seed-data.js`, 3 separate declarations) and `pikTspObj`
-    (`seed.js`, 2 separate declarations), fixed to `rowTimObj`/
+    (`onboarding-seed-data.ts`, 3 separate declarations) and `pikTspObj`
+    (`seed.ts`, 2 separate declarations), fixed to `rowTimObj`/
     `pikTimObj`; `tim` was already the established, correct code for
     this exact word right next to one of the miscorrected instances,
-    `comTimStr` in `onboarding-seed-data.js`'s own `hydStaFun`)
+    `comTimStr` in `onboarding-seed-data.ts`'s own `hydStaFun`)
   - `dwn` → `dow` (Down: a very widely recurring miscorrection, found in
-    `dwnGuaFun` (`onboarding/tour-runner.jsx`), `onPoiDwnFun`/
+    `dwnGuaFun` (`onboarding/tour-runner.tsx`), `onPoiDwnFun`/
     `poiDwnObj`/`onKeyDwnFun`/`keyDwnObj` (`ui.jsx`), `dwnLnkEle`
-    (`tab-settings.jsx`), `keyDwnFun`/`keyDwnObj` (`help/mode.jsx`), and
-    `easDwnBoo`/`isDwnBoo` (`store.js`, 2 separate declarations), fixed
+    (`tab-settings.tsx`), `keyDwnFun`/`keyDwnObj` (`help/mode.tsx`), and
+    `easDwnBoo`/`isDwnBoo` (`store.ts`, 2 separate declarations), fixed
     to `dowGuaFun`/`onPoiDowFun`/`poiDowObj`/`onKeyDowFun`/`keyDowObj`/
     `dowLnkEle`/`keyDowFun`/`keyDowObj`/`easDowBoo`/`isDowBoo` across all
     5 files in one sweep; every one of these comments already spelled
@@ -4558,34 +4558,34 @@ gradually alongside the whitespace rules above (started with `src/app.jsx`).
     "Ease-Down" in full, so none needed any text changes, only the
     identifiers themselves were wrong. Note `dow` collides in SPELLING
     (not meaning) with `dow` already meaning Day-Of-Week in
-    `cadence-control.jsx`'s own `dowIndNum`, a single narrow usage in an
+    `cadence-control.tsx`'s own `dowIndNum`, a single narrow usage in an
     unrelated file; a name's own surrounding context disambiguates which
     of the two "dow" stands for in practice, the same reasoning already
     used for `con`/`sta`/`per`/`fre` elsewhere in this list)
   - `amt` → `amo` (Amount: found in `resAmtNum`/`scrAmtFun`
-    (`onboarding/tour-runner.jsx`), `easAmtNum`/`newAmtNum`
-    (`ui/conditional-controls.jsx`, 2 separate `easSooFun`/`easLatFun`
+    (`onboarding/tour-runner.tsx`), `easAmtNum`/`newAmtNum`
+    (`ui/conditional-controls.tsx`, 2 separate `easSooFun`/`easLatFun`
     parameters and 2 separate `newAmtNum` declarations), and `offAmtNum`
-    (`appearance.js`), fixed to `resAmoNum`/`scrAmoFun`/`easAmoNum`/
+    (`appearance.ts`), fixed to `resAmoNum`/`scrAmoFun`/`easAmoNum`/
     `newAmoNum`/`offAmoNum` across all 3 files in one sweep; every one
     of these comments already spelled "Amount" out in full, so none
     needed any text changes, only the identifiers themselves were
     wrong. No collision: `amo` was not already in use anywhere)
   - `fnd` → `fou` (Found: found in `notFndNum`
-    (`onboarding/tour-runner.jsx`), `fndIteObj` (`tab-picker.jsx`, 2
-    separate declarations), and `curFndIndNum` (`tab-today.jsx`), fixed
+    (`onboarding/tour-runner.tsx`), `fndIteObj` (`tab-picker.tsx`, 2
+    separate declarations), and `curFndIndNum` (`tab-today.tsx`), fixed
     to `notFouNum`/`fouIteObj`/`curFouIndNum` across all 3 files in one
     sweep; `fou` was already the established, correct code for this
     exact word elsewhere in this codebase, e.g. `fouCouNum` in
-    `seed.js`. Every one of these comments already spelled "Found" out
+    `seed.ts`. Every one of these comments already spelled "Found" out
     in full, so none needed any text changes, only the identifiers
     themselves were wrong. No collision: none of the fixed names were
     already in use anywhere)
   - `plc` → `pla` (Place: found in `plcTarFun`
-    (`onboarding/tour-runner.jsx`), fixed to `plaTarFun`; `pla` was
+    (`onboarding/tour-runner.tsx`), fixed to `plaTarFun`; `pla` was
     already the established, heavily-used code for Place elsewhere in
-    this codebase, e.g. `plaTipFun` (`help/mode.jsx`/`ui.jsx`),
-    `plaGriFun` (`bg-flourish.jsx`), `plaThuFun` (`reminders.jsx`).
+    this codebase, e.g. `plaTipFun` (`help/mode.tsx`/`ui.jsx`),
+    `plaGriFun` (`bg-flourish.tsx`), `plaThuFun` (`reminders.jsx`).
     Every comment referencing this function already spelled out
     "Place"/"placement" in full, so only the identifier itself was
     wrong. No collision: `plaTarFun` was not already in use anywhere.
@@ -4593,28 +4593,28 @@ gradually alongside the whitespace rules above (started with `src/app.jsx`).
     found none, so this one was an isolated fix rather than a
     multi-file sweep)
   - `stb` → `sta` (Stable: found in `stbFraNum`
-    (`onboarding/tour-runner.jsx`), fixed to `staFraNum`; `sta` was
+    (`onboarding/tour-runner.tsx`), fixed to `staFraNum`; `sta` was
     already the established code for Stable/Standard/Standalone
     elsewhere in this codebase. Every comment referencing this
     variable already spelled out "Stable"/"stability" in full, so only
     the identifier itself was wrong. No collision: `staFraNum` was not
     already in use anywhere. Note `stb` itself also appears elsewhere
-    in this codebase, in `onboarding/app-features.jsx` and
-    `onboarding/picker-tours.jsx`'s own `stbBoo` (Scroll-To-Bottom, an
+    in this codebase, in `onboarding/app-features.tsx` and
+    `onboarding/picker-tours.tsx`'s own `stbBoo` (Scroll-To-Bottom, an
     initialism-compressed name, not an abbreviation of "Stable"), which
     is unrelated and correctly left untouched, a spelling coincidence
     rather than the same miscorrection)
-  - `pik` → `pic` (Pick: found across 6 files: `pickers.js` itself
-    (`pikIteFun`/`pikRecObj`/`pikResObj`/`pikIdeStr`), `seed.js`
-    (`pikTimObj`, `pikLogArr`, `todPikArr`), `onboarding-seed-data.js`
-    (2 prose mentions of `pikIteFun`), `tab-settings.jsx` (`pikCouNum`,
-    `plyPikFun`), `tab-data.jsx` (`pikIdeStr`), and `tab-today.jsx`
+  - `pik` → `pic` (Pick: found across 6 files: `pickers.ts` itself
+    (`pikIteFun`/`pikRecObj`/`pikResObj`/`pikIdeStr`), `seed.ts`
+    (`pikTimObj`, `pikLogArr`, `todPikArr`), `onboarding-seed-data.ts`
+    (2 prose mentions of `pikIteFun`), `tab-settings.tsx` (`pikCouNum`,
+    `plyPikFun`), `tab-data.tsx` (`pikIdeStr`), and `tab-today.tsx`
     (`newPikArr`, `pikNamSet`, `pikResObj`); `pic` was already the
     established, correct code for this exact word elsewhere in several
-    of these same files (`weiPicFun` in `pickers.js` itself, `picResObj`
-    in `tab-picker.jsx`, `picCouNum` in `tab-picker.jsx`, `picIdeStr`
-    used pervasively across `day-log.jsx`/`app.jsx`/`store.js`/
-    `onboarding/picker-tours.jsx`/etc.). Since `pik`→`pic` is a
+    of these same files (`weiPicFun` in `pickers.ts` itself, `picResObj`
+    in `tab-picker.tsx`, `picCouNum` in `tab-picker.tsx`, `picIdeStr`
+    used pervasively across `day-log.tsx`/`app.tsx`/`store.ts`/
+    `onboarding/picker-tours.tsx`/etc.). Since `pik`→`pic` is a
     straight 1-for-1 letter swap, every renamed identifier stayed
     exactly the same length, so no column-alignment recalculation was
     needed anywhere. Every comment referencing these identifiers
@@ -4622,14 +4622,14 @@ gradually alongside the whitespace rules above (started with `src/app.jsx`).
     changes, only the identifiers themselves were wrong.
     **Two deliberate, documented exceptions were left as `pik`,
     unrenamed**, both a genuine collision against `pic` already meaning
-    Picker in the exact same file: `seed.js`'s own `curPikObj` (used
+    Picker in the exact same file: `seed.ts`'s own `curPikObj` (used
     throughout `buiTodFun`'s own today-row-building section, lines
     ~1071-1095 and ~1162, where the exact same function body ALSO reads
     a real `curPicObj` = Current Picker Object looked up from it,
     e.g. `const curPicObj = picByIdeObj[ curPikObj.pickerId ];`, a hard
     technical collision the user explicitly chose to resolve by leaving
     `curPikObj` exactly as-is rather than escalating segment 1's
-    "Current" to an awkward `cuePicObj`); and `tab-today.jsx`'s own
+    "Current" to an awkward `cuePicObj`); and `tab-today.tsx`'s own
     `curPikObj` (the loop variable iterating `newPicArr` at line 4415),
     left unrenamed by the same reasoning even though it does not sit in
     literal scope alongside a `curPicObj`, since this exact file already
@@ -4637,14 +4637,14 @@ gradually alongside the whitespace rules above (started with `src/app.jsx`).
     differently-meaning `curPicObj` outlier would be a real readability
     trap on a file-wide search)
   - `chg` → `chr` (Charge/Charging: found in `chgUpdFun`
-    (`pickers.js`'s own ease-up/ease-down charge-application helper)
-    and `chgFreBoo` (`tab-today.jsx`, a charging-card's own "just
+    (`pickers.ts`'s own ease-up/ease-down charge-application helper)
+    and `chgFreBoo` (`tab-today.tsx`, a charging-card's own "just
     finished charging" fresh-cue flag), fixed to `chrUpdFun`/
     `chrFreBoo`. This did NOT use the literal first-3-letters `cha`:
     that code already carries a large, heavily-established meaning
     elsewhere in this codebase (Change, dozens of uses, e.g.
-    `chaEveObj` throughout `ui/conditional-controls.jsx`/`app.jsx`/
-    `cadence-control.jsx`), squarely the "heavy pre-existing overload"
+    `chaEveObj` throughout `ui/conditional-controls.tsx`/`app.tsx`/
+    `cadence-control.tsx`), squarely the "heavy pre-existing overload"
     case from the Naming-conflict resolution section below, not the
     few-uses case documented as an ordinary multi-meaning segment.
     Phase A escalation on "Charge" (keep `Ch`, skip the normal 3rd
@@ -4654,24 +4654,24 @@ gradually alongside the whitespace rules above (started with `src/app.jsx`).
     text changes, only the identifiers themselves were wrong)
   - `chg` → `cha` (Change/Changed: a separate, much larger
     miscorrection surfaced while checking the `chg`→`chr` fix above for
-    collisions: `chgEveObj` (~40 instances across `tab-settings.jsx`,
-    `tab-picker.jsx`, `tab-data.jsx`, `tab-today.jsx`), `chgIteArr`/
-    `modChgBoo` (`store.js`), `chgBoo` (`tab-data.jsx`), and
-    `filChgBoo` (`tab-stats.jsx`, `tab-picker.jsx`), fixed to
+    collisions: `chgEveObj` (~40 instances across `tab-settings.tsx`,
+    `tab-picker.tsx`, `tab-data.tsx`, `tab-today.tsx`), `chgIteArr`/
+    `modChgBoo` (`store.ts`), `chgBoo` (`tab-data.tsx`), and
+    `filChgBoo` (`tab-stats.tsx`, `tab-picker.tsx`), fixed to
     `chaEveObj`/`chaIteArr`/`modChaBoo`/`chaBoo`/`filChaBoo`. Unlike the
     Charge/Charging case just above, this one uses the literal
     first-3-letters `cha` directly, no escalation needed, since `cha`
     was already the established, correct code for this exact word
     elsewhere in this same codebase (`chaEveObj` already used
-    throughout `ui/conditional-controls.jsx`/`app.jsx`/`cadence-control.jsx`,
+    throughout `ui/conditional-controls.tsx`/`app.tsx`/`cadence-control.tsx`,
     confirmed with no same-scope collision anywhere the sweep touched:
-    `tab-picker.jsx`'s own pre-existing `chaEveObj` at line 131 sits in
+    `tab-picker.tsx`'s own pre-existing `chaEveObj` at line 131 sits in
     a completely separate function from every `chgEveObj` instance
     fixed there). Every comment referencing these identifiers already
     spelled "Change"/"Changed" out in full, so none needed text
     changes, only the identifiers themselves were wrong)
   - `ovr` → `ove` (Over: found in `ovrShoArr`/`minOvrNum`
-    (`pickers.js`'s own ease-up overshoot-compression block), fixed to
+    (`pickers.ts`'s own ease-up overshoot-compression block), fixed to
     `oveShoArr`/`minOveNum`; this is a distinct word from the `ovf`→
     `ove` (Overflow) and `ovl`→`ove` (Overlap) cases already documented
     above, `ove` now carrying a fourth meaning, the same "context
@@ -4681,11 +4681,11 @@ gradually alongside the whitespace rules above (started with `src/app.jsx`).
     referencing these identifiers already spelled "Overshoot" out in
     full, so none needed text changes, only the identifiers themselves
     were wrong)
-  - `chs` → `cho` (Chosen: found in `chsIteObj` (`pickers.js`'s own
+  - `chs` → `cho` (Chosen: found in `chsIteObj` (`pickers.ts`'s own
     ease-down new-streak branch), fixed to `choIteObj`; `cho` was
     already the established, correct code for this word family
     elsewhere in this codebase, just for a different member of it
-    (Choice, e.g. `choArr` in `tab-data.jsx`, `choResObj` in `pwa.js`),
+    (Choice, e.g. `choArr` in `tab-data.tsx`, `choResObj` in `pwa.ts`),
     so `cho` now carries a second, closely-related meaning (Choice vs.
     Chosen), disambiguated by context the same way as any other
     multi-meaning segment in this list. Only 1 instance, and no
@@ -4695,32 +4695,32 @@ gradually alongside the whitespace rules above (started with `src/app.jsx`).
   - `ok` → `oka` (Okay: a 2-letter abbreviation rather than the usual
     wrong-3-letter case, since "ok" is the common real-world shorthand
     people reach for, the same reasoning as the `id`→`ide` case
-    earlier in this list; found in `askOkBoo` (`pwa.js`) and `perOkBoo`
-    (`tab-settings.jsx`), fixed to `askOkaBoo`/`perOkaBoo`, with each
+    earlier in this list; found in `askOkBoo` (`pwa.ts`) and `perOkBoo`
+    (`tab-settings.tsx`), fixed to `askOkaBoo`/`perOkaBoo`, with each
     one's own comment updated from "Ask/Persist Ok Boolean" to
     "Ask/Persist Okay Boolean" since the old text was the abbreviation
     itself, not a full-word spelling that just needed the identifier
     fixed underneath it. No collision: `oka` was not already in use
     anywhere. **Not swept**: `Oklab`/`linOklFun`/`okLANum`/`okLBNum`/
-    `okLLitNum`/`oklLinFun` (`store.js`) also match a bare `ok`/`Ok`
+    `okLLitNum`/`oklLinFun` (`store.ts`) also match a bare `ok`/`Ok`
     substring search, but none of them mean "Okay" at all; they name
     the real OKLab color space, an unrelated technical term that
     happens to share the same 2 letters, left untouched)
   - `shw` → `sho` (Show: found in `shwYeaBoo` (`reminders.jsx`),
     `shwAllBoo`/`shwConBoo`/`shwEntArr`/`shwPicArr`/`shwRemBoo`/
-    `disShwBoo` (`tab-data.jsx`), `shwErrBoo`/`setShwErrBoo`
-    (`tab-settings.jsx`), and `shwCheBoo`/`shwFeaBoo`/`shwFeaIntBoo`/
-    `setShwFeaIntBoo`/`onbShwNorBoo` (`tab-today.jsx`), fixed across all
+    `disShwBoo` (`tab-data.tsx`), `shwErrBoo`/`setShwErrBoo`
+    (`tab-settings.tsx`), and `shwCheBoo`/`shwFeaBoo`/`shwFeaIntBoo`/
+    `setShwFeaIntBoo`/`onbShwNorBoo` (`tab-today.tsx`), fixed across all
     4 files in one sweep; `sho` was already the established, correct
     code for this exact word in several OTHER identifiers in this same
-    codebase (`shoSavBoo`/`shoDriBoo`/`shoWgtBoo` in `tab-picker.jsx`,
-    `shoRemBoo` in `tab-stats.jsx`), so no escalation was needed, this
+    codebase (`shoSavBoo`/`shoDriBoo`/`shoWgtBoo` in `tab-picker.tsx`,
+    `shoRemBoo` in `tab-stats.tsx`), so no escalation was needed, this
     was purely an inconsistent spelling of a word already spelled
     correctly elsewhere. Note `sho` is a heavily multi-meaning segment
     even before this fix, already carrying Should (`shoDedBoo` in
-    `pickers.js`, `shoPulBoo` in `onboarding/tour-runner.jsx`), Short
-    (`shoPilNum` in `help/mode.jsx`), and Shown (`shoOrdRef`/`shoArr` in
-    `tab-today.jsx`) alongside Show; a name's own surrounding context
+    `pickers.ts`, `shoPulBoo` in `onboarding/tour-runner.tsx`), Short
+    (`shoPilNum` in `help/mode.tsx`), and Shown (`shoOrdRef`/`shoArr` in
+    `tab-today.tsx`) alongside Show; a name's own surrounding context
     disambiguates which of the four "sho" stands for in practice, the
     same reasoning already used for `con`/`sta`/`per`/`fre`/`dow`
     elsewhere in this list. Every comment referencing these identifiers
@@ -4729,27 +4729,27 @@ gradually alongside the whitespace rules above (started with `src/app.jsx`).
     collision in any of the 4 files: none of the corrected names were
     already in use anywhere)
   - `knd` → `kin` (Kind: found in `kndValStr`/`kndWorStr`
-    (`reminders.jsx`) and `kndStr` (`tab-today.jsx`), fixed across both
+    (`reminders.jsx`) and `kndStr` (`tab-today.tsx`), fixed across both
     files in one sweep; `kin` was already the established, correct code
     for this exact word elsewhere in this codebase (`kinStr` in
-    `tabs/settings/previews.jsx`), so no escalation was needed, this was
+    `tabs/settings/previews.tsx`), so no escalation was needed, this was
     purely an inconsistent spelling of a word already spelled correctly
     elsewhere. Every comment referencing these identifiers already
     spelled "Kind" out in full, so none needed text changes, only the
     identifiers themselves were wrong. No collision: neither `kinValStr`/
-    `kinWorStr` nor `kinStr` (in `tab-today.jsx`'s own scope) was already
+    `kinWorStr` nor `kinStr` (in `tab-today.tsx`'s own scope) was already
     in use anywhere)
   - `snp` → `sna` (Snapshot/Snap: found in `draSnpObj`/`snpOptRef`/
     `snpTasObj` (`reminders.jsx`), `curSnpObj`/`preSnpObj`/`snpIteObj`/
-    `snpPicObj`/`snpTasObj` (`store.js`), `snpIteObj`/`snpRef`
-    (`tab-data.jsx`), and `ordSnpRef` (`tab-today.jsx`), fixed across
+    `snpPicObj`/`snpTasObj` (`store.ts`), `snpIteObj`/`snpRef`
+    (`tab-data.tsx`), and `ordSnpRef` (`tab-today.tsx`), fixed across
     all 4 files in one sweep; `sna` was already the established,
     correct code for this exact word in several OTHER identifiers in
-    this same codebase (`genSnaObj` in `day-log.jsx`, `busSnaObj` in
-    `state/tour-bus.js`, `recSnaArr` in `reorder.js`, `ediSnaRef`/
-    `snaIteObj`/`iteSnaArr` in `tab-picker.jsx`), so no escalation was
+    this same codebase (`genSnaObj` in `day-log.tsx`, `busSnaObj` in
+    `state/tour-bus.ts`, `recSnaArr` in `reorder.ts`, `ediSnaRef`/
+    `snaIteObj`/`iteSnaArr` in `tab-picker.tsx`), so no escalation was
     needed, this was purely an inconsistent spelling of a word already
-    spelled correctly elsewhere; `tab-picker.jsx`'s own `snaIteObj` in
+    spelled correctly elsewhere; `tab-picker.tsx`'s own `snaIteObj` in
     particular already meant the exact same thing (a snapshot value
     passed to a revIteFun-style call) as the corrected `snpIteObj`
     instances. Every comment referencing these identifiers already
@@ -4757,47 +4757,47 @@ gradually alongside the whitespace rules above (started with `src/app.jsx`).
     the identifiers themselves were wrong. No collision: none of the
     corrected names were already in use anywhere)
   - `cln` → `cle` (Cleanup/Clean: found in `clnDonBoo`/`clnDraFun`
-    (`reorder.js`, the latter also in its own `#region`/`#endregion`
-    markers) and `clnFunArr`/`clnCurFun`/`curClnFun` (`tab-data.jsx`,
-    `tab-picker.jsx`), fixed across all 3 files in one sweep; `cle` was
+    (`reorder.ts`, the latter also in its own `#region`/`#endregion`
+    markers) and `clnFunArr`/`clnCurFun`/`curClnFun` (`tab-data.tsx`,
+    `tab-picker.tsx`), fixed across all 3 files in one sweep; `cle` was
     already the established, correct code for this exact word in
     several OTHER identifiers in this same codebase (`ripCleTmo`/
-    `ripCleFun`/`parCleTmo` in `tabs/settings/previews.jsx`, `clePicFun`/
-    `cleTasFun` in `help/sample-data.js`, `buiCleFun` in `seed.js`),
+    `ripCleFun`/`parCleTmo` in `tabs/settings/previews.tsx`, `clePicFun`/
+    `cleTasFun` in `help/sample-data.ts`, `buiCleFun` in `seed.ts`),
     so no escalation was needed, this was purely an inconsistent
     spelling of a word already spelled correctly elsewhere;
-    `tab-stats.jsx`'s own `cleFunArr` in particular already meant the
+    `tab-stats.tsx`'s own `cleFunArr` in particular already meant the
     exact same thing (an array of per-row cleanup functions) as the
     corrected `clnFunArr` instances. Every comment referencing these
     identifiers already spelled "Cleanup" out in full, so none needed
     text changes, only the identifiers themselves were wrong. **Not
-    swept**: `seed.js`'s own `'tk_drycln'` also matches a bare `cln`
+    swept**: `seed.ts`'s own `'tk_drycln'` also matches a bare `cln`
     substring search, but it's a literal sample-task-id STRING VALUE
     (short for "dry cleaning"), not one of our own invented
     identifiers, so it was left untouched. No collision: none of the
     corrected identifier names were already in use anywhere)
   - `lop` → `loo` (Loop: found in `edgLopFun`/`edgLopNum`
-    (`reorder.js`, the former also in its own `#region`/`#endregion`
+    (`reorder.ts`, the former also in its own `#region`/`#endregion`
     markers); `loo` was already the established, correct code for this
     exact word elsewhere in this codebase (`looRafFun`/`looCanBoo` in
-    `help/mode.jsx`, `entLooFun` in `onboarding-checklist.js`), so no
+    `help/mode.tsx`, `entLooFun` in `onboarding-checklist.ts`), so no
     escalation was needed, this was purely an inconsistent spelling of
     a word already spelled correctly elsewhere. Every comment
     referencing these identifiers already spelled "Loop" out in full,
     so none needed text changes, only the identifiers themselves were
     wrong. No collision: neither `edgLooFun` nor `edgLooNum` was
     already in use anywhere)
-  - `skp` → `ski` (Skip: found across 7 files: `seed.js`
-    (`skpRowArr`/`addSkpFun`/`skpDatObj`), `onboarding-seed-data.js`
-    (`skpRowObj`), `tab-settings.jsx`/`tab-today.jsx` (`skpSpyRef`,
-    shared by both), `tab-picker.jsx` (`skpHolBoo`/`setSkpHolBoo`/
-    `skpAutBoo`), `tab-today.jsx`'s own separate `skpAniMsNum`, and
-    `onboarding/tour-runner.jsx` (`skpTouFun`); `ski` was already the
+  - `skp` → `ski` (Skip: found across 7 files: `seed.ts`
+    (`skpRowArr`/`addSkpFun`/`skpDatObj`), `onboarding-seed-data.ts`
+    (`skpRowObj`), `tab-settings.tsx`/`tab-today.tsx` (`skpSpyRef`,
+    shared by both), `tab-picker.tsx` (`skpHolBoo`/`setSkpHolBoo`/
+    `skpAutBoo`), `tab-today.tsx`'s own separate `skpAniMsNum`, and
+    `onboarding/tour-runner.tsx` (`skpTouFun`); `ski` was already the
     established, correct code for this exact word in several OTHER
     identifiers across this same codebase (`skiBoo`/`skiIdeSet` in
-    day-log.jsx, `skiLabStr`/`onSkiTouFun` in onboarding/intro-modal.jsx
-    and onboarding/welcome-tour.jsx, `skiIdeStr`/`isaSkiBoo` in
-    reminders.jsx, `skiCouMap` in tab-stats.jsx), so no escalation was
+    day-log.tsx, `skiLabStr`/`onSkiTouFun` in onboarding/intro-modal.tsx
+    and onboarding/welcome-tour.tsx, `skiIdeStr`/`isaSkiBoo` in
+    reminders.jsx, `skiCouMap` in tab-stats.tsx), so no escalation was
     needed, this was purely an inconsistent spelling of a word already
     spelled correctly elsewhere. Every comment referencing these
     identifiers already spelled "Skip" out in full, so none needed text
@@ -4805,36 +4805,36 @@ gradually alongside the whitespace rules above (started with `src/app.jsx`).
     grepped every `ski`-prefixed identifier already in the codebase
     first and confirmed all of them already meant Skip, nothing else)
   - `wks`/`wek` → `wee` (Week: two distinct wrong spellings of the same
-    word, both found only in `seed.js`: `wksSinNum` (`buiConFun`, 4
+    word, both found only in `seed.ts`: `wksSinNum` (`buiConFun`, 4
     instances) and `wekAllArr`/`wekDayArr` (`buiPicFun`)/`wekIndNum`
     (`buiConFun`, sitting in the very same function as `wksSinNum`).
     `wee` was already the established, heavily-used code for this exact
     word elsewhere in this codebase (`weeValNum`/`firWeeNum` in
-    cadence.js/tasks.js, `weeStaObj` in cadence.js, `weeAgoNum`/
-    `remWeeNum` in tab-stats.jsx, `WEE_ABB_ARR`/`weeSumFun` in ui.jsx,
+    cadence.ts/tasks.ts, `weeStaObj` in cadence.ts, `weeAgoNum`/
+    `remWeeNum` in tab-stats.tsx, `WEE_ABB_ARR`/`weeSumFun` in ui.jsx,
     `weeSelArr` in reminders.jsx), so no escalation was needed, this was
     purely 2 inconsistent spellings of a word already spelled correctly
     elsewhere. Every comment referencing these identifiers already
     spelled "Week"/"Weeks"/"Weekly" out in full, so none needed text
     changes, only the identifiers themselves were wrong. No collision:
-    seed.js had no pre-existing `wee`-prefixed identifier of its own)
+    seed.ts had no pre-existing `wee`-prefixed identifier of its own)
   - `tmo` → `tim` (Timeout: a very widely recurring miscorrection,
-    found across 7 files: `idlTmoRef` (`store.js`), `picPreTmo`
-    (`tab-settings.jsx`), `ripCleTmo`/`parCleTmo`
-    (`tabs/settings/previews.jsx`), `pulEndTmo`/`freTmoNum`/`feaIntTmoNum`/
+    found across 7 files: `idlTmoRef` (`store.ts`), `picPreTmo`
+    (`tab-settings.tsx`), `ripCleTmo`/`parCleTmo`
+    (`tabs/settings/previews.tsx`), `pulEndTmo`/`freTmoNum`/`feaIntTmoNum`/
     `celEndTmo`/`bmpEndTmo`/`purTmoNum`/`celTmoNum`/`alnTmoNum`
-    (`tab-today.jsx`), `scrTmo`/`defDonTmo`/`kicOffTmo`
-    (`tab-picker.jsx`), `focDelTmo` (`legal-docs.jsx`), and
-    `exiEndTmo`/`entEndTmo` (`app.jsx`), fixed to their own `tim`
+    (`tab-today.tsx`), `scrTmo`/`defDonTmo`/`kicOffTmo`
+    (`tab-picker.tsx`), `focDelTmo` (`legal-docs.tsx`), and
+    `exiEndTmo`/`entEndTmo` (`app.tsx`), fixed to their own `tim`
     equivalents across all 7 files in one sweep. `tim` was already the
     established, heavily-used code for this exact word in several OTHER
     identifiers across this same codebase (`cloTimRef`/`addTimRef` in
-    reminders.jsx, `scrTimNum` in tab-data.jsx/reminders.jsx,
+    reminders.jsx, `scrTimNum` in tab-data.tsx/reminders.jsx,
     `annTimNum` in ui.jsx), so no escalation was needed, this was purely
     an inconsistent spelling of a word already spelled correctly
     elsewhere; reminders.jsx's own pre-existing `freTimNum` in particular
     already meant the exact same thing (a fresh-cue clear timeout) as
-    the corrected `freTmoNum` instance in tab-today.jsx. Note `tim` also
+    the corrected `freTmoNum` instance in tab-today.tsx. Note `tim` also
     already carries two other meanings in this codebase, Timestamp (`tsp`
     → `tim` above) and plain Time (e.g. `staTimNum` in ui.jsx), making
     this a third; context disambiguates which of the three "tim" stands
@@ -4846,7 +4846,7 @@ gradually alongside the whitespace rules above (started with `src/app.jsx`).
     a straight 1-for-1 substitution with no column-alignment
     recalculation needed anywhere. No collision: none of the corrected
     names were already in use in the same scope anywhere)
-  - `stp` → `sti` (Stripped: found in `stpNamStr` (`store.js`'s own
+  - `stp` → `sti` (Stripped: found in `stpNamStr` (`store.ts`'s own
     `uniNamFun`), fixed to `stiNamStr`. This did NOT use the literal
     first-3-letters `str`: that code is the universal String
     type-segment used throughout this entire codebase, definitionally
@@ -4854,7 +4854,7 @@ gradually alongside the whitespace rules above (started with `src/app.jsx`).
     Phase A escalation on "Stripped" (keep `St`, skip the normal 3rd
     letter, try the word's own 4th letter `i`) landed on `sti` with
     only one existing use, `ONB_STI_ARR`'s own Initialism-compressed
-    segment (Sample-Task-Identifiers, `onboarding-seed-data.js`), a
+    segment (Sample-Task-Identifiers, `onboarding-seed-data.ts`), a
     low-risk multi-meaning case since it's a different KIND of segment
     (an initialism, not a plain-word-truncation) sitting in a different
     position (a module-level export, not a local variable). The next 2
@@ -4869,13 +4869,13 @@ gradually alongside the whitespace rules above (started with `src/app.jsx`).
     text changes, only the identifier itself was wrong)
   - `cnl` → `can` (Cancel: swept the OPPOSITE direction from the usual
     pattern in this list: found the MINORITY form, `cnl` (6 instances:
-    `cnlRunBoo`/`cnlCnfFun` ×2/`cnlCreFun` in `tab-picker.jsx`,
-    `cnlFrmFun`/`cnlImpFun` in `tab-settings.jsx`, plus the prop name
+    `cnlRunBoo`/`cnlCnfFun` ×2/`cnlCreFun` in `tab-picker.tsx`,
+    `cnlFrmFun`/`cnlImpFun` in `tab-settings.tsx`, plus the prop name
     `onCnlFun`), while the MAJORITY of this codebase's own
     "Cancel"-meaning identifiers already used `can` directly (~20
-    instances across `store.js`, `tab-data.jsx`, `tab-today.jsx`,
-    `reminders.jsx`, `onboarding/page-tours.jsx`,
-    `onboarding/tour-runner.jsx`, and `help/mode.jsx`, e.g. `canGroFun`,
+    instances across `store.ts`, `tab-data.tsx`, `tab-today.tsx`,
+    `reminders.jsx`, `onboarding/page-tours.tsx`,
+    `onboarding/tour-runner.tsx`, and `help/mode.tsx`, e.g. `canGroFun`,
     `canNewFun`, `canRenFun`, `canEdiFun`, `canPenFun`), fixed to
     `canRunBoo`/`canCnfFun`/`canCreFun`/`canFrmFun`/`canImpFun`/
     `onCanFun`. `can` was deliberately left unescalated even though it
@@ -4892,29 +4892,29 @@ gradually alongside the whitespace rules above (started with `src/app.jsx`).
     needed text changes, only the identifiers themselves were wrong)
   - `done` → `don` (Done: the same "word wasn't truncated to its own
     literal first 3 letters" class as `boot`→`boo` above, not a
-    3-letter-vs-4-letter miscorrection; found in `nowDoneBoo` (`store.js`,
+    3-letter-vs-4-letter miscorrection; found in `nowDoneBoo` (`store.ts`,
     18 instances across `cotAplFun`/`applyConditionalLog`/
     `stkRecFun`/the `togDonFun` action) and `wasDoneBoo`
-    (`store.js`, 3 instances in the `skiEntFun`-adjacent reminder-toggle
+    (`store.ts`, 3 instances in the `skiEntFun`-adjacent reminder-toggle
     action), fixed to `nowDonBoo`/`wasDonBoo`; `doneCouNum`
-    (`tab-stats.jsx`'s own `couLevFun` parameter, self-contained, no
+    (`tab-stats.tsx`'s own `couLevFun` parameter, self-contained, no
     external callers) fixed to `donCouNum`; and `doneCount`
-    (`tab-today.jsx`'s own `GroHeaCom` component prop, whose
+    (`tab-today.tsx`'s own `GroHeaCom` component prop, whose
     destructuring already aliased it to the correct `donCouNum`
     internally, only the outward-facing prop key itself was wrong)
     fixed to `donCouNum` too, collapsing to shorthand destructuring and
     rippling into its own 3 call sites plus 2 comment mentions of the
-    old prop name (`store.js`, `onboarding/app-features.jsx`). `don` was
+    old prop name (`store.ts`, `onboarding/app-features.tsx`). `don` was
     already the established, heavily-used code for Done elsewhere in
     this codebase before this fix (`donCouNum`/`donNum`/`donIteNum`/
-    `donNowFun`/`donValBoo` across `day-log.jsx`, `onboarding-
-    checklist.js`, `reminders.jsx`, and `seed.js`), so no escalation was
+    `donNowFun`/`donValBoo` across `day-log.tsx`, `onboarding-
+    checklist.js`, `reminders.jsx`, and `seed.ts`), so no escalation was
     needed. **Not a collision, deliberately left untouched at the
-    time**: `TASKS.isDoneToday` (`tasks.js`'s own exported namespace-
+    time**: `TASKS.isDoneToday` (`tasks.ts`'s own exported namespace-
     object property, explicitly re-exporting the already-correctly-named
     `isaDonFun` under its own stable external key, since swept to
-    `TAS_NAM_OBJ.isaDonFun` with the rest of that object, called from `store.js`/
-    `day-log.jsx`/`tab-today.jsx`/`reminders.jsx`) and the bare `done`
+    `TAS_NAM_OBJ.isaDonFun` with the rest of that object, called from `store.ts`/
+    `day-log.tsx`/`tab-today.tsx`/`reminders.jsx`) and the bare `done`
     field itself (the real, persisted property on every Today entry and
     pickLog row, e.g. `entry.done`/`curEntObj.done`) are both protected
     external contracts, not local identifiers, the same class of
@@ -4922,53 +4922,53 @@ gradually alongside the whitespace rules above (started with `src/app.jsx`).
     this list. Every comment referencing the fixed identifiers already
     spelled "Done" out in full, so none needed text changes, only the
     identifiers themselves were wrong)
-  - `cch` → `cac` (Cached/Cache: found in `cchStaObj` (`store.js`'s own
+  - `cch` → `cac` (Cached/Cache: found in `cchStaObj` (`store.ts`'s own
     `loaStaFun`, 2 instances), fixed to `cacStaObj`; `cac` was already
     the established, heavily-used code for this exact word elsewhere in
-    this codebase, e.g. `storage.js`'s own `cacStaObj`/`cacStaFun`
+    this codebase, e.g. `storage.ts`'s own `cacStaObj`/`cacStaFun`
     (~20 uses, including the very `STG_NAM_OBJ.cacStaFun()` call this
-    fixed variable reads from) and `bg-flourish.jsx`'s own `floCacMap`,
+    fixed variable reads from) and `bg-flourish.tsx`'s own `floCacMap`,
     so no escalation was needed, this was purely an inconsistent
     spelling of a word already spelled correctly elsewhere. Every
     comment referencing this identifier already spelled "Cached" out in
     full, so it needed no text changes, only the identifier itself was
     wrong. No collision: `cacStaObj` was not already in use in the same
     scope)
-  - `Jsn` → `Jso` (Json: found in `rawJsnStr` (`store.js`'s own
-    `loaStaFun`, 2 instances; `tab-today.jsx`, 3 instances), fixed to
+  - `Jsn` → `Jso` (Json: found in `rawJsnStr` (`store.ts`'s own
+    `loaStaFun`, 2 instances; `tab-today.tsx`, 3 instances), fixed to
     `rawJsoStr` across both files; `Jso` was already the established,
     correct code for this exact word elsewhere in this codebase, e.g.
-    `storage.js`'s own `rawJsoStr`/`jsoTexStr`, so no escalation was
+    `storage.ts`'s own `rawJsoStr`/`jsoTexStr`, so no escalation was
     needed, this was purely an inconsistent spelling of a word already
     spelled correctly elsewhere. Every comment referencing these
     identifiers already spelled "Json" out in full, so none needed text
     changes, only the identifiers themselves were wrong. No collision:
     `rawJsoStr` was not already in use in either file's own scope)
   - `rsv` → `res` (Resolve/Resolved: found in `rsvPicIde`
-    (`store.js`'s own `migStaFun`, 2 instances; this instance ALSO had
+    (`store.ts`'s own `migStaFun`, 2 instances; this instance ALSO had
     its own type-segment error, see the Two-word-single-segment
     compression section below for the full fix), fixed to `rspIdeStr`.
     `res` was already the established, correct code for this exact word
-    elsewhere in this codebase, e.g. `app.jsx`'s own `resCusFun`/
+    elsewhere in this codebase, e.g. `app.tsx`'s own `resCusFun`/
     `resTheFun`/`palResObj`, so no escalation was needed for the word
     itself, this was purely an inconsistent spelling of a word already
     spelled correctly elsewhere. Note `res` already carries a second
-    meaning in this codebase, Resize (`resObsObj` in `app.jsx`, a
+    meaning in this codebase, Resize (`resObsObj` in `app.tsx`, a
     `ResizeObserver` instance); context disambiguates which of the two
     "res" stands for in practice, the same reasoning already used for
     `con`/`sta`/`per`/`fre`/`dow`/`sho` elsewhere in this list.)
-  - `wgt` → `wei` (Weight: found across 4 files: `store.js`'s own
+  - `wgt` → `wei` (Weight: found across 4 files: `store.ts`'s own
     `wgtValNum` (8 instances spanning the conditional odds-migration and
-    the ease-down fairness-weight calc), `tab-data.jsx`'s own
-    `useWgtBoo` (4 instances), `tab-picker.jsx`'s own `wgtValNum`/
+    the ease-down fairness-weight calc), `tab-data.tsx`'s own
+    `useWgtBoo` (4 instances), `tab-picker.tsx`'s own `wgtValNum`/
     `useWgtBoo`/`wgtTipStr`/`shoWgtBoo`/`setTypWgtFun`/`newWgtNum` (~23
-    instances), and `tab-today.jsx`'s own `hasWgtBoo` (2 instances),
+    instances), and `tab-today.tsx`'s own `hasWgtBoo` (2 instances),
     fixed to `weiValNum`/`useWeiBoo`/`weiTipStr`/`shoWeiBoo`/
     `setTypWeiFun`/`newWeiNum`/`hasWeiBoo`. `wei` was already the
     established, heavily-used code for this exact word elsewhere in
-    this codebase, e.g. `seed.js`'s own `picWeiFun`/`totWeiNum`/
-    `remWeiNum`, `ui/conditional-controls.jsx`'s own `useWeiBoo`, and even
-    `store.js`'s own `perWeiArr`/`curWeiNum` sitting just a few lines
+    this codebase, e.g. `seed.ts`'s own `picWeiFun`/`totWeiNum`/
+    `remWeiNum`, `ui/conditional-controls.tsx`'s own `useWeiBoo`, and even
+    `store.ts`'s own `perWeiArr`/`curWeiNum` sitting just a few lines
     from one of the fixed `wgtValNum` instances, so no escalation was
     needed, this was purely an inconsistent spelling of a word already
     spelled correctly elsewhere. Every comment referencing these
@@ -4977,13 +4977,13 @@ gradually alongside the whitespace rules above (started with `src/app.jsx`).
     collision: none of the corrected names were already in use in the
     same scope anywhere)
   - `nrm` → `nor` (Normalize/Normalized: found in `nrmGroStr`/
-    `nrmNamStr`/`nrmKeyStr`/`nrmOptObj` (`store.js`, 4 instances each in
+    `nrmNamStr`/`nrmKeyStr`/`nrmOptObj` (`store.ts`, 4 instances each in
     the picker-tidy/group-remap section and `setOptFun`), fixed to
     `norGroStr`/`norNamStr`/`norKeyStr`/`norOptObj`. `nor` was already
     the established, heavily-used code for this exact word elsewhere in
-    this codebase, e.g. `cadence-control.jsx`'s own `norCadFun`/
+    this codebase, e.g. `cadence-control.tsx`'s own `norCadFun`/
     `norCadObj`, and `norNamStr`/`norOptObj` in particular already
-    existed with this exact meaning in `ui/conditional-controls.jsx`/
+    existed with this exact meaning in `ui/conditional-controls.tsx`/
     `reminders.jsx`, so no escalation was needed, this was purely an
     inconsistent spelling of a word already spelled correctly
     elsewhere. Every comment referencing these identifiers already
@@ -4991,8 +4991,8 @@ gradually alongside the whitespace rules above (started with `src/app.jsx`).
     the identifiers themselves were wrong. No collision: none of the
     corrected names were already in use in the same scope anywhere)
   - `clm` → `cla` (Claimed: found in `preClmRef`/`clmNowBoo`
-    (`tab-today.jsx`'s own streak-pulse effect) and `wasClmBoo`/
-    `stkClmBoo` (`store.js`'s own `stkRecFun`), fixed to `preClaRef`/
+    (`tab-today.tsx`'s own streak-pulse effect) and `wasClmBoo`/
+    `stkClmBoo` (`store.ts`'s own `stkRecFun`), fixed to `preClaRef`/
     `claNowBoo`/`wasClaBoo`/`stkClaBoo`; `clm` drops the word's own
     vowel the same way `cnl`/`cln` did elsewhere in this list, rather
     than taking its literal first 3 letters. Note `cla` already carries
@@ -5005,15 +5005,15 @@ gradually alongside the whitespace rules above (started with `src/app.jsx`).
     identifiers already spelled "Claimed" out in full, so none needed
     text changes, only the identifiers themselves were wrong. No
     collision: none of the corrected names were already in use anywhere)
-  - `fls` → `flu` (Flush: found in `runFlsFun` (`store.js`'s own
+  - `fls` → `flu` (Flush: found in `runFlsFun` (`store.ts`'s own
     persistence-flush effect inside `useAppStaFun`), fixed to
     `runFluFun`; `flu` was already the established, correct code for
-    this exact word elsewhere in this codebase, e.g. `storage.js`'s own
-    `fluSynFun` and `store.js`'s own `fluStaFun`, so no escalation was
+    this exact word elsewhere in this codebase, e.g. `storage.ts`'s own
+    `fluSynFun` and `store.ts`'s own `fluStaFun`, so no escalation was
     needed. The comment already spelled "Flush" out in full, so it
     needed no text changes, only the identifier itself was wrong. No
     collision: `runFluFun` was not already in use anywhere)
-  - `frs` → `fre` (Fresh: found in `frsEntArr` (`store.js`'s own
+  - `frs` → `fre` (Fresh: found in `frsEntArr` (`store.ts`'s own
     `setEntFun` action), fixed to `freEntArr`; `fre` was
     already the established, heavily-used code for Fresh elsewhere in
     this codebase (`isaFreBoo`, `freIndNum`, `freBoo`, ...), so no
@@ -5025,7 +5025,7 @@ gradually alongside the whitespace rules above (started with `src/app.jsx`).
     these identifiers already spelled "Fresh"/"descriptor" out in full,
     so none needed text changes. No collision: neither corrected name
     was already in use anywhere)
-  - `nmd` → `nam` (Named: found in `nmdTasObj` (`store.js`'s own
+  - `nmd` → `nam` (Named: found in `nmdTasObj` (`store.ts`'s own
     `addTasFun` action), fixed to `namTasObj`; `nam` was already the
     established, heavily-used code for Name elsewhere in this codebase
     (`sibNamArr`, `uniNamStr`, `uniNamFun`, `finNamStr`, ...), and
@@ -5033,31 +5033,31 @@ gradually alongside the whitespace rules above (started with `src/app.jsx`).
     comment already spelled "Named" out in full, so it needed no text
     changes, only the identifier itself was wrong. No collision:
     `namTasObj` was not already in use anywhere)
-  - `tdy` → `tid` (Tidied: found in `tdyNamStr` (`store.js`'s own
+  - `tdy` → `tid` (Tidied: found in `tdyNamStr` (`store.ts`'s own
     `renPicFun` action), fixed to `tidNamStr`; `tdy` drops the word's
     own vowel the same way `cnl`/`cln`/`clm` did elsewhere in this list,
     rather than taking its literal first 3 letters. The comment already
     spelled "Tidied" out in full, so it needed no text changes. No
     collision: `tid` was not already in use anywhere)
-  - `cst` → `cus` (Custom: found in `curCstObj` (`store.js`'s own
+  - `cst` → `cus` (Custom: found in `curCstObj` (`store.ts`'s own
     `delHolFun` action), fixed to `curCusObj`; `cus` was already
     the established code for Custom elsewhere in this codebase (`resCusFun`,
     `cusColObj`, `addCusFun`), and `cst` drops the word's own vowel the same
     way `cnl`/`cln`/`clm`/`tdy` did elsewhere in this list. No collision:
     `curCusObj` was not already in use anywhere)
-  - `opn` → `ope` (Open, found across a dozen `tab-data.jsx` names,
+  - `opn` → `ope` (Open, found across a dozen `tab-data.tsx` names,
     e.g. `opnIdeStr`/`isaOpnBoo`/`onOpnSecFun`, fixed to `opeIdeStr`/
     `isaOpeBoo`/`onOpeSecFun`; `ope` was already the established code for
     Open elsewhere, e.g. `opeIdeStr` in `reminders.jsx`. Instances in
-    `tab-picker.jsx` and `tab-settings.jsx` remain for their own reviews)
-  - `drf` → `dra` (Draft, found across `tab-data.jsx`, e.g. `newDrfStr`/
+    `tab-picker.tsx` and `tab-settings.tsx` remain for their own reviews)
+  - `drf` → `dra` (Draft, found across `tab-data.tsx`, e.g. `newDrfStr`/
     `isaDrfBoo`/`drfCrdRef`, plus the shared `conDrfFun` export from
-    `ui/conditional-controls.jsx` and its `tab-picker.jsx` import, fixed to
-    `conDraFun`. `tab-today.jsx`'s own `drfSooFun`/`drfLatFun`/
+    `ui/conditional-controls.tsx` and its `tab-picker.tsx` import, fixed to
+    `conDraFun`. `tab-today.tsx`'s own `drfSooFun`/`drfLatFun`/
     `dayDrfFun` used `drf` for Drift instead, a different word whose
     literal first 3 letters are `dri`, fixed to `driSooFun`/`driLatFun`/
     `dayDriFun`)
-  - A batch of vowel-drop spellings found together in one `tab-data.jsx`
+  - A batch of vowel-drop spellings found together in one `tab-data.tsx`
     pass, each fixed to its word's literal first 3 letters: `ftr` → `foo`
     (Footer, `fooActFun`/`fooDisBoo`/`fooLabStr`/`fooTipStr`), `flp` →
     `fli` (Flip, `fliFirRef`/`groFliRef`), `flb` → `fal` (Fallback,
@@ -5068,7 +5068,7 @@ gradually alongside the whitespace rules above (started with `src/app.jsx`).
     (Create, `disCreBoo`), `crd` → `car` (Card, `draCarRef`), `dsp` →
     `dis` (Display, `disIteArr`, matching `reminders.jsx`'s own
     `disTasArr`), `rdr` → `sho` (Rendered, `shoSecArr`, following the
-    same "Shown" synonym `tab-today.jsx`'s own `rndOrdRef` resolved to,
+    same "Shown" synonym `tab-today.tsx`'s own `rndOrdRef` resolved to,
     since `ren` reads first as Rename via `renPicFun`/`renIteFun`), and
     `blr` →
     `blu` (Blur, `bluEveObj`). `bst` → `boo` (Boost, `conBooFun`) joins
@@ -5077,7 +5077,7 @@ gradually alongside the whitespace rules above (started with `src/app.jsx`).
     `rel` → `rea` (Real, `isaRelBoo` → `isaReaBoo`, originally `realMode`;
     "Mode" was dropped rather than compressed into `ram`, since the value
     it's compared against already reads as a mode)
-  - A second vowel-drop batch, found together in `tab-picker.jsx`'s own
+  - A second vowel-drop batch, found together in `tab-picker.tsx`'s own
     review, each fixed to its word's literal first 3 letters: `avd` → `avo`
     (Avoid), `bck` → `bac` (Back), `blk` → `blo` (Block), `bnd` → `ban`
     (Band), `cnf` → `con` (Confirm), `dft` → `dra` (Draft), `dly` → `dai`
@@ -5092,12 +5092,12 @@ gradually alongside the whitespace rules above (started with `src/app.jsx`).
     to `tid`, e.g. `tidValStr`). `cnv` (Convert) couldn't take the literal
     `con`, which already carries 4 meanings, so Phase A escalation gave
     `cov` (`covDriFun`/`covLatFun`/`covSooFun`)
-  - A third batch, found together in `tab-settings.jsx`'s own review, each
+  - A third batch, found together in `tab-settings.tsx`'s own review, each
     fixed to its word's literal first 3 letters: `bra` → `bro` (Browser,
     `broNamStr`/`BRO_PAT_ARR`), `clk` → `cli` (Click, which recurred in
-    `onboarding/tour-runner.jsx`'s own step fields, now `advCliStr`/
-    `cliSelStr`, and in `help/mode.jsx`'s own `cliEveObj`/`cliCapFun`,
-    and still has instances in `tab-data.jsx` and `tab-picker.jsx` for
+    `onboarding/tour-runner.tsx`'s own step fields, now `advCliStr`/
+    `cliSelStr`, and in `help/mode.tsx`'s own `cliEveObj`/`cliCapFun`,
+    and still has instances in `tab-data.tsx` and `tab-picker.tsx` for
     their own passes), `cpd` →
     `cop` (Copied), `drk` → `dar` (Dark), `jmp` → `jum` (Jump), `lnk` → `lin`
     (Link), `mnt` → `mou` (Mount), `ofs` → `off` (Offset), `ply` → `pla`
@@ -5109,7 +5109,7 @@ gradually alongside the whitespace rules above (started with `src/app.jsx`).
     (Read), `ul` → `lis` (List), and `apm` (AM/PM) became `mer`
     (Meridiem). Address keeps `adr` via Phase A escalation, since its own
     literal `add` already heavily means Add
-  - A fourth batch, found together in `tab-today.jsx`'s own review, each
+  - A fourth batch, found together in `tab-today.tsx`'s own review, each
     fixed to its word's literal first 3 letters: `rng` → `rin` (Ring),
     `slt` → `slo` (Slot), `shn` → `sho` (Shown), `bst` → `bes` (Best),
     `hnd` → `han` (Handle), `tmr` → `tim` (Timer), `rdc` → `red`
@@ -5135,7 +5135,7 @@ gradually alongside the whitespace rules above (started with `src/app.jsx`).
   (App+Root+Component).
   - Renaming an exported symbol (a component, in particular) ripples to
     every file that imports it, e.g. renaming `App` also required
-    updating `main.jsx`'s import and its `<App />` JSX usage. Check for
+    updating `main.tsx`'s import and its `<App />` JSX usage. Check for
     other importers before committing to a rename like this.
 - **Exemptions**: standard React/DOM convention names are left as-is,
   entirely exempt from the rule: `onChange`, `className`, `value` (a
@@ -5150,7 +5150,7 @@ gradually alongside the whitespace rules above (started with `src/app.jsx`).
   plus `DayLogChip`'s own `open`), `ref` (decided 2026-10-05: React only
   attaches a ref passed under that exact name, so a component that takes
   one destructures it as plain `ref`, the same way it destructures
-  `className`; see `ui/button.jsx`'s own `ButBasCom`), and React's own
+  `className`; see `ui/button.tsx`'s own `ButBasCom`), and React's own
   hooks (`useState`, `useRef`, `useLayoutEffect`, `useEffect`,
   `useCallback`, ...).
 - **Generic JS API-shape exemption**: separately from the React/DOM
@@ -5158,7 +5158,7 @@ gradually alongside the whitespace rules above (started with `src/app.jsx`).
   well-known, generic (non-React) API shape keeps that shape's own
   conventional method names bare too, the same reasoning as the
   React-convention exemptions just applied to a different convention
-  family. Example: `state/tour-bus.js`'s own `emlTouObj` is a minimal
+  family. Example: `state/tour-bus.ts`'s own `emlTouObj` is a minimal
   observable/store (the same shape as `Map`'s `get`/`set`, or a Redux
   store's `getState`/`subscribe`), so its own `get`, `set`, and
   `subscribe` properties stay bare rather than becoming e.g. `getFun`/
@@ -5235,7 +5235,7 @@ gradually alongside the whitespace rules above (started with `src/app.jsx`).
     to the second word's own contribution instead: replace its 1st
     letter with its 2nd, cycling back through every one of the first
     word's own middle-letter candidates again against that new final
-    letter, then its 3rd letter, and so on. Example (`store.js`'s own
+    letter, then its 3rd letter, and so on. Example (`store.ts`'s own
     `__plSeqNum`, meaning "Pick-Log Sequence Number"): base `pil`
     (`Pi`+`l`) collides with `ui.jsx`'s own heavily-established `pil` =
     Pill (`PilTagCom`, `pilIdeStr`, ... 14 uses); escalating the middle
@@ -5247,11 +5247,11 @@ gradually alongside the whitespace rules above (started with `src/app.jsx`).
     middle letter again, now against Log's own 2nd letter, `o`, instead
     of its 1st, `l`), then `pig`/`pcg`/`pkg` against Log's own 3rd
     letter `g`, and so on. A second example, this time actually needing
-    2 escalation steps (`store.js`'s own `__clSeqNum`, "Conditional-Log
+    2 escalation steps (`store.ts`'s own `__clSeqNum`, "Conditional-Log
     Sequence Number"): base `col` (`Co`+`l`) collides with 3 separate
     established meanings across this codebase at once (Color, e.g. this
     same file's own `hexColStr`/`invColFun`; Column, e.g.
-    `bg-flourish.jsx`'s own `colIndNum`/`colCouNum`; Collapse, e.g.
+    `bg-flourish.tsx`'s own `colIndNum`/`colCouNum`; Collapse, e.g.
     `ColDisCom`/`conColBoo`), so escalating the middle letter through
     "Conditional"'s own later letters was tried first: its own 3rd
     letter gives `cnl`, which turned out to already mean Cancel
@@ -5260,7 +5260,7 @@ gradually alongside the whitespace rules above (started with `src/app.jsx`).
     `__clSeqNum` became `__cdlSeqNum`.
   - A third example, this time the compressed segment sitting as
     segment 1 of a genuinely 3-concept name rather than standing alone
-    (`store.js`'s own `rsvPicIde`, meaning "Resolved Picker Identifier",
+    (`store.ts`'s own `rsvPicIde`, meaning "Resolved Picker Identifier",
     which ALSO had its own type-segment error: `Ide` isn't a real JS
     type, so it was misplaced as segment 3 instead of the actual type,
     `Str`, matching the same "an item's pickerId is always a string or
@@ -5294,7 +5294,7 @@ gradually alongside the whitespace rules above (started with `src/app.jsx`).
   here, not a blanket license to drop context: it only applies to a word
   that's redundant with the DEFINING FILE's own name/purpose, never to a
   word that distinguishes this function from a sibling in the SAME file.
-  Example: `help/sample-data.js`'s own `seedHelpPickers`/`clearHelpPickers`/
+  Example: `help/sample-data.ts`'s own `seedHelpPickers`/`clearHelpPickers`/
   `seedHelpTasks`/`clearHelpTasks`/`unhideHelpStatsHistory`/
   `hideHelpStatsHistory` each had a verb, "Help", and a 1-2 word target
   (Pickers/Tasks/Stats+History): 3-4 real concepts, one segment too many.
@@ -5304,7 +5304,7 @@ gradually alongside the whitespace rules above (started with `src/app.jsx`).
   `sedPicFun`/`clePicFun`/`sedTasFun`/`cleTasFun`/`unhHisFun`/`hidHisFun`.
   "Seed" itself needed its own separate escalation (see the general
   Naming-conflict resolution below) once truncated: literal `See`
-  collides in MEANING with `tab-picker.jsx`'s own already-established
+  collides in MEANING with `tab-picker.tsx`'s own already-established
   `see` = Seen (`seeGroArr`/`seeModSet`), so Phase A's own "keep first 2
   letters, escalate the 3rd character" landed on `Sed` (seed's own 4th
   letter) instead.
@@ -5338,7 +5338,7 @@ gradually alongside the whitespace rules above (started with `src/app.jsx`).
   field actually DOES, the same reasoning already used to name
   `clickSel`/`pulseSel`'s own "Sel" segment after the value's real
   shape (a selector) rather than its literal old name. Example:
-  `onboarding/tour-runner.jsx`'s own `advanceOn` field (a selector
+  `onboarding/tour-runner.tsx`'s own `advanceOn` field (a selector
   where a real click ALSO counts as clicking Next) has "Advance" +
   "On" as its literal two words, but "On" is only 2 letters; since the
   field is fundamentally about a CLICK counting as advancing, it
@@ -5347,7 +5347,7 @@ gradually alongside the whitespace rules above (started with `src/app.jsx`).
   polls for a selector to exist, not a click) by using "Sel" there
   instead for the same "value is a selector" reasoning.
   - **A second instance, this time the under-length word being a
-    complete word rather than a preposition**: `reorder.js`'s own
+    complete word rather than a preposition**: `reorder.ts`'s own
     `onUpPoiFun` (the "on"-prefix pattern's own pointerup/pointercancel
     handler) had "Up" as its literal segment 2, a genuine, complete
     2-letter English word rather than a truncation, so there was no
@@ -5364,7 +5364,7 @@ gradually alongside the whitespace rules above (started with `src/app.jsx`).
     instead, the more literal, precise word for what the handler
     actually captures (the pointer being released, whether by lifting
     it or having the gesture cancelled out from under it), giving
-    `onRelPoiFun`. `rel` already appears in `pwa.js` meaning "Related"
+    `onRelPoiFun`. `rel` already appears in `pwa.ts` meaning "Related"
     (`relInsBoo`, `proRelFun`), an unrelated word sharing the same
     3-letter code, the same acceptable multi-meaning-segment pattern
     already documented for `con`/`sta`/`per`/`fre`/`dow`/`sho` elsewhere
@@ -5386,18 +5386,18 @@ gradually alongside the whitespace rules above (started with `src/app.jsx`).
   place, whether as a bare `_` placeholder or a named-but-unread
   parameter, since a future TypeScript migration would flag it as
   unused. Restructure the call so the value actually needed arrives
-  first instead, e.g. `tab-data.jsx`'s own `Array.from( Array( 31
+  first instead, e.g. `tab-data.tsx`'s own `Array.from( Array( 31
   ).keys(), ( arrIndNum ) => arrIndNum + 1 )`, where `keys()` yields
   the indices as the values themselves. Only when no such restructure
   exists does the parameter stay, named like any other parameter.
   The same goes for a `useState` value that is never read (kept only so
   its setter can force a re-render): bind the setter alone with an
   elision, `const [ , setPwaTicNum ] = React.useState( 0 );`, rather
-  than naming an unread value (`tab-settings.jsx`).
+  than naming an unread value (`tab-settings.tsx`).
 - **Comparator parameters use `One`/`Two`, never `a`/`b` prefixes**: a
   sort comparator's own two parameters are named like any other pair of
-  same-kind values, with `One`/`Two` as segment 2, e.g. `cadence.js`'s
-  own `dowOneNum`/`dowTwoNum` and `tab-data.jsx`'s own `conOneObj`/
+  same-kind values, with `One`/`Two` as segment 2, e.g. `cadence.ts`'s
+  own `dowOneNum`/`dowTwoNum` and `tab-data.tsx`'s own `conOneObj`/
   `conTwoObj`, not `aConObj`/`bConObj`.
 - **Acronym-reference rule**: when a name describes or refers to another
   named thing (a component, function, etc.), its own first segment is
@@ -5441,7 +5441,7 @@ gradually alongside the whitespace rules above (started with `src/app.jsx`).
     the codebase (a handful of uses is fine and gets documented as an
     ordinary multi-meaning segment instead, like `con`/`sta`/`app`/
     `pla`/`rem`/`pat`/`per` elsewhere in this list; this is for the
-    dozens-of-uses case). Example: `day-log.jsx`'s own icon-lookup
+    dozens-of-uses case). Example: `day-log.tsx`'s own icon-lookup
     property for a clock glyph would literally truncate to `clo`, but
     `clo` already means "Close" in dozens of other identifiers
     throughout this codebase (`cloAddFun`, `cloTimRef`, `onCloConFun`,
@@ -5449,7 +5449,7 @@ gradually alongside the whitespace rules above (started with `src/app.jsx`).
     code, it was escalated via Phase A to `clcEle` instead, keeping
     `clo`'s own meaning unambiguous everywhere else.
   - **When even the escalation letters collide, pick a different word
-    entirely rather than force one through**: `tab-today.jsx`'s own
+    entirely rather than force one through**: `tab-today.tsx`'s own
     `rndOrdRef`/`rndArr` (holding the group order actually rendered to
     the DOM, so a drag-drop's own DOM-position indices can be resolved
     against it) truncated Rendered to the common `rnd` abbreviation
@@ -5525,7 +5525,7 @@ gradually alongside the whitespace rules above (started with `src/app.jsx`).
     the truncated base word and before the type segment, breaking the
     strict 6-character count up to the full 9, the same way the
     Full-word variant below does, e.g. a catalog item's own
-    horizontal/vertical highlight-padding override in `help/content.jsx`
+    horizontal/vertical highlight-padding override in `help/content.tsx`
     is `padXcoNum`/`padYcoNum` (Pad + X-Coordinate/Y-Coordinate +
     Number). This is the same `Xco`/`Yco` segment variables use (see the
     axis-letter rule in the general naming rules above); it replaced an
@@ -5537,7 +5537,7 @@ gradually alongside the whitespace rules above (started with `src/app.jsx`).
     a real type. Truncate that word to its own normal 3 letters (same as
     any other segment) and keep the type segment too, breaking the
     6-character budget up to the full 9 rather than dropping the type
-    segment to force a fit. E.g. `help/geometry.js`'s own `claPadFun` return
+    segment to force a fit. E.g. `help/geometry.ts`'s own `claPadFun` return
     shape became `padTopNum`/`padBotNum`/`padLefNum`/`padRigNum` (Pad +
     Top/Bot/Lef/Rig + Number), not a 6-char `padBot`/`padLef`/`padRig`
     missing a type segment entirely, and not a bare `topNum`/`botNum`/
@@ -5581,7 +5581,7 @@ gradually alongside the whitespace rules above (started with `src/app.jsx`).
     ones already swept this way.
     This also covers an object that plays the same role without being
     exported directly, e.g. a hook's own returned actions object passed
-    down as a prop and called by name across many files (`store.js`'s own
+    down as a prop and called by name across many files (`store.ts`'s own
     `actStoObj`). When its values are inline functions with no internal
     names to reuse, each key is written as a full 9-character name under
     the normal naming rules, the same as if it had an internal
@@ -5605,15 +5605,15 @@ gradually alongside the whitespace rules above (started with `src/app.jsx`).
     this key" test as the first exemption above); an externally
     constrained key stays exactly as it is, and a destructuring reader
     aliases it instead. An object read only through dot access, never
-    destructured, keeps the normal 6-character keys. See `store.js`'s own
+    destructured, keeps the normal 6-character keys. See `store.ts`'s own
     `stkSynFun` for the reference example: its `{ stkClaBoo, stkValNum }`
     return shape matches the local variables of the same names inside the
     function itself, and each of its 4 callers destructures it with
     shorthand, then writes the persisted `streak`/`streakClaimed` state
     keys out explicitly (`streak : stkValNum`). Earlier precedents
-    reached the same result before this bullet existed: `group-header.jsx`'s
+    reached the same result before this bullet existed: `group-header.tsx`'s
     own `GroHeaCom` prop key `doneCount` became `donCouNum` so its own
-    destructuring could collapse to shorthand, and `help/geometry.js`'s own
+    destructuring could collapse to shorthand, and `help/geometry.ts`'s own
     `claPadFun` return shape (`padTopNum`/`padBotNum`/...) matched the
     reading local variables' own names.
     - **Large, externally constrained argument objects are read, not
@@ -5635,7 +5635,7 @@ gradually alongside the whitespace rules above (started with `src/app.jsx`).
       local (`const newConObj = picArgObj.newConditional;`). A short
       destructuring with only a couple of constrained keys can still
       alias them in place instead, whichever reads more clearly. See
-      `store.js`'s own `addPicFun`/`savEdiFun` (`picArgObj`) for
+      `store.ts`'s own `addPicFun`/`savEdiFun` (`picArgObj`) for
       the reference example.
 - **Exported namespace objects must use explicit `originalName :
   internalName` mapping, never JS shorthand `{ internalName }`.** A
@@ -5646,8 +5646,8 @@ gradually alongside the whitespace rules above (started with `src/app.jsx`).
   as shorthand (e.g. `export const X = { perCheFun, askOncFun }`)
   silently renames the external API to match the internal names
   instead, since shorthand's key IS the internal name; this has caused
-  two separate live production outages (`holidays.js`'s `HOL_NAM_OBJ`
-  and `notify.js`'s `NOT_NAM_OBJ`, both caught only after a real page
+  two separate live production outages (`holidays.ts`'s `HOL_NAM_OBJ`
+  and `notify.ts`'s `NOT_NAM_OBJ`, both caught only after a real page
   went blank/threw in the browser). Before finishing any file that
   exports a namespace object, grep every other file for
   `<ObjectName>\.` to enumerate every property name actually called
@@ -5655,13 +5655,13 @@ gradually alongside the whitespace rules above (started with `src/app.jsx`).
   (`realName : internalName`), never bare.
   - **Standard practice (not a rare exception): sweep the external
     property names to match their internal implementation exactly.**
-    `cadence.js`'s own `CAD_NAM_OBJ` (originally `CADENCE`),
-    `conditionals.js`'s own `CON_NAM_OBJ` (originally `CONDITIONALS`),
-    `notify.js`'s own `NOT_NAM_OBJ`, `onboarding-checklist.js`'s own
-    `ONB_CHE_OBJ`, `pickers.js`'s own `PIC_NAM_OBJ` (originally
-    `PICKERS`), `pwa.js`'s own `PWA_NAM_OBJ` (originally `PWA`), and
-    `reorder.js`'s own `REO_NAM_OBJ` (originally `REORDER`), and
-    `tasks.js`'s own `TAS_NAM_OBJ` (originally `TASKS`) all
+    `cadence.ts`'s own `CAD_NAM_OBJ` (originally `CADENCE`),
+    `conditionals.ts`'s own `CON_NAM_OBJ` (originally `CONDITIONALS`),
+    `notify.ts`'s own `NOT_NAM_OBJ`, `onboarding-checklist.ts`'s own
+    `ONB_CHE_OBJ`, `pickers.ts`'s own `PIC_NAM_OBJ` (originally
+    `PICKERS`), `pwa.ts`'s own `PWA_NAM_OBJ` (originally `PWA`), and
+    `reorder.ts`'s own `REO_NAM_OBJ` (originally `REORDER`), and
+    `tasks.ts`'s own `TAS_NAM_OBJ` (originally `TASKS`) all
     deliberately swept their external property names to
     match their internal implementation exactly (e.g. `normalize` →
     `norCadFun`, `isCadence` → `isaCadFun` for the first; `cardComplete`
