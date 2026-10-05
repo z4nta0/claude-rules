@@ -262,7 +262,11 @@ itself gets its own mandatory self-check.
   single line**, unlike the one-binding-per-`import` rule above, with
   one comment generalized to describe everything the statement exports
   (not a separate comment per binding). See `ui/conditional-controls.tsx`'s own
-  `export { CodConCom, conDraFun };` for the reference example.
+  `export { CodConCom, conDraFun };` for the reference example. An exported
+  TypeScript type joins that same statement, marked with an inline `type`
+  (`export { aveEasFun, type EscEntTyp };`), which the tsconfig's
+  `verbatimModuleSyntax` requires, rather than a separate `export type {
+  ... }` statement (decided 2026-10-05).
 
 ### Indentation
 - Use tabs for indentation, one tab per nesting level, not spaces.
@@ -317,20 +321,23 @@ can move code between files rather than just within one.
 - **Section order.** After the `// #region Imports` block and the file's
   own header comment, a file's top-level contents always appear in this
   order, skipping any section the file doesn't need:
-  1. **Constants**: `ALL_CAPS` values and lookup tables.
-  2. **Module state**: module-level `let` bindings, `window.__` globals
+  1. **Types**: TypeScript types that two or more declarations in the
+     file use (added 2026-10-05; see "Type placement" below).
+  2. **Constants**: `ALL_CAPS` values and lookup tables.
+  3. **Module state**: module-level `let` bindings, `window.__` globals
      and their one-time setup.
-  3. **Helpers**: plain, non-component functions (formatters, math,
+  4. **Helpers**: plain, non-component functions (formatters, math,
      comparators, ...).
-  4. **Hooks**: this file's own custom `useXxxFun` hooks.
-  5. **Components**: private sub-components first, then the main/exported
+  5. **Hooks**: this file's own custom `useXxxFun` hooks.
+  6. **Components**: private sub-components first, then the main/exported
      ones.
-  6. **Module init**: code that runs once on load, e.g. an IIFE or a
+  7. **Module init**: code that runs once on load, e.g. an IIFE or a
      document-level listener registration.
-  7. **Exports**: the single export statement (or the namespace object
+  8. **Exports**: the single export statement (or the namespace object
      followed by its export), per "### Exports" above.
-  The order follows the dependency direction: constants feed helpers,
-  helpers feed hooks, hooks feed components.
+  The order follows the dependency direction: types describe everything
+  below them, constants feed helpers, helpers feed hooks, hooks feed
+  components.
 - **Order within a section: define before use.** Anything a declaration
   reads sits above it, so a reader never has to scroll down to learn what
   a name means, and a `const` is never read before its own line. When two
@@ -343,6 +350,23 @@ can move code between files rather than just within one.
   the helper it calls, not in Constants, and an exported component that a
   private one renders comes before it; "private first, then exported" only
   orders components that don't depend on each other.
+- **Type placement** (decided 2026-10-05). A type sits next to what uses
+  it, keeping define-before-use:
+  - **Used by one standalone declaration**: the type sits directly above
+    it with no blank line between them, the same way a comment is glued to
+    its target, so the two read as one unit.
+  - **Used by members of a tightly grouped run** (consecutive declarations
+    with no blank lines between them): the types for every member that
+    needs one form their own tight group directly above the run, with 3
+    blank lines between the two groups, and align their `=` signs and
+    comments like any declaration run. This holds even when only one
+    member of the run needs a type, so the run is never split up by a type
+    wedged between its lines.
+  - **Used by two or more declarations in the file**: the type moves to
+    the Types section at the top.
+  - **Used by two or more files**: the type moves to a shared file, the
+    same way a shared sub-component does under "What a file holds", in the
+    folder the directory structure rules give it.
 - **Section regions.** A file with at least 2 of the sections above wraps
   each of them in a `// #region <Section>` / `// #endregion <Section>`
   pair, whatever the file's length, using the section's own name from the list above (`// #region
