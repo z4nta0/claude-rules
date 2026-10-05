@@ -547,7 +547,7 @@ src/
 - **Every line of code gets a comment.** Rare exceptions: a closing
   bracket alone on its own line (a function/object/array/block's `}`,
   `]`, `)`, or a combination like `});`/`};`) never gets one. A bare
-  `function foo(...) {}` declaration (a custom function that ISN'T stored
+  `function foo ( ... ) {}` declaration (a custom function that ISN'T stored
   in a `const`/`let`) gets its own, more involved JSDoc-style comment
   instead. See "### Custom function declaration comments" below. This
   does NOT extend to inline/anonymous functions passed
@@ -1079,6 +1079,13 @@ src/
     element's attributes have no comment, so a shared column would be
     mostly empty); a `//` comment inside an opening tag compiles away
     cleanly (verified with both Babel and Vite's own Oxc transformer).
+    - **Exception, the element's only attribute** (decided 2026-10-04):
+      a one-attribute element stays on one line even when that attribute
+      qualifies for a comment (e.g. `<UnmWatCom onUnmWatFun={ () => { if
+      ( opeIdeStr === curTasObj.id ) cloTasFun(); } } />`), since a
+      trailing `//` there would comment out the element's own `/>`. The
+      element's own `{ /* */ }` comment covers it instead, as long as it
+      explains what the attribute does.
     - **Exception, `style={{ ... }}` objects**: a multi-line `style`
       object needs no comment on its `style={{` line or on its own
       properties, since real CSS property names already say what each
@@ -1252,13 +1259,13 @@ under the old rule keeps it only if it passes the test below.
     @param void - This function takes no parameters.
     ```
   - A single destructured-object parameter (the common case for a React
-    component, e.g. `function Foo({ a, b })`): one `@param props.<name>`
+    component, e.g. `function Foo ( { a, b } )`): one `@param props.<name>`
     line PER destructured field, in the same order as the destructuring
     itself. This is the ONLY form used for this case; do not also emit a
     bare `@param <name>` line for the same field, that was a documentation
     mistake in an earlier draft of this rule.
   - A plain, non-destructured positional parameter (e.g.
-    `function foo(bar)`): a bare `@param <name>` line (no `props.` prefix),
+    `function foo ( bar )`): a bare `@param <name>` line (no `props.` prefix),
     since there's no props object at all in that case.
   - Whichever form applies, pad every specifier (left-justify) so every
     line's `-` lines up in one shared column, computed from the single
@@ -3247,6 +3254,15 @@ line, so only the rules that can't change what a tool reads apply.
 - An EMPTY parenthesized list stays tight instead: a zero-argument call
   (`foo()`), a zero-parameter arrow (`() => ...`), an empty dependency
   array's enclosing call, no space inserted either side.
+- **A space before the `(` marks a declaration, never a call** (decided
+  2026-10-04): a function declaration's name (or the `function` keyword
+  itself, when it has no name) is followed by one space before its
+  parameter list, whether the function is bare or stored somewhere
+  (`function TabBarCom ( { ... } ) {`, `function AppRooCom () {`,
+  `React.forwardRef( function EntEdiCom ( ... ) {`, `const fooFun =
+  function ( ... ) {`). A call never takes that space: `togDayFun(
+  dayIndNum )`, `redMotFun()`. An arrow function has no name or keyword
+  directly before its `(`, so nothing changes for it.
 - Ternary/grouping parens used purely for operator precedence (not a call,
   a declaration, or a control-flow condition) are NOT covered by this rule
   and stay exactly as written.
