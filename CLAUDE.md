@@ -1324,6 +1324,11 @@ under the old rule keeps it only if it passes the test below.
     function with its real positional arguments, followed by `// =>` and
     either the returned variable/void/a terse description of the returned
     data.
+  - **Example calls are written tight** (decided 2026-10-04): no space
+    inside the call's parentheses (`sorEntFun(rowOneObj, rowTwoObj,
+    sorKeyStr)`, `pagColFun(rawValStr)`), unlike real code. An example is
+    illustration only, some run long, and the tight form keeps them
+    compact; the parentheses spacing rule doesn't apply inside them.
 - A final blank ` *` line (no trailing space) directly before the closing
   `*/`.
 
