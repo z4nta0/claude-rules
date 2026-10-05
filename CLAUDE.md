@@ -4192,6 +4192,23 @@ identifiers) and also stays inline as one line, for the same reason.
     followed by `return isaStaBoo;` gets 3 blank lines, not 2, even
     though `isaStaBoo` is exactly this rule's own "final combining
     boolean" shape (three bare identifiers ORed together).
+- **Chains whose operands guard each other stay inline** (decided
+  2026-10-04). When a later operand only works because an earlier one
+  already passed, as in a null-guard chain (`staAppObj.ui &&
+  staAppObj.ui.dataSort && staAppObj.ui.dataSort.reminders`), pulling it
+  out would either crash on missing data or need optional chaining
+  (`a?.b?.c`), which is harder to read than the chain itself. Such a chain
+  stays exactly as written. The same goes for an operand with side
+  effects (a call that does something rather than just answering a
+  question): extracting it would run it every time instead of only when
+  the earlier operands let it.
+- **JSX render conditions and value fallbacks are covered too** (decided
+  2026-10-04). In `{ a && b && c && <Foo /> }` the condition's operands
+  are extracted and the rendered element is not counted as one. A value
+  fallback (`picArgObj.replaceId || picArgObj.id || newIdeStr`) extracts
+  its operands the same way, each named with its own value's type
+  segment rather than `Boo`. A `??` chain isn't an `&&`/`||` chain and is
+  not covered.
 
 ### General relatedness tiering
 Used for spacing between statements inside a function/block body (JSX
