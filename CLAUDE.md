@@ -37,9 +37,13 @@ explicitly says otherwise for that specific project.
   this doc.
 - **Type names and their documentation** follow "TypeScript types" under
   "### Naming conventions" (decided 2026-10-05).
-- **Still to be decided**: compiler strictness. Raise it with the user as it
-  first comes up, per "### Undefined cases: stop and ask", and record the
-  answer here.
+- **Compiler strictness** (decided 2026-10-05): a new project starts with
+  `strict` on from its first file. A migrated project starts with `strict`
+  off, so the rename doesn't bury real problems under a flood of errors, and
+  turns it on once its code is typed, area by area where that's practical.
+  Until then, tightening stays a tracked to-do in that project's CLAUDE.md
+  and is never dropped, and type checking joins the build only once the
+  code is clean.
 
 ## Commit messages
 
