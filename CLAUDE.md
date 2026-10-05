@@ -1,7 +1,7 @@
 # User-Level CLAUDE.md
 
-Rules that apply to every project: development servers, commit messages,
-copy, and code formatting, naming, and comments. A project's own CLAUDE.md
+Rules that apply to every project: development servers, language, commit
+messages, copy, and code formatting, naming, and comments. A project's own CLAUDE.md
 describes that project and adds anything specific to it (scoped naming
 overrides, its own values).
 
@@ -17,6 +17,21 @@ those files.
 - Start any dev/test server via the Bash tool's `run_in_background: true` option (not a manual `&` subshell); this returns a task ID that stays valid across turns.
 - To stop a server started that way, use the `TaskStop` tool with that task ID. Never `pkill`/`kill` by name, port, or a guessed PID.
 - Do not interfere with any pre-existing Node processes running in this environment, or any dev server the user started themselves.
+
+## Language: TypeScript
+Decided 2026-10-05. Every project is written in TypeScript unless the user
+explicitly says otherwise for that specific project.
+- **A new project** starts in TypeScript from its first file, with
+  `typescript` installed as a dev dependency and a `tsconfig.json` in place.
+- **An existing JavaScript project** is migrated to TypeScript (ease-my-life's
+  migration runs on its `integrate-typescript` branch). Until a migration
+  finishes, its remaining `.js`/`.jsx` files keep following this doc as
+  written.
+- **This doc's `.js`/`.jsx` rules carry over**: anything said about a `.js`
+  or `.jsx` file applies the same way to a `.ts` or `.tsx` one.
+- **Still to be decided**: compiler strictness, and how types themselves are
+  named and documented. Raise each with the user as it first comes up, per
+  "### Undefined cases: stop and ask", and record the answer here.
 
 ## Commit messages
 
@@ -371,7 +386,8 @@ can move code between files rather than just within one.
   `--reformat` flag, which reuses the data already on disk instead of
   simulating new random history.
 - **Extension and naming.** A file uses `.jsx` only when it actually
-  contains JSX, and `.js` otherwise. Every filename is kebab-case
+  contains JSX, and `.js` otherwise (in TypeScript, `.tsx` and `.ts` the same
+  way; see "## Language: TypeScript"). Every filename is kebab-case
   (`tab-today.jsx`, `onboarding-seed-data.js`). Renaming a file means
   updating every import of it in the same change.
 - **What a file holds.** A file is either one domain module (a family of
