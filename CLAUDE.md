@@ -29,6 +29,12 @@ explicitly says otherwise for that specific project.
   written.
 - **This doc's `.js`/`.jsx` rules carry over**: anything said about a `.js`
   or `.jsx` file applies the same way to a `.ts` or `.tsx` one.
+- **Exception, scripts in `public/` stay JavaScript**: everything in
+  `public/` is copied into the build untouched and loaded by its exact URL
+  (a boot script `index.html` pulls in, a script a service worker imports),
+  so nothing compiles it, and a `.ts` file there would reach the browser as
+  raw TypeScript. They keep their `.js` extension and every other rule in
+  this doc.
 - **Still to be decided**: compiler strictness, and how types themselves are
   named and documented. Raise each with the user as it first comes up, per
   "### Undefined cases: stop and ask", and record the answer here.
