@@ -2725,8 +2725,13 @@ newline, which is also what npm writes whenever it rewrites `package.json`
 indentation and trailing newline. Formatting that matches the serializer
 never churns when a tool rewrites the file.
 - **Scope**: hand-maintained JSON files (`package.json`,
-  `public/manifest.webmanifest`). A generated one (`package-lock.json`) is
-  exempt: its tool owns its format, and nobody edits or reformats it.
+  `public/manifest.webmanifest`, and the `tsconfig*.json` files). A
+  generated one (`package-lock.json`) is exempt: its tool owns its format,
+  and nobody edits or reformats it.
+- **`tsconfig` files follow it exactly** (decided 2026-10-05), even though
+  TypeScript accepts comments and trailing commas in them: no comments or
+  section labels, and every key alphabetical, since a tsconfig has no
+  established key order of its own.
 - **Format**: tab indentation, double quotes (JSON requires them, the one
   exception to the single-quote rule), `"key": value` with no space before
   the colon, every non-empty object or array expanded one entry per line,
