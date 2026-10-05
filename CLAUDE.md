@@ -4209,6 +4209,11 @@ identifiers) and also stays inline as one line, for the same reason.
   its operands the same way, each named with its own value's type
   segment rather than `Boo`. A `??` chain isn't an `&&`/`||` chain and is
   not covered.
+- **A literal counts like a bare name** (decided 2026-10-04): a
+  literal operand (`null`, `[]`, `'name-asc'`, `0`) is already as easy to
+  read as a variable, so it never counts toward the "more than 2 real
+  expressions" threshold and is never extracted into a constant of its
+  own.
 
 ### General relatedness tiering
 Used for spacing between statements inside a function/block body (JSX
