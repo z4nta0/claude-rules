@@ -3310,6 +3310,26 @@ line, so only the rules that can't change what a tool reads apply.
   last entry) to the width of the longest value in the object, the same
   computation used for the property-name column itself.
 
+### TypeScript annotations
+Decided 2026-10-05, for the TypeScript migration.
+- **A type annotation's colon takes a space on both sides**, the same as
+  an object literal's: `( yeaValNum : number )`, `const curIteObj :
+  IteRcdTyp = ...`, an optional field `labStr? : string`, and a return type
+  `) : number =>`.
+- **Return types are explicit where a JSDoc is**: every exported function,
+  component, and hook declares its return type, so its contract is written
+  in its signature and an accidental change is caught. Any other function
+  lets TypeScript infer it, the accepted default.
+- **Angle brackets take inner spaces**, the same as parentheses:
+  `React.useState< number >( 0 )`, `Map< string, IteRcdTyp >`, `Array<
+  EscEntTyp >`. Next to a name they can't be misread as comparisons, and
+  the spacing reads more easily. Empty brackets don't occur.
+- **JSDoc doesn't restate types**: `@param` and `@returns` keep their
+  descriptions as they are, with no `{number}`-style type, since the
+  signature already declares it.
+
+
+
 ### Parentheses spacing (declarations, calls, control-flow)
 - A non-empty parenthesized list gets a space directly after `(` and
   directly before `)`; this covers a function/arrow declaration's own
