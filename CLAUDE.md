@@ -3328,8 +3328,6 @@ Decided 2026-10-05, for the TypeScript migration.
   descriptions as they are, with no `{number}`-style type, since the
   signature already declares it.
 
-
-
 ### Parentheses spacing (declarations, calls, control-flow)
 - A non-empty parenthesized list gets a space directly after `(` and
   directly before `)`; this covers a function/arrow declaration's own
