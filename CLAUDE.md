@@ -1223,11 +1223,14 @@ under the old rule keeps it only if it passes the test below.
   described below, however short the function is. A function written as a
   `const` (or an object entry) also keeps its own one-line comment on the
   declaration line; the JSDoc sits between its own `// #region` marker and
-  that line. A `React.forwardRef` component documents its forwarded ref as
-  a bare `@param` after the `props.` lines, since it's a positional
-  parameter; see `ui/entry-editor.jsx`'s own `EntEdiCom` and
-  `ui/button.jsx`'s own `ButBasCom`. See `TabBarCom`/`AppRooCom` in `src/app.jsx` for the
-  reference implementation of every rule below.
+  that line. A component that takes a `ref` (React 19 passes it as an
+  ordinary prop, so no `forwardRef` wrapper is needed) destructures it with
+  its other props and documents it as `@param props.ref`, in its
+  alphabetical place; see `ui/button.jsx`'s own `ButBasCom`. A component
+  still wrapped in `React.forwardRef` (React 18 or older) documents its
+  forwarded ref as a bare `@param` after the `props.` lines instead, since
+  there it's a positional parameter. See `TabBarCom`/`AppRooCom` in
+  `src/app.jsx` for the reference implementation of every rule below.
 - **Placement**: exactly 1 blank line before the opening `/**` (see
   "### Sectioning / fold regions" below for what comes before that blank
   line), exactly 1 blank line between the closing `*/` and the function's
@@ -3264,7 +3267,7 @@ line, so only the rules that can't change what a tool reads apply.
   itself, when it has no name) is followed by one space before its
   parameter list, whether the function is bare or stored somewhere
   (`function TabBarCom ( { ... } ) {`, `function AppRooCom () {`,
-  `React.forwardRef( function EntEdiCom ( ... ) {`, `const fooFun =
+  `React.memo( function Name ( ... ) {`, `const fooFun =
   function ( ... ) {`). A call never takes that space: `togDayFun(
   dayIndNum )`, `redMotFun()`. An arrow function has no name or keyword
   directly before its `(`, so nothing changes for it.
@@ -5117,8 +5120,12 @@ gradually alongside the whitespace rules above (started with `src/app.jsx`).
   expanded state, the same native boolean attribute convention as
   `<details open>`/`<dialog open>`, confirmed already left bare
   consistently across all 39 call sites of `Collapse`'s own `open` prop
-  plus `DayLogChip`'s own `open`), and React's own hooks (`useState`,
-  `useRef`, `useLayoutEffect`, `useEffect`, `useCallback`, ...).
+  plus `DayLogChip`'s own `open`), `ref` (decided 2026-10-05: React only
+  attaches a ref passed under that exact name, so a component that takes
+  one destructures it as plain `ref`, the same way it destructures
+  `className`; see `ui/button.jsx`'s own `ButBasCom`), and React's own
+  hooks (`useState`, `useRef`, `useLayoutEffect`, `useEffect`,
+  `useCallback`, ...).
 - **Generic JS API-shape exemption**: separately from the React/DOM
   exemptions above, a hand-rolled object that deliberately mirrors a
   well-known, generic (non-React) API shape keeps that shape's own
