@@ -3344,6 +3344,21 @@ Decided 2026-10-05, for the TypeScript migration.
 - **JSDoc doesn't restate types**: `@param` and `@returns` keep their
   descriptions as they are, with no `{number}`-style type, since the
   signature already declares it.
+- **Assertions say why** (decided 2026-10-05): where the code guarantees
+  something TypeScript can't see, a value that can't be null at that point
+  takes the postfix non-null `!` (`picMapObj.get( picIdeStr )!`), and a
+  value whose type is wider than the code allows takes `as <Type>` (an
+  event target read `as Element`, an `Object.entries` key read `as
+  ModNamTyp`). Either way, the line's own comment gains a merged note
+  after its What/Why/How saying what guarantees it (`// What: Non-Null
+  Note. Why: ... How: ...`). A real runtime guard is added only where the
+  value genuinely can be missing.
+- **Checks that don't narrow use a shared type guard** (decided
+  2026-10-05): when a built-in check proves a type without TypeScript
+  knowing it (`Number.isInteger( x )` says nothing about `x`'s type), the
+  check goes through a small type-guard helper in `utils/` instead (e.g.
+  `isaIntFun( valAny : unknown ) : valAny is number`), which keeps the
+  same runtime result and lets TypeScript narrow.
 
 ### Parentheses spacing (declarations, calls, control-flow)
 - A non-empty parenthesized list gets a space directly after `(` and
