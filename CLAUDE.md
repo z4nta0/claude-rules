@@ -4173,6 +4173,14 @@ reference example:
     group, even though all 6 are `const`, plain-shaped, and
     single-line-valued, and the second group directly consumes values
     from the first.
+  - **A run also splits off a declaration carrying a TypeScript type
+    annotation** (decided 2026-10-05), the same way it splits off a
+    longer non-standard name: `const curPicObj : Partial< PicRcdTyp > =
+    ...` sits 1 blank line apart from its plain-named neighbors, in its
+    own group, so the annotation never widens their `=` and comment
+    columns. Several annotated declarations next to each other form one
+    group, aligned among themselves. See `state/pending-mutations.ts`'s
+    own `curPicObj`, split from `hasPipBoo`/`perRunStr` above it.
   - **This same run gets its `=` signs column-aligned**, the same
     column-alignment mechanism used elsewhere in this doc (named imports,
     object `:` alignment, ...): pad each line's own left-hand side
