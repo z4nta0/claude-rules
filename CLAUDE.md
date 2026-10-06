@@ -361,7 +361,13 @@ can move code between files rather than just within one.
   it, keeping define-before-use:
   - **Used by one standalone declaration**: the type sits directly above
     it with no blank line between them, the same way a comment is glued to
-    its target, so the two read as one unit.
+    its target, so the two read as one unit. When the declaration is wrapped
+    in its own `// #region` (a JSDoc'd function or component), the type sits
+    above that marker instead, with exactly 1 blank line between them, the
+    same gap a marker keeps from what it wraps (decided 2026-10-05). A
+    component's props type is the common case: it's named from the
+    component's own segments under the acronym-reference rule (`ButBasCom`'s
+    props are `BbcProTyp`), as in `ui/button.tsx`.
   - **Used by members of a tightly grouped run** (consecutive declarations
     with no blank lines between them): the types for every member that
     needs one form their own tight group directly above the run, with 3
@@ -5213,6 +5219,12 @@ gradually alongside the whitespace rules above (started with `src/app.tsx`).
   `Window`, which merges only with an `interface`) or reads more logically.
   A name TypeScript or a library already defines (`Window`, `CSSProperties`,
   ...) is an external contract and stays as it is.
+  - **Generic type parameters are exempt** (decided 2026-10-05): a type
+    parameter is named `T`, the universal convention, so it reads as a
+    type variable at a glance instead of passing for a real named type,
+    e.g. `function useRcdDraFun< T extends { id : string } > ( rcdDatObj :
+    T | null )` in `ui/record-draft.ts`. A second parameter, where one is
+    ever needed, follows on alphabetically (`U`, then `V`).
   - **Documented like a variable**: a type gets the same one-line
     What/Why/How comment a variable does, expanding its name (`What:
     Escape Entry Type.`); a multi-line object type gets that comment on its
