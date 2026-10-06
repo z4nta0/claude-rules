@@ -3307,7 +3307,9 @@ line, so only the rules that can't change what a tool reads apply.
   (even if it would otherwise still fit on one line character-count-wise)
   whenever at least one property's value is a non-trivial expression
   (contains a binary operator like `+`/`-`/`*`/`/`, or is otherwise more
-  than a bare literal/identifier/single property-access). A simple
+  than a bare literal/identifier/single property-access; decided
+  2026-10-06, a non-null `!` on one of those, `curEntObj.itemId!`, doesn't
+  make it non-trivial, since it computes nothing). A simple
   config-style object whose values are plain literals only (e.g.
   `TAB_OBJ_ARR`'s entries) stays on one line even with several properties,
   since there's nothing to visually untangle. Even when it's really just
@@ -3378,6 +3380,13 @@ Decided 2026-10-05, for the TypeScript migration.
   after its What/Why/How saying what guarantees it (`// What: Non-Null
   Note. Why: ... How: ...`). A real runtime guard is added only where the
   value genuinely can be missing.
+  - **One label per kind** (decided 2026-10-06): the note is always
+    labelled `Non-Null Note` for a `!` and `Type Assertion Note` for an
+    `as`, never a custom label (`Event Target Note`) and never an
+    explanation folded into the line's own `How:`, so a single search finds
+    every assertion and what guarantees it. A line holding both kinds gets
+    one note of each. On a multi-line construct, the note merges onto the
+    line carrying the construct's own comment.
 - **Checks that don't narrow use a shared type guard** (decided
   2026-10-05): when a built-in check proves a type without TypeScript
   knowing it (`Number.isInteger( x )` says nothing about `x`'s type), the
