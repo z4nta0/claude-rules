@@ -119,6 +119,25 @@ casually reads `git log` the way a file gets read; showing the real
 message every time means a drift is visible immediately, in the same
 turn it happens, without the user ever needing to go look for it.
 
+### Backing up at the end of a session
+Decided 2026-10-05. Feature branches can run for weeks before they're
+merged, and until they're pushed their only copy is the local disk. So
+whenever the user says the session is over for the day ("that is all the
+time I have for today", or anything else that signals the work is done for
+now), the reply ends with a reminder to push the branch to GitHub (`git
+push`, or `git push -u origin <branch>` the first time a branch goes up).
+Pushing a branch only backs it up; nothing is merged until the branch is
+done.
+- **No separate backup commit is needed when everything is committed**:
+  work is committed after each verified step, so a push already uploads
+  all of it. Check `git status` before giving the reminder.
+- **Uncommitted work gets a normal commit first**: if a change is still
+  half done when the session ends, it's committed in the usual one-line
+  format, named for what it is, e.g. `What: Work In Progress Backup. Why:
+  The session ended partway through ... How: ...`, saying in the `Why:`
+  or `How:` what's still unfinished. It never uses a bare `WIP:` subject,
+  which would break the `What:` format check above.
+
 ## Copy rules
 
 Applies to every piece of prose this repo produces: user-facing app copy
@@ -180,6 +199,12 @@ rule in "## Copy rules" and "## Code formatting rules". Take the changed
 lines from `git diff` (staged and unstaged), check them, fix anything that
 doesn't comply, and only then commit, the same way the commit message
 itself gets its own mandatory self-check.
+- **Automated checks run first** (decided 2026-10-05): before this rule
+  check, run the project's linter and type checker over the change
+  (ESLint, `npx eslint <files>`, and TypeScript, e.g. `npm run typecheck`
+  or `tsc -b`) and fix everything they report. Then run the rule check
+  below, so it reviews code that already lints and type checks, and any
+  fix it makes gets the same automated checks again before committing.
 - **Scope**: the added/changed lines, plus whatever they directly affect
   around them, since a change can break a rule on a line it didn't touch:
   the column alignment of the run a changed line sits in, the blank-line
