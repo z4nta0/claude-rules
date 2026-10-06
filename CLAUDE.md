@@ -3358,7 +3358,11 @@ Decided 2026-10-05, for the TypeScript migration.
   knowing it (`Number.isInteger( x )` says nothing about `x`'s type), the
   check goes through a small type-guard helper in `utils/` instead (e.g.
   `isaIntFun( valAny : unknown ) : valAny is number`), which keeps the
-  same runtime result and lets TypeScript narrow.
+  same runtime result and lets TypeScript narrow. The same goes for
+  `.filter( Boolean )`, which drops nulls without TypeScript seeing it:
+  it filters through `isaTruFun` instead (`utils/guard.ts` in
+  ease-my-life), which runs `Boolean` and declares a passing value
+  non-null.
 
 ### Parentheses spacing (declarations, calls, control-flow)
 - A non-empty parenthesized list gets a space directly after `(` and
