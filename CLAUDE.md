@@ -3688,6 +3688,14 @@ block's own body still gets the standard 2-blank-line padding from
   `catch` and the page-level fallback's own `try` get 3 blank lines
   between them, and so do the `window.focus()`/`pagNotObj.close()`
   cleanup pair inside that fallback's own click handler.
+- **A catch binding exists only when it's read** (decided 2026-10-06): a
+  `catch` that guards an expected fallback (private-mode storage, an old
+  browser API, a feature check) and never reads its error drops the
+  binding entirely (`catch { return null; }`), so lint has nothing unused
+  to report. A `catch` that guards a real failure (a storage write or read,
+  a save, a wipe, an import) logs it with `console.warn( errCatObj );` as
+  its first statement, so the failure stays visible to anyone debugging
+  without filling the console during normal use.
 - **A complete `try`/`catch` (or `try`/`catch`/`finally`) statement always
   gets 3 blank lines before its own `try` AND 3 blank lines after its own
   final block**, whatever sits on the other side of either gap (a
