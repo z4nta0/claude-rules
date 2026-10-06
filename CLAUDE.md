@@ -5225,6 +5225,17 @@ gradually alongside the whitespace rules above (started with `src/app.tsx`).
     e.g. `function useRcdDraFun< T extends { id : string } > ( rcdDatObj :
     T | null )` in `ui/record-draft.ts`. A second parameter, where one is
     ever needed, follows on alphabetically (`U`, then `V`).
+  - **Type names are unique across the codebase** (decided 2026-10-05),
+    even for a type private to its file, so a search for one always lands
+    on exactly one declaration. The type added later is the one renamed.
+    When its first segment is an acronym (a props type named by the
+    acronym-reference rule), the clash escalates the way a two-word
+    compressed segment does: keep the first and last letters, and replace
+    the middle one with the next letter of the referenced name's second
+    word, then its later letters in turn. E.g. `CodConCom`'s props would
+    be `CccProTyp`, already `CadConCom`'s, so "Con" gives `o` and they
+    became `CocProTyp`. Any other clash follows the usual
+    Naming-conflict resolution.
   - **Documented like a variable**: a type gets the same one-line
     What/Why/How comment a variable does, expanding its name (`What:
     Escape Entry Type.`); a multi-line object type gets that comment on its
