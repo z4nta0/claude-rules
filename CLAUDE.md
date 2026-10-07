@@ -2429,6 +2429,13 @@ still passes.
       base at the usual 16px default and still follows any size a person
       sets: `--fon-siz-bas` is `1rem`, and each step above it is `var(
       --fon-siz-bas )` times the next `--cdn-pow-*` token.
+    - **Fluid sizes snap their bounds to steps** (decided 2026-10-07): a
+      vertical value that scales with the viewport through `clamp( min,
+      vw, max )` (a heading that grows with the screen, a section's
+      padding) keeps its viewport middle, but its min and max each move
+      to the nearest font size or rhythm step, e.g. `clamp( var(
+      --fon-siz-p05 ), 6.5vw, var( --fon-siz-p07 ) )`. Its token value
+      comment quotes both bounds.
     - **Width is decided per project** (decided 2026-10-01, replacing an
       earlier viewport-based rule): horizontal sizes are responsive, and
       layouts vary too much between projects for one approach to fit all
@@ -2648,6 +2655,15 @@ are renamed to this as their files come up in the design-system pass.
     of each other fold into one token. The lightness shift stays a plain
     number, since a base plus a rhythm number isn't truly on the scale. A
     shade only one element uses stays inline where it's used.
+    Decided 2026-10-07: `--acc-lig-col` (accent light) is a lighter
+    accent shade for text, hovers, and focus lines on a dark surface, where
+    the main accent would sink (reese-roofing's soft blue).
+  - **Dark surfaces have their own role** (decided 2026-10-07):
+    `--bac-inv-col` (background inverse) is the background of a dark band,
+    a dark footer, or a dark button, so a dark surface is named for what it
+    is and can change apart from the text color it often matches. Text on
+    it reads `--bac-pag-col` (or that role through relative color syntax
+    with an alpha), since the page color is what reads as light on dark.
   - **Transparency sits on the rhythm** (decided 2026-10-02): an alpha
     read through relative color syntax uses the reciprocal power of the
     core design number nearest to it (`/ var( --cdn-pow-004-rec )`, about
