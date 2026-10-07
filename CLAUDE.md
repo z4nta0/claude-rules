@@ -2782,6 +2782,17 @@ Decided 2026-10-03, for the HTML pass that follows the CSS pass.
   one exception, since JSON has no comments: its comment follows its closing
   `</script>`. A `style` attribute's declarations are spaced like CSS
   declarations (`style='--equ-tok-ind : 3'`).
+- **The shipped page drops its comments** (decided 2026-10-07): Vite
+  processes `index.html` but doesn't minify it, so every comment and
+  indentation level above would ship to every visitor. Each project's
+  `vite.config.ts` carries a build-only plugin whose `transformIndexHtml`
+  step (ordered `'post'`, after Vite injects its own tags) strips every HTML
+  comment and the comment inside an external `<script>` tag, trims each
+  line, and drops blank lines, keeping the newlines between lines so wrapped
+  text keeps its spaces. A project with inline styles, JSON-LD, or scripts
+  in `public/` minifies those in the same plugin. See ease-my-life's
+  `minShiFun` for the full version and reese-roofing's for the
+  `index.html`-only one.
 - **A section summary** is the section-intro design-rationale block in HTML
   form, a multi-line `<!-- ... -->` whose lines are indented one tab and
   hard-wrapped at 79 characters: an `index.html = <Name> <Descriptor>` name
@@ -5702,6 +5713,16 @@ gradually alongside the whitespace rules above (started with `src/app.tsx`).
     tab uses its own 3-letter modifier (`braMarCli--dat`, `--pic`,
     `--set`, `--sta`, `--tod`). A literal id is fine when only one
     instance of that component can ever exist, no variable needed.
+  - **Exception, an id that's a navigation target** (decided 2026-10-07):
+    an id that in-page links jump to (`href='#contact'`), and so appears in
+    the page's URL (`/#contact`), keeps its plain, readable name instead of
+    the 9-character form. A visitor can bookmark or share that URL, so the
+    id is an external contract, the same reasoning that exempts CSS property
+    names in a `style` object. Its element's comment says it's kept as is
+    for that reason. Every other id on the page (a label's `htmlFor`
+    target, an SVG pattern, a mount point) still follows the normal rule.
+    See reese-roofing's section anchors `top`, `services`, `about`, and
+    `contact`.
 - **Object property names** follow the same naming rule as everything
   above, but are only 6 characters: they drop the middle "descriptor"
   segment and keep just segment 1 (what it is) + segment 3 (type), each
