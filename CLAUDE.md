@@ -274,6 +274,19 @@ itself gets its own mandatory self-check.
   import in the build). One binding per statement, alphabetized and padded
   among themselves the same way the named group is, since the extra `type`
   word shifts their columns.
+- **Side-effect imports form a fourth, last group** (decided 2026-10-07,
+  matching ease-my-life's practice): a bare import with no binding
+  (`import './styles/styles.css';`) goes after every other group, 2 blank
+  lines apart from the group before it, each line commented and the
+  comments aligned. These stay in load order rather than alphabetical
+  whenever their order matters, e.g. `fonts.css` before `styles.css`, so
+  the font faces register before the stylesheet that uses them.
+- **Relative imports name the file's real extension** (decided 2026-10-07,
+  matching ease-my-life's practice): `from './app.tsx'`, `from
+  './state/storage.ts'`, `from './logo-mark.svg'`, never an extensionless
+  `from './app'`, so the import line alone says exactly which file it reads.
+  The tsconfig's `allowImportingTsExtensions` allows it. Package imports
+  (`from 'react'`) are unaffected.
 - Within each of those groups, alphabetize by the imported binding's own
   name (case-insensitive), not by source path, regardless of which source
   file each one came from.
