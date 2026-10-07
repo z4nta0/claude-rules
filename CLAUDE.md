@@ -556,6 +556,10 @@ src/
   a tab's file lands on it directly.
 - **Folder names** are lowercase kebab-case and short, plural only when
   the folder holds many of one kind of thing (`tabs/`).
+- **`vite-env.d.ts` stays at the `src/` root** (decided 2026-10-07), where
+  Vite's template puts it, beside `main.tsx`. It's an ambient type
+  declaration file that nothing imports, so it sits outside the folder
+  layout and the dependency order, the same as `main.tsx`.
 - **No barrel files.** No `index.js` that just re-exports a folder's
   contents; every import names the real file, so the import line alone
   answers where a binding comes from.
