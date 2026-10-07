@@ -1,7 +1,7 @@
 # User-Level CLAUDE.md
 
-Rules that apply to every project: development servers, language, commit
-messages, copy, and code formatting, naming, and comments. A project's own CLAUDE.md
+Rules that apply to every project: development servers, language, linting,
+commit messages, copy, and code formatting, naming, and comments. A project's own CLAUDE.md
 describes that project and adds anything specific to it (scoped naming
 overrides, its own values).
 
@@ -44,6 +44,28 @@ explicitly says otherwise for that specific project.
   Until then, tightening stays a tracked to-do in that project's CLAUDE.md
   and is never dropped, and type checking joins the build only once the
   code is clean.
+
+## Linting: ESLint
+Decided 2026-10-07. Every project is linted with ESLint, which the pre-commit
+rule check runs before anything else (see "### Pre-commit rule check").
+- **Setup**: `eslint`, `typescript-eslint`, `eslint-plugin-react`, and
+  `eslint-plugin-react-hooks` are installed as dev dependencies, with a flat
+  config in `eslint.config.ts` (plus `jiti`, which ESLint needs to read a
+  TypeScript config) and a `lint` script (`eslint .`) in `package.json`. A
+  new project starts with it in place; an existing project without it gets
+  it before its next change is committed.
+- **The config starts from ease-my-life's own `eslint.config.ts`**:
+  typescript-eslint's recommended rules with its two overrides,
+  `react/jsx-no-undef` on everything under `src/`, and the React Hooks
+  recommended rules on every `.tsx` file minus the four React Compiler
+  readiness rules. A project changes only what doesn't apply to it (its own
+  ignores, comments naming the other app), and a real difference in rules
+  is recorded in its own CLAUDE.md.
+- **Versions follow the ecosystem, not the latest release**: ESLint and
+  TypeScript are upgraded only once every lint package's peer range
+  supports the new version. As of 2026-10-07 that holds ESLint at 9
+  (`eslint-plugin-react` doesn't support 10 yet) and TypeScript at 6.0
+  (`typescript-eslint` doesn't support 7 yet).
 
 ## Commit messages
 
