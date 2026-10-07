@@ -1,7 +1,7 @@
 # User-Level CLAUDE.md
 
 Rules that apply to every project: development servers, language, linting,
-commit messages, copy, and code formatting, naming, and comments. A project's own CLAUDE.md
+browser testing, commit messages, copy, and code formatting, naming, and comments. A project's own CLAUDE.md
 describes that project and adds anything specific to it (scoped naming
 overrides, its own values).
 
@@ -66,6 +66,29 @@ rule check runs before anything else (see "### Pre-commit rule check").
   supports the new version. As of 2026-10-07 that holds ESLint at 9
   (`eslint-plugin-react` doesn't support 10 yet) and TypeScript at 6.0
   (`typescript-eslint` doesn't support 7 yet).
+
+## Testing: Every Browser Engine
+Decided 2026-10-07. Any check of what a page renders or how it behaves (a
+screenshot comparison, an interaction or animation test, a computed-style
+probe) runs in all three of Playwright's engines: Chromium, Firefox, and
+WebKit. Passing in one engine proves nothing about the others: in
+reese-roofing, a drawer animation that relied on transitioning `display`
+worked in Chromium but snapped shut in Firefox, which the user caught by hand.
+- **Missing browsers are installed, not skipped**: when an engine fails to
+  launch because its browser isn't downloaded, or the installed build doesn't
+  match the Playwright version in use, run `npx playwright install chromium
+  firefox webkit` from the project whose Playwright is being used, then
+  rerun the check.
+- **Anything needing `sudo` goes to the user**: system libraries (most often
+  WebKit's on Linux and WSL, via `npx playwright install-deps`) need admin
+  rights, and Claude can't enter a password. Stop and ask the user to run the
+  exact command, then verify every engine launches before continuing.
+- **A check that only one engine can run says so**: a test built on a
+  Chromium-only tool (the DevTools Protocol, e.g. reading a `mailto`
+  navigation) runs in Chromium, and the report names it as Chromium-only
+  rather than implying the other engines passed it.
+- **Report the engines**: when reporting a verification, say which engines
+  ran it.
 
 ## Commit messages
 
