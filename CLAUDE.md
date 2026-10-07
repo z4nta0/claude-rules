@@ -2083,8 +2083,10 @@ still passes.
   (Heading), `ul` → `Uno` (Unordered list), `ol` → `Ord` (Ordered list),
   `li` → `Ite` (list Item), `img` → `Ima` (Image), `svg` → `Svg`, `g` →
   `Gro` (Group), `tr` → `Row`, `td` → `Cel` (Cell), `th` → `Hce`
-  (Header cell, since `Hea` already means Heading), and `i` → `Ita`
-  (Italic). A tag not listed here is always expanded to its full name
+  (Header cell, since `Hea` already means Heading), `i` → `Ita`
+  (Italic), and (decided 2026-10-07) `em` → `Emp` (Emphasis), `dt` → `Ter`
+  (description Term), and `dd` → `Det` (description Details). A tag not
+  listed here is always expanded to its full name
   the same way; one that can't be expanded is raised with the user
   rather than guessed. A modifier (variant)
   class is its base class's name, then `--`, then the variant (the
