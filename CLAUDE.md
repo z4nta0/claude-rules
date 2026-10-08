@@ -1,7 +1,7 @@
 # User-Level CLAUDE.md
 
 Rules that apply to every project: development servers, language, linting,
-browser testing, required pages, SEO, social previews, commit messages, copy, and code formatting, naming, and comments. A project's own CLAUDE.md
+browser testing, required pages, SEO, social previews, interaction feedback, commit messages, copy, and code formatting, naming, and comments. A project's own CLAUDE.md
 describes that project and adds anything specific to it (scoped naming
 overrides, its own values).
 
@@ -225,6 +225,52 @@ pitch changes.
   after each deploy by the user, through a preview checker such as
   opengraph.xyz or the platforms' own debuggers (Facebook's Sharing Debugger,
   LinkedIn's Post Inspector), which also refresh a stale cached card.
+
+## Interaction Feedback
+Decided 2026-10-08. Every user interaction gets an animation or transition, so
+a person always sees that something happened. The feel is subtle but
+noticeable, with just a touch of flair: never flashy, never slow, and never
+in the way.
+- **What counts as an interaction**: hovering a link, button, or card;
+  pressing one; moving keyboard focus onto any control; toggling,
+  opening, or closing something (a menu, a drawer, a disclosure, a
+  switch); focusing or filling a form field; submitting a form or sending
+  something; and any change the person's action causes on screen (an item
+  added, a label swapped to "Sent").
+- **The baseline for each state**:
+  - **Hover**: a color shift, plus a small lift (1 to 3px) or a nudge of an
+    inline arrow or icon where the element invites a click.
+  - **Press**: a slight press-in (a scale near 0.97, or the lift undone),
+    so a tap registers before anything else happens.
+  - **Focus**: the focus ring or underline eases in rather than snapping,
+    while staying visible, per the accessibility scan.
+  - **Open and close**: the content slides, fades, or grows into place, and
+    leaves the same way, rather than appearing or vanishing at once.
+  - **Result of an action**: the change itself animates, such as a label
+    cross-fading to its new text or an added item easing in.
+- **The flair**: one small, purposeful touch per element at most, such as an
+  arrow that slides on hover, a gentle overshoot on something opening, or a
+  check that pops in once. It never repeats on its own, loops, bounces
+  every element, or competes with the content.
+- **The limits**:
+  - Durations come from the duration scale: interface motion runs about
+    100 to 300ms, and only a deliberate moment (a success state, a drawer)
+    runs longer, up to about 400ms.
+  - Easing comes from the easing tokens: decelerate for things arriving,
+    accelerate for things leaving, and the gentle overshoot for flair. The
+    strong bounce is kept for rare celebrations.
+  - Movement stays small: a few pixels of travel, and scales within a few
+    percent, except an element opening from nothing.
+- **It follows the motion rules**: every transition gets its reduced-motion
+  variant per "### Reduced motion", where the state still changes, just
+  without the movement, and it animates compositor properties per "###
+  Animation performance".
+- **Verified**: the test suite checks that every interactive element has a
+  transition or animation on its hover, focus, and pressed states (a
+  computed duration above zero, or an animation that plays), in all three
+  engines, and that reduced motion turns the movement off.
+- **Existing projects** are brought in line in one pass the next time they're
+  worked on, the same way the reduced motion rule was rolled out.
 
 ## Commit messages
 
