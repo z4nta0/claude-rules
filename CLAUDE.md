@@ -917,6 +917,13 @@ src/
   if/else block, function, call, ...) gets its comment right after its own
   opening bracket, one space in, on that same line, not a new one:
   `const TAB_OBJ_ARR = [ // What: ...`, `React.useLayoutEffect( () => { // What: ...`.
+  - **After the code unless the syntax forbids it** (decided 2026-10-07):
+    a comment always goes after the code it describes, on the same line,
+    and only moves to its own line above when the file's or language's
+    syntax rules out a trailing one (an ESLint directive, which ESLint reads
+    only at the start of a comment). A TypeScript triple-slash directive
+    takes its comment after it: `/// <reference types="vite/client" /> //
+    What: ...`, which TypeScript still reads.
   - **Known blind spot**: a bare `return {`/`return [` that opens a
     multi-line object/array literal is easy to skip, since it reads as
     "just a return statement" rather than as its own multi-line
@@ -1107,6 +1114,10 @@ src/
     just use its literal current name as-is for now (e.g. `What: Icon.`);
     that comment is expected to be revisited once the component itself
     gets renamed.
+  - **A library component that will never be renamed** (decided
+    2026-10-07) names what that instance is for, ending in the component's
+    own name: a React Router `<Route>` reads `What: Home Route.` or `What:
+    Not Found Route.`
   - **Placement: NEVER a bare `//`/text comment as JSX children.**
     Anything that isn't wrapped in `{}` between an opening and closing tag
     is literal DOM text content, so a plain `// comment` placed after an
@@ -1426,6 +1437,10 @@ under the old rule keeps it only if it passes the test below.
   lines. This limit applies throughout the whole JSDoc block, not just
   `@summary`: every line inside it, `@param`/`@returns` continuation
   lines included, stays at 79 characters or fewer.
+- **Tabs count as 4 columns** toward every 79-character limit in this doc
+  (decided 2026-10-07), the width VS Code shows them at, so a tab-indented
+  comment block (an HTML section summary, a nested JSDoc) wraps earlier
+  than a flush one.
 - **`@author z4nta0 <https://github.com/z4nta0>`**: a static, literal line,
   always exactly this, every time.
 - **`@param`**: which form to use depends on the function's own parameter
@@ -2307,6 +2322,16 @@ still passes.
   - A theme color gives the default theme's value: `/* Text Muted Color =
     oklch( 0.5 0.012 250 ) */`; a role read through relative color syntax
     lists the role and any alpha token.
+  - **Fixed wording for derived values** (decided 2026-10-07): a value that
+    runs between two bounds is written `about <low> - <high>` (`/* Gutter
+    Side Padding, about 19.304px - 44.876px */`), and a color at an opacity
+    is written `= <color> @ <alpha> opacity` (`/* Border Main Color =
+    #1a1f24 @ 0.12 opacity */`). Every other derived note keeps its plain
+    wording (`the accent lightened by 0.204`).
+  - **Numbers of 1,000 or more take thousands separators** in every
+    comment (decided 2026-10-07), since they read more easily: `1,130.0ms`,
+    `@ 1,920px width`. Code values stay as the language requires
+    (`calc( 1920px / ... )`).
   - A declaration that also needs a real explanation (the tricky-value
     exception above) keeps both: the token comment first, then the
     What/Why/How in its own `/* */` right after it on the same line.
@@ -2841,6 +2866,9 @@ Decided 2026-10-03, for the HTML pass that follows the CSS pass.
   own key order), indented with tabs.
 - **The doctype is its own section**: exactly 3 blank lines separate
   `<!doctype html>` from the `<html>` tag after it.
+- **The head and body are separate sections too** (decided 2026-10-07):
+  exactly 3 blank lines separate `</head>` from `<body>`, whatever their
+  contents.
 - **Comments are HTML comments in the same one-line template**: `<!-- What:
   ... Why: ... How: ... -->`. An HTML file gets no file-level summary. A
   raw-text element (`<script>`, `<style>`) can't hold an HTML comment, since
