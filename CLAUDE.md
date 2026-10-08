@@ -1923,6 +1923,14 @@ comes up and recorded here, per "### Undefined cases: stop and ask".
 - **Text measure uses `em` or `ch`** (decided 2026-10-01): a paragraph's
   `max-width` follows its own font rather than the root, per "Text measure
   is font based" under "### CSS modules and JS hooks".
+- **Glyph spacing uses `em`** (decided 2026-10-07): spacing that belongs to
+  the text itself and has to keep its proportion as the element's own font
+  size changes is written in `em`, not `rem`: `letter-spacing`, the gap
+  between a number and its suffix, and an inline mark's raise. A fixed
+  `rem` value would look right at one size and wrong at every other one,
+  most visibly beside fluid type. Where a value has a scale step within
+  10%, it still reads that step times `1em` (reese-roofing's stat suffixes
+  use `calc( var( --cdn-pow-008-rec ) * 1em )` for their 0.1em gap).
 - **Breakpoints are `px` values** (decided 2026-10-01): see "Breakpoints
   are a short list of round numbers" under "### Custom property naming".
 - **A 3D `perspective` is a length too** (decided 2026-10-03): even though
