@@ -164,6 +164,29 @@ casually reads `git log` the way a file gets read; showing the real
 message every time means a drift is visible immediately, in the same
 turn it happens, without the user ever needing to go look for it.
 
+### PR summaries
+Decided 2026-10-07. When the user asks for a PR (or merge) summary, it
+covers the whole branch (`git log main..HEAD`), condensed to a high-level
+overview in the same What/Why/How shape as a commit message, but laid out
+as Markdown for a PR description rather than squeezed onto one line:
+- **`What:`**: one bold-labelled line naming everything the branch does, in
+  Title Case, with the release version in parentheses when the branch bumps
+  it, e.g. `**What:** TypeScript Integration, Pre-Merge Test Suites, and Bug
+  Fixes (v0.13.0)`.
+- **`Why:`**: one short paragraph of real sentences: the problem the branch
+  set out to solve, plus anything worth knowing that it turned up along the
+  way.
+- **`How:`**: a bulleted list, one bullet per area of work, each opening
+  with a short bold label (`**TypeScript:**`, `**Tests:**`, `**Bug
+  fixes:**`, `**Docs:**`, ...) and nesting sub-bullets for the kinds of
+  changes in that area, not individual commits, files, or identifiers. A
+  short area keeps its one line instead of sub-bullets.
+- **Terse throughout**: each sub-bullet is a phrase or one sentence, and
+  bug fixes are named by what the user saw, not by the code that changed.
+- It's written for the PR's readers, follows the Copy rules (no em dashes),
+  and is given in the reply as rendered Markdown, never inside a code
+  block, ready to paste into the PR description.
+
 ### Backing up at the end of a session
 Decided 2026-10-05. Feature branches can run for weeks before they're
 merged, and until they're pushed their only copy is the local disk. So
