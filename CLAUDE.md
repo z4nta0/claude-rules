@@ -1215,8 +1215,11 @@ src/
   How: <a terse but complete sentence explaining how it works and/or how
   it's used.>` The `What:` value is Title Case (capitalize every word,
   e.g. `TAB_OBJ_ARR` → `Tab Object Array`): it's a label, not a sentence.
-  An initialism keeps its capitals (decided 2026-10-08): a `Url` segment
-  expands to `URL`, e.g. `CAR_URL_STR` → `Card URL String`.
+  An initialism keeps its capitals (decided 2026-10-08) in a label and in
+  any other comment prose: `URL`, `SVG`, `CSS`, `HTML`, `JSON`, `PNG`,
+  `ARIA`, `SEO`, and the like, e.g. `CAR_URL_STR` → `Card URL String` and
+  `lomSvgUrl` → `Logo-Mark SVG URL`. The identifier itself keeps its
+  camelCase segment (`Url`, `Svg`).
   When the name being expanded follows the 9-char/3-segment (or 6-char
   property) naming rule, expand each segment to its actual full word, in
   the SAME ORDER the segments appear in the name, never reordered, and
@@ -2873,6 +2876,10 @@ are renamed to this as their files come up in the design-system pass.
     Decided 2026-10-07: `--acc-lig-col` (accent light) is a lighter
     accent shade for text, hovers, and focus lines on a dark surface, where
     the main accent would sink (reese-roofing's soft blue).
+    Decided 2026-10-08: `--bor-str-col` (border strong) is the main border
+    color at a higher opacity, for dividers and outlines that have to hold
+    up as structure rather than fade back (reese-roofing's service grid,
+    logo ring, and ghost buttons, at 0.22).
   - **Dark surfaces have their own role** (decided 2026-10-07):
     `--bac-inv-col` (background inverse) is the background of a dark band,
     a dark footer, or a dark button, so a dark surface is named for what it
