@@ -1,7 +1,7 @@
 # User-Level CLAUDE.md
 
 Rules that apply to every project: development servers, language, linting,
-browser testing, commit messages, copy, and code formatting, naming, and comments. A project's own CLAUDE.md
+browser testing, required pages, commit messages, copy, and code formatting, naming, and comments. A project's own CLAUDE.md
 describes that project and adds anything specific to it (scoped naming
 overrides, its own values).
 
@@ -89,6 +89,25 @@ worked in Chromium but snapped shut in Firefox, which the user caught by hand.
   rather than implying the other engines passed it.
 - **Report the engines**: when reporting a verification, say which engines
   ran it.
+
+## Required Pages: 404
+Decided 2026-10-08. Every project has a 404 page, so a mistyped or outdated
+address lands somewhere useful instead of a blank screen or the host's
+default error.
+- **A new project** gets one from its first routes, and an existing project
+  without one gets it before its next release.
+- **It's a real page of the site**: the shared navigation and footer, the
+  site's own design, a short message saying the page doesn't exist, and at
+  least one clear way onward (back to the home page, plus the site's main
+  action where it has one). See reese-roofing's
+  `pages/not-found/not-found.tsx`.
+- **Every unknown path reaches it**: the router's catch-all route renders it,
+  and for a single-page app the host serves `index.html` for any path it
+  doesn't have (Netlify's `_redirects` rule `/* /index.html 200`), so the
+  app's router gets the chance to.
+- **Links from it work**: any link back into a page's sections names the
+  page's path (`/#contact`, not `#contact`), since a bare hash would jump
+  within the 404 page itself.
 
 ## Commit messages
 
