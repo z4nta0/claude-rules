@@ -126,6 +126,8 @@ or business details change.
     text, which the accessibility scan already covers.
   - A canonical URL, plus the social preview tags and image under "##
     Social Previews".
+  - An `author` meta naming who built the site (decided 2026-10-08): the
+    business itself on a real business's site, or the builder on a demo.
   - `robots.txt` and `sitemap.xml` in `public/`, the sitemap listing every
     indexable route.
   - The 404 page carries `noindex`, since a single-page app's host answers
@@ -181,9 +183,10 @@ pitch changes.
   - `theme-color`, which Discord uses for its embed's edge, and the favicon
     and `apple-touch-icon`, which some apps show beside the card.
 - **The copy**: the title stays under about 60 characters and the
-  description between about 110 and 160, both written for a person deciding
-  whether to tap, matching the page's own title and description unless a
-  shorter version reads better.
+  description between about 100 and 125 (decided 2026-10-08, down from 160,
+  since mobile cards cut a summary off around 125), both written for a
+  person deciding whether to tap, matching the page's own title and
+  description unless a shorter version reads better.
 - **The image** (`public/og-image.png`, per the directory rules):
   - 1200x630 PNG (or JPG for a photograph), under 300 KB so WhatsApp shows it
     at all.
@@ -208,6 +211,15 @@ pitch changes.
     filename (`og-image-2.png`) and every tag pointing at it is updated.
 - **A site that isn't a real business** says so in its preview too, per "##
   SEO": the title, description, and image all call it a demo.
+- **Inspector warnings that don't apply** (decided 2026-10-08): preview
+  checkers also flag items a site doesn't need, which are left out unless
+  the project calls for them:
+  - `fb:app_id`, which only links a site to a Facebook app for its
+    analytics.
+  - A publication date (`article:published_time`), which belongs only to
+    pages with `og:type` `article`, never a `website`.
+  - A call to action drawn on the image, a marketing choice made per
+    project, and never on a demo, where it would read as a real ad.
 - **Verified** by the test suite in all three engines (every tag present
   with an absolute URL, and the image's type, size, and dimensions), and
   after each deploy by the user, through a preview checker such as
@@ -3080,8 +3092,9 @@ Decided 2026-10-03, for the HTML pass that follows the CSS pass.
   need:
   1. **Document**: `charset` (always the head's first tag), `viewport`, and
      the `<title>`.
-  2. **Search**: the `description` meta, the `robots` meta (decided
-     2026-10-08), and the `canonical` link.
+  2. **Search**: the `author` meta, the `description` meta, the `robots`
+     meta, and the `canonical` link (author and robots decided
+     2026-10-08).
   3. **Web App**: the `manifest` link and the `theme-color` metas.
   4. **Icons**: the browser favicon links.
   5. **Home Screen**: the `apple-touch-icon` link and the
