@@ -1,7 +1,7 @@
 # User-Level CLAUDE.md
 
 Rules that apply to every project: development servers, language, linting,
-browser testing, required pages, commit messages, copy, and code formatting, naming, and comments. A project's own CLAUDE.md
+browser testing, required pages, SEO, commit messages, copy, and code formatting, naming, and comments. A project's own CLAUDE.md
 describes that project and adds anything specific to it (scoped naming
 overrides, its own values).
 
@@ -108,6 +108,57 @@ default error.
 - **Links from it work**: any link back into a page's sections names the
   page's path (`/#contact`, not `#contact`), since a bare hash would jump
   within the 404 page itself.
+
+## SEO
+Decided 2026-10-08. Every project gets an SEO pass early on, once its pages
+and copy have settled, and the pass is revisited whenever routes, content,
+or business details change.
+- **Only what can reasonably be expected**: honest markup that helps search
+  engines and link previews understand the site. Nothing spammy or
+  unseemly: no keyword stuffing, hidden text, doorway pages, invented
+  reviews or ratings, structured data that claims something the page
+  doesn't show, or tricks aimed at gaming rankings.
+- **Every project**:
+  - A unique `<title>` and meta description for each route, written for
+    people, with a single-page app setting them per route (React 19 hoists
+    a `<title>` or `<meta>` rendered in a component into the head).
+  - One `h1` per page, headings in order, descriptive link text, and alt
+    text, which the accessibility scan already covers.
+  - A canonical URL, Open Graph and Twitter card tags, and a social preview
+    image (1200x630, served from `public/` per the directory rules).
+  - `robots.txt` and `sitemap.xml` in `public/`, the sitemap listing every
+    indexable route.
+  - The 404 page carries `noindex`, since a single-page app's host answers
+    every unknown path with a 200.
+  - Fast, mobile-friendly pages over HTTPS.
+- **Local business websites** (most projects) add local SEO:
+  - `LocalBusiness` structured data (JSON-LD, the most specific subtype,
+    e.g. `RoofingContractor`) with the name, address, phone, hours, service
+    area, and URL, matching exactly what the page shows.
+  - The same name, address, and phone everywhere on the site, with
+    click-to-call `tel:` links, and the city or region in the title,
+    description, and headings where it reads naturally.
+  - Off-site work Claude can't do (the Google Business Profile, directory
+    listings, reviews) is listed for the user in the project's CLAUDE.md.
+- **Web apps**: public pages (the landing page, help, legal) are indexed,
+  and screens behind a sign-in or holding personal data carry `noindex`.
+  Structured data uses `WebApplication` where it fits.
+- **A site that isn't a real business** (a mockup, demo, or portfolio piece)
+  stays out of search and never passes as real:
+  - `noindex` through both the robots meta tag and an `X-Robots-Tag`
+    header, and no sitemap.
+  - `robots.txt` lets search crawlers in, so they can read the `noindex`,
+    and disallows AI training crawlers.
+  - No `LocalBusiness` or `Organization` data for the fictional business;
+    the title, description, social tags, and structured data say it's a
+    demo and who built it.
+  - Placeholder contact details use reserved values (555-01xx phone
+    numbers, `.example` domains), and the README says plainly what the
+    project is. See reese-roofing.
+- **Verified like everything else**: a scripted check in the test suite
+  confirms each route's title, description, robots directives, canonical,
+  and structured data in all three engines, and the project's CLAUDE.md
+  records which kind of site it is and its live URL.
 
 ## Commit messages
 
