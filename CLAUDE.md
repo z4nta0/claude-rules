@@ -1,7 +1,7 @@
 # User-Level CLAUDE.md
 
 Rules that apply to every project: development servers, language, linting,
-browser testing, required pages, SEO, commit messages, copy, and code formatting, naming, and comments. A project's own CLAUDE.md
+browser testing, required pages, SEO, social previews, commit messages, copy, and code formatting, naming, and comments. A project's own CLAUDE.md
 describes that project and adds anything specific to it (scoped naming
 overrides, its own values).
 
@@ -124,8 +124,8 @@ or business details change.
     a `<title>` or `<meta>` rendered in a component into the head).
   - One `h1` per page, headings in order, descriptive link text, and alt
     text, which the accessibility scan already covers.
-  - A canonical URL, Open Graph and Twitter card tags, and a social preview
-    image (1200x630, served from `public/` per the directory rules).
+  - A canonical URL, plus the social preview tags and image under "##
+    Social Previews".
   - `robots.txt` and `sitemap.xml` in `public/`, the sitemap listing every
     indexable route.
   - The 404 page carries `noindex`, since a single-page app's host answers
@@ -159,6 +159,52 @@ or business details change.
   confirms each route's title, description, robots directives, canonical,
   and structured data in all three engines, and the project's CLAUDE.md
   records which kind of site it is and its live URL.
+
+## Social Previews
+Decided 2026-10-08. Every project gets a complete social preview, so a link
+shared in a message, post, or chat (iMessage, WhatsApp, Facebook, LinkedIn,
+X, Slack, Discord, ...) shows a proper card instead of a bare address. It's
+set up alongside the SEO pass and updated whenever the site's name, look, or
+pitch changes.
+- **Tags live in `index.html`**, since link scrapers read the raw HTML and
+  never run JavaScript. A single-page app therefore shares one preview across
+  its routes unless it's prerendered; a route that needs its own card is a
+  reason to prerender, raised with the user first.
+- **The tags**, all with absolute `https://` URLs:
+  - Open Graph: `og:title`, `og:description`, `og:type` (`website`),
+    `og:url`, `og:site_name`, `og:locale`, `og:image`, `og:image:type`,
+    `og:image:width`, `og:image:height`, and `og:image:alt`.
+  - Twitter card: `twitter:card` (`summary_large_image`), `twitter:title`,
+    `twitter:description`, `twitter:image`, and `twitter:image:alt`, plus
+    `twitter:site` (the business's X account) and `twitter:creator` only
+    where a real account exists.
+  - `theme-color`, which Discord uses for its embed's edge, and the favicon
+    and `apple-touch-icon`, which some apps show beside the card.
+- **The copy**: the title stays under about 60 characters and the
+  description between about 110 and 160, both written for a person deciding
+  whether to tap, matching the page's own title and description unless a
+  shorter version reads better.
+- **The image** (`public/og-image.png`, per the directory rules):
+  - 1200x630 PNG (or JPG for a photograph), under 300 KB so WhatsApp shows it
+    at all.
+  - Built from the site's own logo, fonts, and colors, so the card looks like
+    the site, with text no smaller than about 40px so it reads at thumbnail
+    size.
+  - Everything that matters (the logo and the main line of text) fits inside
+    the center 630x630 square, since some apps crop the card to a square.
+  - Rendered by a script through Playwright rather than drawn by hand, so it
+    can be rebuilt when the design changes. The script and its HTML live
+    outside the served tree (e.g. `design/og-image/`), per the directory
+    rules on source artwork.
+  - Apps cache a preview for days or weeks, so a changed image gets a new
+    filename (`og-image-2.png`) and every tag pointing at it is updated.
+- **A site that isn't a real business** says so in its preview too, per "##
+  SEO": the title, description, and image all call it a demo.
+- **Verified** by the test suite in all three engines (every tag present
+  with an absolute URL, and the image's type, size, and dimensions), and
+  after each deploy by the user, through a preview checker such as
+  opengraph.xyz or the platforms' own debuggers (Facebook's Sharing Debugger,
+  LinkedIn's Post Inspector), which also refresh a stale cached card.
 
 ## Commit messages
 
