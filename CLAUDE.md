@@ -292,6 +292,30 @@ itself gets its own mandatory self-check.
   or `tsc -b`) and fix everything they report. Then run the rule check
   below, so it reviews code that already lints and type checks, and any
   fix it makes gets the same automated checks again before committing.
+- **Accessibility scan before committing** (decided 2026-10-08): any change
+  that can affect what a page renders or how it behaves (markup, styles,
+  copy, scripts) runs the project's accessibility scan after the automated
+  checks above and before committing. Pure tooling or docs changes skip it.
+  - **What it runs**: axe-core through Playwright on every page and its main
+    states (each page at phone and desktop widths, open menus and drawers,
+    error pages), in all three engines per "## Testing: Every Browser
+    Engine", plus scripted checks axe can't make: the announced name of
+    every link and button in the accessibility tree, a Tab walk checking
+    focus order, no keyboard traps, and visible focus, reflow at 320px wide
+    with no horizontal scrolling, and motion stopping under reduced motion.
+  - **It passes at zero violations**: every axe violation is fixed before
+    the commit, and anything axe marks as needing review is listed for the
+    user to check by hand, since automated tools catch only part of real
+    accessibility problems.
+  - **Setup**: `playwright` and `@axe-core/playwright` are installed as dev
+    dependencies, the scan lives in the project's test suite so it reruns
+    the same way every time, and the browsers are installed per "## Testing:
+    Every Browser Engine" (with any `sudo` step handed to the user). A
+    project without the scan gets it set up before its next commit that
+    needs it.
+  - **Report it**: the commit report says the scan ran, in which engines,
+    and what it found and fixed, the same way the rule check below is
+    reported.
 - **Scope**: the added/changed lines, plus whatever they directly affect
   around them, since a change can break a rule on a line it didn't touch:
   the column alignment of the run a changed line sits in, the blank-line
