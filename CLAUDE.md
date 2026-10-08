@@ -2379,6 +2379,10 @@ still passes.
   element with no child elements gets no region. Exactly 1 blank line
   sits between each marker and the rules it wraps, the same as every
   other region in this doc.
+  - **A classless wrapper gets no region** (decided 2026-10-07): an
+    element that needs no styling of its own (a plain `<div>` grouping a
+    column) has no class to name a region after, so its children's rules
+    sit at its parent's level. It never gains a class just to name one.
 - **Blank lines between siblings in CSS** mirror the JSX sibling spacing
   rule under "### JSX": 3 blank lines around a section whose element
   contains elements that themselves have children, 2 around a section
@@ -2786,6 +2790,11 @@ are renamed to this as their files come up in the design-system pass.
   `box-shadow` that isn't elevation (a `0 0 0 Npx` ring or outline, an inset
   border, a pulse keyframe, a spotlight's huge spread) isn't covered by
   the scale.
+  - **A `filter: drop-shadow()` is exempt too** (decided 2026-10-07): it
+    follows an image's own outline rather than its box, and it can't take
+    a spread value, so it can't read the `--ele-*-sha` tokens. Its lengths
+    still read rhythm steps, and its color may be tinted (reese-roofing's
+    hero logo casts an accent-tinted shadow).
 - **Rings and outlines use the same lengths** (decided 2026-10-02): a
   focus ring's `outline-offset`, and a `box-shadow` that draws a ring, gap,
   or extra line, read the token of the size they mirror (`var(
@@ -4047,6 +4056,12 @@ while ( condition );
     own wrapped attributes (no children at all, e.g.
     `<button\n\tclassName='x'\n\tonClick={...}\n>`) needs no padding
     between its attribute lines; there's no "inside" to pad.
+  - Exception, an element holding only text (decided 2026-10-07): a
+    paragraph, heading, label, or button whose children are just text,
+    with any inline phrasing elements inside it (`<br />`, `<em>`, a
+    `<span>` within the run), needs no padding, however many lines the
+    text wraps across or whether its opening tag spans several lines.
+    Padding applies once a child is a structural element on its own line.
 - **JSX sibling spacing is set by nesting depth alone.** Rewritten
   2026-09-26 and applied during the final file-by-file pass; it replaces
   the earlier approach of borrowing the JS relatedness tiers for JSX
