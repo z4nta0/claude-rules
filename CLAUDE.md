@@ -240,10 +240,15 @@ in the way.
 - **The baseline for each state**:
   - **Hover**: a color shift, plus a small lift (1 to 3px) or a nudge of an
     inline arrow or icon where the element invites a click.
-  - **Press**: a slight press-in (a scale near 0.97, or the lift undone),
-    so a tap registers before anything else happens.
+  - **Press**: a slight press-in (a scale near 0.97, which also undoes any
+    hover lift), so a tap registers before anything else happens. A text
+    link, which can't scale while it sits inline, dims slightly instead.
   - **Focus**: the focus ring or underline eases in rather than snapping,
-    while staying visible, per the accessibility scan.
+    while staying visible, per the accessibility scan. The ring starts as a
+    zero-width outline held a little away from the element and grows in
+    close on `:focus-visible`, so it stays invisible in forced colors mode
+    until something is focused, and every element with its own transition
+    lists the outline properties so the ease survives.
   - **Open and close**: the content slides, fades, or grows into place, and
     leaves the same way, rather than appearing or vanishing at once.
   - **Result of an action**: the change itself animates, such as a label
@@ -2938,6 +2943,10 @@ are renamed to this as their files come up in the design-system pass.
     color at a higher opacity, for dividers and outlines that have to hold
     up as structure rather than fade back (reese-roofing's service grid,
     logo ring, and ghost buttons, at 0.22).
+    Decided 2026-10-08: `--foc-rin-col` (focus ring) is the color keyboard
+    focus rings draw in, the main accent by default, and a dark band sets it
+    to a lighter shade (reese-roofing's `--acc-lig-col`) so the ring keeps
+    3:1 contrast.
   - **Dark surfaces have their own role** (decided 2026-10-07):
     `--bac-inv-col` (background inverse) is the background of a dark band,
     a dark footer, or a dark button, so a dark surface is named for what it
