@@ -196,6 +196,14 @@ pitch changes.
     can be rebuilt when the design changes. The script and its HTML live
     outside the served tree (e.g. `design/og-image/`), per the directory
     rules on source artwork.
+  - Styled from the site's own tokens (decided 2026-10-08): the card's
+    `<style>` imports the site's font and global stylesheets, and every
+    value with a scale step within 10% reads that step, as in the site's own
+    CSS. The exception is what the scale can't match: the card's fixed
+    1200x630 pixel size, and any size, line height, weight, or letter
+    spacing with no step within 10% (reese-roofing's 40px lines), which
+    stay literal. Rems resolve to the site's base, since the global
+    stylesheet sets it.
   - Apps cache a preview for days or weeks, so a changed image gets a new
     filename (`og-image-2.png`) and every tag pointing at it is updated.
 - **A site that isn't a real business** says so in its preview too, per "##
@@ -1207,6 +1215,8 @@ src/
   How: <a terse but complete sentence explaining how it works and/or how
   it's used.>` The `What:` value is Title Case (capitalize every word,
   e.g. `TAB_OBJ_ARR` → `Tab Object Array`): it's a label, not a sentence.
+  An initialism keeps its capitals (decided 2026-10-08): a `Url` segment
+  expands to `URL`, e.g. `CAR_URL_STR` → `Card URL String`.
   When the name being expanded follows the 9-char/3-segment (or 6-char
   property) naming rule, expand each segment to its actual full word, in
   the SAME ORDER the segments appear in the name, never reordered, and
@@ -3063,7 +3073,8 @@ Decided 2026-10-03, for the HTML pass that follows the CSS pass.
   need:
   1. **Document**: `charset` (always the head's first tag), `viewport`, and
      the `<title>`.
-  2. **Search**: the `description` meta and the `canonical` link.
+  2. **Search**: the `description` meta, the `robots` meta (decided
+     2026-10-08), and the `canonical` link.
   3. **Web App**: the `manifest` link and the `theme-color` metas.
   4. **Icons**: the browser favicon links.
   5. **Home Screen**: the `apple-touch-icon` link and the
