@@ -2962,7 +2962,18 @@ are renamed to this as their files come up in the design-system pass.
     a dark footer, or a dark button, so a dark surface is named for what it
     is and can change apart from the text color it often matches. Text on
     it reads `--bac-pag-col` (or that role through relative color syntax
-    with an alpha), since the page color is what reads as light on dark.
+    with an alpha), since the page color is what reads as light on dark,
+    unless the site has light text colors of its own (below).
+  - **Inverse roles for a site built on dark bands** (decided 2026-10-09):
+    `--bac-inr-col` (background inverse raised) is a panel or button one
+    step lighter than the dark band, `--tex-inv-col` (text inverse) is the
+    main text on a dark surface when it isn't the page color, and
+    `--tex-inm-col` (text inverse muted) is the quiet labels and captions on
+    a dark surface. Each second segment is a two-word compression (Inverse
+    plus Raised, Inverse plus Muted). seal-and-shield's navy panels
+    (`#0f1e45`), light silver text (`#c8d0e0`), and quiet silver labels
+    (`#8a9ab5`) are the reference values; a site without them leaves the
+    roles out.
   - **Transparency sits on the rhythm** (decided 2026-10-02): an alpha
     read through relative color syntax uses the reciprocal power of the
     core design number nearest to it (`/ var( --cdn-pow-004-rec )`, about
