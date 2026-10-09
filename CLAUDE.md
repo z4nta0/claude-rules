@@ -2311,6 +2311,16 @@ still passes.
   `data-*` attribute, set as `data-row-edit-active={ isaEdiBoo ||
   undefined }` so it disappears when false, and matched with
   `[data-row-edit-active]`.
+- **A behavior many elements share across files is a role attribute**
+  (decided 2026-10-09): when JS treats a whole family of different elements
+  the same way across several component files (seal-and-shield's
+  scroll-reveal blocks: section headers, cards, and paragraphs in three
+  sections), each carries a presence-only `data-*` role attribute that JS
+  finds them by (`data-scroll-reveal-block`), rather than a shared class or
+  a separate identity hook per element, and any state JS sets on them is a
+  second presence-only attribute (`data-scroll-reveal-shown`). Both are
+  styled once in the global stylesheet's Body State region, the same way
+  body-level state is, instead of being copied into every module.
 - **Converting an existing state class** (`is-on`, `is-open`, ...) during
   the module move, judged per element, since the same class often sits
   on elements with different semantics: first, an `aria-*` attribute the
