@@ -4377,7 +4377,11 @@ attribute) are ordered into these 8 tiers, top to bottom:
      `defaultValue`, `checked`/`defaultChecked`, `disabled`, `required`,
      `readOnly`, `placeholder`, `min`/`max`/`step`/`pattern`/`maxLength`,
      `target`/`rel`, `autoFocus`, `autoComplete`, `spellCheck`,
-     `contentEditable`, `draggable`.
+     `contentEditable`, `draggable`, and (decided 2026-10-08) `hidden` and
+     `inert`, booleans like `disabled` that decide whether the element
+     renders or can be used at all, `noValidate`, which changes how a form
+     submits like `required` does, and `rows`, which sizes a control like
+     `maxLength` does.
    - SVG elements specifically: every SVG geometry/presentation attribute
      (`viewBox`, `width`, `height`, `x`, `y`, `cx`, `cy`, `r`, `rx`, `ry`,
      `d`, `points`, `transform`, `fill`, `stroke`, `strokeWidth`,
