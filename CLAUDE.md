@@ -121,7 +121,11 @@ or business details change.
 - **Every project**:
   - A unique `<title>` and meta description for each route, written for
     people, with a single-page app setting them per route (React 19 hoists
-    a `<title>` or `<meta>` rendered in a component into the head).
+    a `<title>` or `<meta>` rendered in a component into the head). A
+    `noindex` page, such as the 404 page, needs only its own title (decided
+    2026-10-09): search engines never show its description, and React would
+    add a second description tag beside `index.html`'s rather than replace
+    it.
   - One `h1` per page, headings in order, descriptive link text, and alt
     text, which the accessibility scan already covers.
   - A canonical URL, plus the social preview tags and image under "##
@@ -243,6 +247,9 @@ in the way.
   - **Press**: a slight press-in (a scale near 0.97, which also undoes any
     hover lift), so a tap registers before anything else happens. A text
     link, which can't scale while it sits inline, dims slightly instead.
+    Decided 2026-10-09: every text link dims, whatever its layout (inline,
+    in a flex row, or block-level), so all text links press the same way;
+    only links styled as buttons scale.
   - **Focus**: the focus ring or underline eases in rather than snapping,
     while staying visible, per the accessibility scan. The ring starts as a
     zero-width outline held a little away from the element and grows in
@@ -269,7 +276,10 @@ in the way.
 - **It follows the motion rules**: every transition gets its reduced-motion
   variant per "### Reduced motion", where the state still changes, just
   without the movement, and it animates compositor properties per "###
-  Animation performance".
+  Animation performance". Decided 2026-10-09: a hover lift or press scale
+  still applies under reduced motion, only instantly, since turning off its
+  transition means nothing slides; the small position change is part of the
+  feedback, not motion.
 - **Verified**: the test suite checks that every interactive element has a
   transition or animation on its hover, focus, and pressed states (a
   computed duration above zero, or an animation that plays), in all three
