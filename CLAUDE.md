@@ -683,7 +683,11 @@ can move code between files rather than just within one.
   own `REM_MAT_ARR`, built with `paiSubFun`) sits in Helpers right after
   the helper it calls, not in Constants, and an exported component that a
   private one renders comes before it; "private first, then exported" only
-  orders components that don't depend on each other.
+  orders components that don't depend on each other. Decided 2026-10-10:
+  a helper that reads a value Module Init creates with a top-level `await`
+  (seal-and-shield's icon script's `renPngFun`, which draws in the browser
+  page Module Init opens) sits in Module Init right after that value, for
+  the same reason.
 - **Type placement** (decided 2026-10-05). A type sits next to what uses
   it, keeping define-before-use:
   - **Used by one standalone declaration**: the type sits directly above
@@ -1494,7 +1498,10 @@ src/
     own value, never column-aligned with other attributes (most of an
     element's attributes have no comment, so a shared column would be
     mostly empty); a `//` comment inside an opening tag compiles away
-    cleanly (verified with both Babel and Vite's own Oxc transformer).
+    cleanly (verified with both Babel and Vite's own Oxc transformer). A
+    note that explains two attributes at once (an image's intrinsic `width`
+    and `height`) is copied onto each of them (decided 2026-10-10), the
+    same as a note covering two object properties.
     - **Exception, the element's only attribute** (decided 2026-10-04):
       a one-attribute element stays on one line even when that attribute
       qualifies for a comment (e.g. `<UnmWatCom onUnmWatFun={ () => { if
@@ -1735,6 +1742,10 @@ under the old rule keeps it only if it passes the test below.
   - Returns an expression directly, not stored in a variable first (JSX is
     the common case, e.g. `return ( <nav>...</nav> );`): just `@returns
     <terse description>`, no `@see`.
+  - An async function that resolves with nothing (decided 2026-10-10):
+    `@returns A promise that settles once <the work> is done, with no
+    value.`, and its `@example` ends `// => Promise<void>`. A wrapped
+    `@returns` continues under its own text.
 - A blank ` *` line.
 - **`@example`**: matches whichever return type applies.
   - A JSX-returning component: a ` ```tsx ``` ` fenced block whose one
@@ -2559,7 +2570,10 @@ still passes.
   - `=` for an exact value (`ease`, `1rem`), `~=` for a rounded one.
   - A token wrapped in a calc gives the value it resolves to on screen:
     `calc( var( --ver-rhy-m03 ) * 1rem )` is `/* Vertical Rhythm Base
-    Minus 3 ~= 6.268px */`.
+    Minus 3 ~= 6.268px */`. A token multiplied by `1em` keeps the unit
+    (decided 2026-10-10): `calc( var( --cdn-pow-004-rec ) * 1em )` is `/*
+    Core-Design-Number to the Power of 4 Reciprocal ~= 0.325em */`, and a
+    token multiplied by `-1` shows its minus sign.
   - Several tokens make a comma-separated list in the order they appear,
     each token once: `/* Duration Transition Base Plus 2 ~= 277.0ms,
     Motion Standard Easing = ease */`.
@@ -2571,7 +2585,10 @@ still passes.
     Side Padding, about 19.304px - 44.876px */`), and a color at an opacity
     is written `= <color> @ <alpha> opacity` (`/* Border Main Color =
     #1a1f24 @ 0.12 opacity */`). Every other derived note keeps its plain
-    wording (`the accent lightened by 0.204`).
+    wording (`the accent lightened by 0.204`). Decided 2026-10-10: the sign
+    still follows the color itself, `=` for an exact color and `~=` for a
+    rounded one (seal-and-shield's `Accent Light Color ~= #4488f6 @ 0.5
+    opacity`, whose hex is a rounded conversion).
   - **Numbers of 1,000 or more take thousands separators** in every
     comment (decided 2026-10-07), since they read more easily: `1,130.0ms`,
     `@ 1,920px width`. Code values stay as the language requires
@@ -2620,7 +2637,9 @@ still passes.
   `/* #region <Name> */` / `/* #endregion <Name> */` pair (the CSS form
   VS Code folds), named after the element's own class and wrapping its
   own rule (with its variants) plus every one of its children's rules. An
-  element with no child elements gets no region. Exactly 1 blank line
+  element with no child elements gets no region; inline phrasing elements
+  inside its text (`<br />`, `<strong>`, `<em>`) don't count as children
+  here, the same as in JSX (decided 2026-10-10). Exactly 1 blank line
   sits between each marker and the rules it wraps, the same as every
   other region in this doc.
   - **A classless wrapper gets no region** (decided 2026-10-07): an
@@ -3730,7 +3749,10 @@ line, so only the rules that can't change what a tool reads apply.
   (contains a binary operator like `+`/`-`/`*`/`/`, or is otherwise more
   than a bare literal/identifier/single property-access; decided
   2026-10-06, a non-null `!` on one of those, `curEntObj.itemId!`, doesn't
-  make it non-trivial, since it computes nothing). A simple
+  make it non-trivial, since it computes nothing; decided 2026-10-10, nor
+  does a chain of plain property reads, `chaEveObj.target.value`, or an
+  array or object holding only plain literals, `[ 'Monday', 'Friday' ]`).
+  A simple
   config-style object whose values are plain literals only (e.g.
   `TAB_OBJ_ARR`'s entries) stays on one line even with several properties,
   since there's nothing to visually untangle. Even when it's really just
@@ -4267,7 +4289,8 @@ while ( condition );
   continue;`) follows the same "3 before, unless it's the declare +
   guard pair's own guard half" rule as a fused early-return guard.
   `continue` never takes a value, so the multi-line/parenthesized-return
-  bullet has no equivalent case for it.
+  bullet has no equivalent case for it. A `break` follows the same
+  treatment as `continue` (decided 2026-10-10).
 - **A single-line exit guard always gets 3 blank lines AFTER it too.**
   `if (cond) return;`, `if (cond) return <value>;` (a guard that returns
   an actual value, e.g. a fallback/placeholder, rather than a bare
@@ -4569,7 +4592,10 @@ reference example:
   above, are the common case), or several declarations jointly share one
   clearly-scoped purpose even without directly consuming each other (e.g.
   a small group of module-private state variables all backing the same
-  piece of behavior). This is a correction to (and takes priority over)
+  piece of behavior, or, decided 2026-10-10, values gathered for the same
+  step, such as a test reading several parts of a page before checking
+  them; plain declarations with no such link are unrelated and sit 3 blank
+  lines apart). This is a correction to (and takes priority over)
   "### General relatedness tiering" below, whose own "Related" tier does
   NOT cover plain declarations at all anymore.
   - **Only same-keyword declarations (all `const`, or all `let`) group
@@ -4755,7 +4781,9 @@ identifiers) and also stays inline as one line, for the same reason.
   final boolean that combines them, tightly grouped (0 blank lines
   between them, same mechanism as "### Variable declarations" above),
   followed by exactly 1 blank line, then the final combining
-  declaration.
+  declaration. The operand group also sits 1 blank line below any
+  declarations it reads (decided 2026-10-10), so it stays its own visible
+  block rather than joining their run.
 - Exactly 2 or fewer real-expression operands stay inline as-is,
   regardless of how many additional bare-identifier operands are also
   in the same chain (e.g. `canBigBoo && Math.random() < BIG_CHA_NUM` has
@@ -4886,6 +4914,10 @@ gradually alongside the whitespace rules above (started with `src/app.tsx`).
   - Example: `TABS` → `TAB_OBJ_ARR` (Tab + Object + Array).
   - Example: `active` (the app's current tab id) → `actIdeStr` (Active +
     Identifier + String).
+  - **Base64 is `B64`** (decided 2026-10-10), kept in its familiar form the
+    way initialisms are, since its first three letters, `Bas`, already mean
+    Base (`SOU_B64_STR`, `pngB64Str`); its `What:` expansion reads
+    `Base64`.
 - **Known miscorrections: check every segment against this list before
   finalizing a name.** In practice, segments built from a word with a
   strong, ubiquitous conventional abbreviation (the kind used constantly
