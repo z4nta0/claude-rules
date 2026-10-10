@@ -2637,9 +2637,14 @@ still passes.
   `/* #region <Name> */` / `/* #endregion <Name> */` pair (the CSS form
   VS Code folds), named after the element's own class and wrapping its
   own rule (with its variants) plus every one of its children's rules. An
-  element with no child elements gets no region; inline phrasing elements
-  inside its text (`<br />`, `<strong>`, `<em>`) don't count as children
-  here, the same as in JSX (decided 2026-10-10). Exactly 1 blank line
+  element with no child elements gets no region. Decided 2026-10-10: any
+  element whose children have rules of their own in the same module's
+  stylesheet gets a region, inline or not and on one line or several (a
+  heading's accent span, a sentence's link), so the group is visible and
+  collapses together. A child with no rule of its own (a bare `<br />`), or
+  whose rules live in another module (the app root's children, styled by
+  each page's own module), doesn't count, since there's nothing of it here
+  to group. Exactly 1 blank line
   sits between each marker and the rules it wraps, the same as every
   other region in this doc.
   - **A classless wrapper gets no region** (decided 2026-10-07): an
