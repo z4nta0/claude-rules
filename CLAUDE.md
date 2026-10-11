@@ -293,6 +293,13 @@ in the way.
     leaves the same way, rather than appearing or vanishing at once.
   - **Result of an action**: the change itself animates, such as a label
     cross-fading to its new text or an added item easing in.
+- **Links in a row and text links shift color only** (decided 2026-10-11):
+  a bar's row of pill links, a bar's icon toggle (the phone menu's bars),
+  and a text link (in a footer line, a menu's contact block) don't lift on
+  hover, since a color change already reads clearly there and a lift would
+  jostle the bar, the row, or the line. Other buttons, cards, and rows still
+  lift, and a stacked menu's rows may nudge sideways instead (tonys-toppers'
+  phone menu).
 - **The flair**: one small, purposeful touch per element at most, such as an
   arrow that slides on hover, a gentle overshoot on something opening, or a
   check that pops in once. It never repeats on its own, loops, bounces
@@ -724,11 +731,14 @@ can move code between files rather than just within one.
 - **Type placement** (decided 2026-10-05). A type sits next to what uses
   it, keeping define-before-use:
   - **Used by one standalone declaration**: the type sits directly above
-    it with no blank line between them, the same way a comment is glued to
-    its target, so the two read as one unit. When the declaration is wrapped
-    in its own `// #region` (a JSDoc'd function or component), the type sits
-    above that marker instead, with exactly 1 blank line between them, the
-    same gap a marker keeps from what it wraps (decided 2026-10-05). A
+    it with exactly 1 blank line between them (decided 2026-10-11, replacing
+    an earlier glued placement), so the two read as a pair while each line,
+    with its own comment in its own column, stays distinct. When the
+    declaration is wrapped in its own `// #region` (a JSDoc'd function or
+    component), the type sits above that marker instead, with the same 1
+    blank line between them, the gap a marker keeps from what it wraps
+    (decided 2026-10-05). Either way, the type's comment and the
+    declaration's comment never share a column. A
     component's props type is the common case: it's named from the
     component's own segments under the acronym-reference rule (`ButBasCom`'s
     props are `BbcProTyp`), as in `ui/button.tsx`.
@@ -1032,6 +1042,14 @@ src/
       becomes one Section-intro block (see "### Large / design-rationale
       comments") whose region wraps every one of those declarations,
       rather than being attached to just one of them.
+    - **A lookup of plain values** (decided 2026-10-10), an object whose
+      rows are all the same kind of string or number keyed by name (e.g.
+      tonys-toppers' `PHO_ALT_OBJ`, 50 alt texts keyed by file name), is
+      covered the same way: one JSDoc note says what every row is, and the
+      rows carry no comments of their own. Decided 2026-10-11: so is a plain
+      list whose rows are all the same kind of value (tonys-toppers'
+      `INT_OPT_ARR`, the contact form's interest options), where a row that
+      has something of its own to say keeps a trailing comment.
     - **Each item's own opening line still gets its identity comment**
       (decided 2026-09-27): the exemption covers the shared fields' own
       lines only, so a multi-line item's opening `{` gets a one-line
@@ -1369,6 +1387,14 @@ src/
     8 decorative grid-line `<path>`s, or repeated single-letter spans) may
     share the exact same What/Why/How text; they don't need distinct
     invented names just to be different.
+  - **An element with a class expands its class instead** (decided
+    2026-10-11): once an element carries a class of its own (a CSS module
+    class named under the class naming rules), its `What:` is that class's
+    expansion, the same words its CSS rule's comment uses, plus `Element`
+    (`porWraDiv` → `What: Portrait Wrap Div Element.`), so a comment and its
+    class never disagree. Elements sharing one class share the label, and
+    their Why and How say which one each is. The pretend-id name is for an
+    element with no class, and a library component keeps its own rule below.
   - **The `What:` for a custom component**: if the component's OWN name
     already follows the naming rules (like `TabBarCom`), use its real
     expanded name directly, same as any other named identifier; don't
@@ -1427,6 +1453,12 @@ src/
     single-letter spans) each get their own comment immediately after
     their own closing tag, chained along that same line, not one merged
     trailing comment covering the whole line.
+  - **An element whose opening tag spans several lines but whose content
+    and closing tag finish on one line** (decided 2026-10-10, e.g. a
+    multi-attribute `<div ...\n>☎</div>`) is treated like a one-line
+    element: its comment goes after the closing tag on that last line,
+    `>☎</div>{ /* What: ... */ }`, rather than splitting the content off
+    to put the comment after the opening `>`.
   - **Exception, an element sitting directly inside a `{}` JS expression**
     (e.g. a self-closing element that's the sole value of a
     `{cond && ( <span ... /> )}` or `.map((x) => ( <span ... /> ))`
@@ -2157,6 +2189,11 @@ later, but don't invent one for anything else yet:
   `className="x"` becomes `className='x'`). If a string's own content
   needs a literal `"` character, that's fine: it just sits inside the
   single-quoted string as normal text, no escaping concern either way.
+- **A string whose text holds an apostrophe** (decided 2026-10-10) may use
+  double quotes instead, in JS, JSX attributes, and HTML alike (`alt="Tony's
+  Toppers logo"`, `content="Tony's Toppers"`), rather than escaping it: a
+  JSX attribute string can't escape a quote at all, and the text reads as
+  written. Any other string keeps single quotes.
 - This only governs actual string-literal delimiters in code. Quotation
   marks used as ordinary English punctuation inside a `//`/`/* */` comment
   (e.g. quoting a UI phrase in a design-rationale comment) are prose, not
@@ -4636,6 +4673,11 @@ reference example:
   lines apart). This is a correction to (and takes priority over)
   "### General relatedness tiering" below, whose own "Related" tier does
   NOT cover plain declarations at all anymore.
+  - **A test file's top-level settings group tightly** (decided
+    2026-10-11): constants that configure a spec or a test config (a
+    pattern, a width, a limit, a URL), even ones used by different checks,
+    read as one block of configuration and sit at 0 blank lines, aligned,
+    as seal-and-shield's do.
   - **Only same-keyword declarations (all `const`, or all `let`) group
     this tightly.** A run that would otherwise mix `const` and `let`
     splits into two separate sub-groups by keyword instead (each 0-blank
@@ -5757,6 +5799,13 @@ gradually alongside the whitespace rules above (started with `src/app.tsx`).
     its synonym Full was used instead (`isaFulBoo`, `preFulRef`). Day-Off
     is a two-word "what", so it follows Two-word single-segment
     compression: `dao` (`daoCarArr`, `daoTitStr`), not the old `dof`
+  - `rcd` → `rec` (Record, decided 2026-10-10: a vowel drop that spread
+    through every project's record names and types, `PRO_RCD_ARR`,
+    `secRcdObj`, `ProRcdTyp`, ... including this doc's own examples. It's
+    renamed project by project as each one comes up, starting with
+    tonys-toppers; until then the older examples here, such as ease-my-life's
+    `HolRcdTyp`, still show the old spelling. Note `rec` already means
+    Rect/Rectangle (`indRecObj`, `butRecObj`); context disambiguates)
   This list grows every time a new instance is found; add to it rather
   than only fixing the one file where it turned up, since the same
   miscorrection reliably recurs in later files too.
