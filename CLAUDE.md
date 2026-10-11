@@ -1,7 +1,7 @@
 # User-Level CLAUDE.md
 
 Rules that apply to every project: development servers, language, linting,
-browser testing, required pages, SEO, social previews, interaction feedback, commit messages, copy, and code formatting, naming, and comments. A project's own CLAUDE.md
+browser testing, required pages, SEO, social previews, images, interaction feedback, commit messages, copy, and code formatting, naming, and comments. A project's own CLAUDE.md
 describes that project and adds anything specific to it (scoped naming
 overrides, its own values).
 
@@ -229,6 +229,39 @@ pitch changes.
   after each deploy by the user, through a preview checker such as
   opengraph.xyz or the platforms' own debuggers (Facebook's Sharing Debugger,
   LinkedIn's Post Inspector), which also refresh a stale cached card.
+
+## Images
+Decided 2026-10-10. Every image a project ships is as small as it can be
+without a visible loss of quality, and SVG is preferred wherever the artwork
+allows it.
+- **SVG first**: a logo, favicon, icon, or other flat artwork is used as SVG
+  whenever an SVG version exists, since it stays sharp at every size and is
+  usually the smallest file. A raster image is never traced or wrapped in an
+  SVG to pass as one. When only a raster version exists (seal-and-shield's
+  logos), it's optimized as below, and the user is told an SVG version would
+  be better.
+- **Every non-SVG image gets the optimization it needs**:
+  - **Size**: no more than twice the largest size it's displayed at, which
+    covers high-density screens, and never enlarged.
+  - **Format**: WebP, lossless for flat artwork such as a logo and lossy for
+    a photograph, at the lowest quality that shows no difference from the
+    original at 3x zoom (seal-and-shield's full logo at 0.95). The exception
+    is a format fixed by where the image is used: the social preview image
+    (PNG or JPG, per "## Social Previews"), and the favicon PNGs, ICO, and
+    `apple-touch-icon`, which browsers and apps require.
+  - **Markup**: its intrinsic `width` and `height` attributes, so the page
+    doesn't shift while it loads, and `loading='lazy'` when it starts below
+    the fold.
+- **Rendered by a script, not by hand**: the originals are kept outside the
+  served tree (e.g. `design/photos/`), per the directory rules on source
+  artwork, and a script beside them writes the optimized copies into `src/`,
+  the same way the social preview card is rendered. So a new or replaced
+  image gets the same treatment, and every image can be rebuilt at a new
+  size. Encoding through Playwright's Chromium canvas, as seal-and-shield
+  did, needs no new dependency.
+- **Reported**: the commit gives the size before and after, and the rendering
+  baselines are refreshed only for the encoding change, checked in all three
+  engines.
 
 ## Interaction Feedback
 Decided 2026-10-08. Every user interaction gets an animation or transition, so
