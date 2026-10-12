@@ -2970,6 +2970,11 @@ still passes.
       - **Headings are exempt** (decided 2026-10-01): a heading is never a
         long line of text, so it gets no text width cap; its container sets
         its width.
+      - **The limits apply to one continuous run of text** (decided
+        2026-10-12): a line built from short pieces with separators between
+        them (tonys-toppers' footer line, its parts split by dots) isn't held
+        to them as a whole, but any single piece between separators that runs
+        past the limit is.
       - **A container that exists to hold reading text** (a modal, a card)
         takes its `max-width` from its text's width plus its own horizontal
         padding and borders (boxes are `border-box`), rather than a
