@@ -155,17 +155,39 @@ or business details change.
   reviews or ratings, structured data that claims something the page
   doesn't show, or tricks aimed at gaming rankings.
 - **Every project**:
-  - A unique `<title>` and meta description for each route, written for
-    people, with a single-page app setting them per route (React 19 hoists
-    a `<title>` or `<meta>` rendered in a component into the head). A
-    `noindex` page, such as the 404 page, needs only its own title (decided
-    2026-10-09): search engines never show its description, and React would
-    add a second description tag beside `index.html`'s rather than replace
-    it.
+  - **Titles and descriptions** (rewritten 2026-10-11, after the-bernie-bears,
+    the first site with several routes): a unique `<title>` and meta
+    description for each indexed route, written for people.
+    - **`index.html` carries the home page's in full**: its real title, never
+      a bare site name, and its description as the site's only description
+      tag. Link checkers (opengraph.xyz) and many crawlers read the raw HTML
+      and never run the script, so a title or description that only React
+      sets is invisible to them: the-bernie-bears' first deploy showed them
+      a 16-character title and no description. A one-page site needs
+      nothing more.
+    - **Every other route renders its own `<title>`** in its component, which
+      React 19 places ahead of `index.html`'s and removes when the route
+      changes.
+    - **A route with its own description swaps the one tag's text** while it
+      shows and puts it back when it leaves, through a small hook (the-bernie-
+      bears' `ui/page-description.ts`, `usePagDesFun`), since React 19 adds a
+      rendered description beside `index.html`'s rather than replacing it,
+      leaving two.
+    - **A `noindex` page** (the 404 page, a page that overlaps another site)
+      needs only its own title (decided 2026-10-09) and keeps `index.html`'s
+      description, which search engines never show for it.
+    - **Canonical links render per route** on a site with several routes, in
+      each indexed route's component, and `index.html` carries none, since a
+      canonical in the raw page would point every route at the home page. A
+      one-page site keeps its canonical in `index.html`.
+    - **Checked** by the SEO suite: the raw page, fetched without a browser,
+      carries the home page's full title and description, and every route has
+      exactly one description and its own title. See the-bernie-bears'
+      `tests/seo/head.spec.ts`.
   - One `h1` per page, headings in order, descriptive link text, and alt
     text, which the accessibility scan already covers.
-  - A canonical URL, plus the social preview tags and image under "##
-    Social Previews".
+  - A canonical URL (per route on a site with several, as above), plus the
+    social preview tags and image under "## Social Previews".
   - An `author` meta naming who built the site (decided 2026-10-08): the
     business itself on a real business's site, or the builder on a demo.
   - `robots.txt` and `sitemap.xml` in `public/`, the sitemap listing every
