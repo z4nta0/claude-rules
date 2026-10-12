@@ -5864,6 +5864,10 @@ gradually alongside the whitespace rules above (started with `src/app.tsx`).
     tonys-toppers; until then the older examples here, such as ease-my-life's
     `HolRcdTyp`, still show the old spelling. Note `rec` already means
     Rect/Rectangle (`indRecObj`, `butRecObj`); context disambiguates)
+  - `hed` → `hea` (Head, found in the-bernie-bears' `pagHedSec` and its SEO
+    suite's `PAG_HED_ARR`/`hedCheFun`/`hedRowObj`, which check each page's
+    head tags; `Hed` is reserved for the `<header>` tag's class segment, never
+    the word Head)
   This list grows every time a new instance is found; add to it rather
   than only fixing the one file where it turned up, since the same
   miscorrection reliably recurs in later files too.
