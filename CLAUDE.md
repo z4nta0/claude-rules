@@ -542,6 +542,12 @@ touched, not swept all at once.
   value yet" in a stat/number display (e.g. a table cell rendering `—`
   instead of a number that hasn't been computed) is a display character,
   not prose punctuation, and is unaffected by this rule.
+- **Exception, a quote's attribution** (decided 2026-10-12): an em dash
+  directly before the name of the person a quotation comes from (a quote's
+  sign-off, e.g. "— Juli & Keeli" under the stylists' quote in
+  hair-designs' Contact section) is the standard typographic mark for an
+  attribution, not prose punctuation, and stays. Any em dash inside the
+  quotation itself is still reworded.
 
 ## Code formatting rules
 
