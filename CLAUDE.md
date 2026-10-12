@@ -1,7 +1,7 @@
 # User-Level CLAUDE.md
 
 Rules that apply to every project: development servers, language, linting,
-browser testing, required pages, SEO, social previews, images, interaction feedback, commit messages, copy, and code formatting, naming, and comments. A project's own CLAUDE.md
+browser testing, required pages, multi-page scroll position, SEO, social previews, images, interaction feedback, commit messages, copy, and code formatting, naming, and comments. A project's own CLAUDE.md
 describes that project and adds anything specific to it (scoped naming
 overrides, its own values).
 
@@ -108,6 +108,42 @@ default error.
 - **Links from it work**: any link back into a page's sections names the
   page's path (`/#contact`, not `#contact`), since a bare hash would jump
   within the 404 page itself.
+
+## Multi-Page React Sites: Scroll Position
+Decided 2026-10-11. A React site with more than one route opens each page
+the way a site of real pages does: at its top. A client-side router swaps
+pages without loading a new document, so the browser never resets the scroll
+position, and a link clicked at the bottom of one page opens the next one
+just as far down. React Router's declarative `BrowserRouter` leaves this
+alone; only its data router's `<ScrollRestoration />` handles it.
+- **Applies to** every project with more than one client-side route. A
+  one-page site whose links only jump between its own sections doesn't need
+  it.
+- **The behavior**:
+  - Every navigation a link or a redirect makes (a PUSH or REPLACE),
+    including a link to the page already showing, opens at the top, before
+    the new page is drawn, so the old position never flashes first.
+  - The jump is instant even when the stylesheet sets `scroll-behavior :
+    smooth`, since a smooth scroll down a whole page reads as motion rather
+    than as arriving on a new page.
+  - A link with a hash (`/#contact`) scrolls its target into view instead,
+    following the stylesheet's `scroll-behavior`, which its reduced-motion
+    variant already turns off.
+  - Back and forward (a POP) are left to the browser, which returns the
+    visitor to where they were.
+- **The implementation**: a `useScrTopFun` hook in `ui/scroll-top.ts`,
+  called once from the app root inside the router, running a
+  `useLayoutEffect` keyed on the location's `key` (which changes on every
+  navigation, even to the same address), its `hash`, and the navigation type.
+  See the-bernie-bears' `src/ui/scroll-top.ts`. A project on React Router's
+  data router uses `<ScrollRestoration />` instead.
+- **Verified** by the interaction suite in all three engines: a footer link
+  clicked at the bottom of each page opens the next page at its top, the
+  current page's own link returns to the top, a phone menu link does the
+  same, and back returns near the earlier position. See the-bernie-bears'
+  `tests/interaction/navigation.spec.ts`.
+- **Existing projects** with more than one route get it the next time
+  they're worked on.
 
 ## SEO
 Decided 2026-10-08. Every project gets an SEO pass early on, once its pages
