@@ -1,7 +1,7 @@
 # User-Level CLAUDE.md
 
 Rules that apply to every project: development servers, language, linting,
-browser testing, required pages, multi-page scroll position, SEO, social previews, images, interaction feedback, commit messages, copy, and code formatting, naming, and comments. A project's own CLAUDE.md
+browser testing, required pages, multi-page scroll position, SEO, social previews, images, card grids, interaction feedback, commit messages, copy, and code formatting, naming, and comments. A project's own CLAUDE.md
 describes that project and adds anything specific to it (scoped naming
 overrides, its own values).
 
@@ -320,6 +320,26 @@ allows it.
 - **Reported**: the commit gives the size before and after, and the rendering
   baselines are refreshed only for the encoding change, checked in all three
   engines.
+
+## Card Grids
+Decided 2026-10-12, after the user's sites had each been fixed by hand. A
+grid of cards (services, products, values, team members, ...) always has the
+same number of cards in every row, at every width, never a short last row
+left by an `auto-fit` or `auto-fill` column that happens not to divide the
+card count.
+- **Column counts divide the card count**: the grid steps through column
+  counts that do (six cards go three, then two, then one column), switching
+  at the project's existing breakpoints, each step chosen so the cards stay
+  wide enough for their text. See reese-roofing's and hair-designs'
+  `services.module.css`.
+- **A grid whose card count can change** (a catalog filtered on the page)
+  computes its columns from the count instead, as the-bernie-bears' home and
+  about grids do with a `minmax()` built from the card count.
+- **Verified** by checking the rows at a spread of widths, a pixel either
+  side of each breakpoint included, in every engine, and the responsive
+  suite covers the widths it already measures.
+- **Existing projects** are brought in line the next time they're worked
+  on.
 
 ## Interaction Feedback
 Decided 2026-10-08. Every user interaction gets an animation or transition, so
