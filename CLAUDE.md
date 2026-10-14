@@ -57,10 +57,12 @@ rule check runs before anything else (see "### Pre-commit rule check").
 - **The config starts from ease-my-life's own `eslint.config.ts`**:
   typescript-eslint's recommended rules with its two overrides,
   `react/jsx-no-undef` on everything under `src/`, and the React Hooks
-  recommended rules on every `.tsx` file minus the four React Compiler
-  readiness rules. A project changes only what doesn't apply to it (its own
-  ignores, comments naming the other app), and a real difference in rules
-  is recorded in its own CLAUDE.md.
+  recommended rules on every `.tsx` file and the `.ts` files under `src/`
+  (decided 2026-10-14, so a custom hook in a file without JSX is checked too,
+  while tests stay out, since Playwright's `test.use` reads as React's `use`)
+  minus the four React Compiler readiness rules. A project changes only what
+  doesn't apply to it (its own ignores, comments naming the other app), and a
+  real difference in rules is recorded in its own CLAUDE.md.
 - **Versions follow the ecosystem, not the latest release**: ESLint and
   TypeScript are upgraded only once every lint package's peer range
   supports the new version. As of 2026-10-07 that holds ESLint at 9
@@ -2908,6 +2910,10 @@ still passes.
       base at the usual 16px default and still follows any size a person
       sets: `--fon-siz-bas` is `1rem`, and each step above it is `var(
       --fon-siz-bas )` times the next `--cdn-pow-*` token.
+    - **Headings set tight** (decided 2026-10-14): headings take a line
+      height of the m01 step, exactly 1, so each line is as tall as its
+      text. A heading rarely wraps, and when it does it reads better set
+      tight. A font that needs more room is given it case by case.
     - **Fluid sizes snap their bounds to steps** (decided 2026-10-07): a
       vertical value that scales with the viewport through `clamp( min,
       vw, max )` (a heading that grows with the screen, a section's
@@ -3167,12 +3173,16 @@ are renamed to this as their files come up in the design-system pass.
     (`#0f1e45`), light silver text (`#c8d0e0`), and quiet silver labels
     (`#8a9ab5`) are the reference values; a site without them leaves the
     roles out.
-  - **Transparency sits on the rhythm** (decided 2026-10-02): an alpha
-    read through relative color syntax uses the reciprocal power of the
-    core design number nearest to it (`/ var( --cdn-pow-004-rec )`, about
-    0.325), under the 10% rule for behavior numbers. An alpha with no power
-    within 10% stays literal: in ease-my-life 0.16, 0.5, 0.65, 0.85, the
-    near-opaque 0.88 to 0.94, and 0 and 1.
+  - **Transparency sits on the rhythm** (decided 2026-10-02): an alpha read
+    through relative color syntax uses the reciprocal power of the core design
+    number nearest to it (`/ var( --cdn-pow-004-rec )`, about 0.325), under
+    the 10% rule for behavior numbers. An alpha with no power within 10% stays
+    literal: in ease-my-life 0.16, 0.5, 0.65, 0.85, the near-opaque 0.88 to
+    0.94, and 0 and 1. Decided 2026-10-14: the same goes for any other
+    opacity, an `opacity` on an SVG shape or a strength a component takes as a
+    prop. An SVG attribute can't read a custom property, so the shape sets it
+    through its `style` instead (`style={{ opacity : 'var( --cdn-pow-001-rec
+    )' }}`).
 - **Examples mapped from today's tokens**: `--bg` → `--bac-pag-col`,
   `--surface` → `--bac-sur-col`, `--text` → `--tex-mai-col`, `--muted` →
   `--tex-mut-col`, `--accent-soft` → `--acc-tin-col`, `--warm` →
@@ -3194,7 +3204,7 @@ are renamed to this as their files come up in the design-system pass.
   pixels, with a 1px minimum), so the intent stays visible in the value:
   `--bor-wid-sma` (`m12`, about 0.499px, the hairline), `--bor-wid-bas`
   (`m09`, about 1.160px), `--bor-wid-lar` (`m07`, about 2.035px), and
-  `--bor-wid-xla` (`m05`, about 3.571px), each a rhythm step times 1rem. A
+  `--bor-wid-xla` (`m05`, about 3.572px), each a rhythm step times 1rem. A
   step is picked so it snaps to the intended width: `m06` (about 2.696px)
   would draw as 2px, so 3px takes `m05`.
 - **Border radii use a five-step scale** (decided 2026-10-01):
