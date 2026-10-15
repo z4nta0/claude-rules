@@ -362,7 +362,10 @@ in the way.
     link, which can't scale while it sits inline, dims slightly instead.
     Decided 2026-10-09: every text link dims, whatever its layout (inline,
     in a flex row, or block-level), so all text links press the same way;
-    only links styled as buttons scale.
+    only links styled as buttons scale. Decided 2026-10-14: a `<button>`
+    styled as text (tech-geek-cards' Replay, beside the More cards link in
+    its card bar) presses like a text link and dims, so a bar's one filled
+    button stays its clear main action.
   - **Focus**: the focus ring or underline eases in rather than snapping,
     while staying visible, per the accessibility scan. The ring starts as a
     zero-width outline held a little away from the element and grows in
@@ -2807,6 +2810,13 @@ still passes.
     element that needs no styling of its own (a plain `<div>` grouping a
     column) has no class to name a region after, so its children's rules
     sit at its parent's level. It never gains a class just to name one.
+  - **A class shared across sections** (decided 2026-10-14): when
+    elements under several different parents in one module share a class
+    (tech-geek-cards' Home `secInnDiv`, inside three of its sections), its
+    rule and region are written once, inside the section of the first
+    parent that uses it, in markup order. Every other section that uses it
+    gets a one-line What/Why/How comment where the rule would otherwise
+    sit, saying which region holds it.
 - **Blank lines between siblings in CSS** mirror the JSX sibling spacing
   rule under "### JSX": 3 blank lines around a section whose element
   contains elements that themselves have children, 2 around a section
@@ -4552,6 +4562,8 @@ while ( condition );
     block-level only when its own content is genuinely structured (it
     holds block-level elements, or elements that themselves hold
     elements); a button holding just text, or an icon plus text, doesn't.
+    Decided 2026-10-14: an SVG `<g>` counts as block-level when it spans
+    several lines and holds elements (tech-geek-cards' 404 stamp groups).
   - **When two neighbors call for different counts, the bigger count
     wins** for the gap between them.
   - **A `{ cond && ( ... ) }` or `.map( ... )` wrapper** holding a
