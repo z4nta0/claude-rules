@@ -2713,6 +2713,13 @@ still passes.
   rule's comment, the same "once it's multi-line, one entry per line"
   reasoning as array entries and JSX attributes. See
   `ui/number-stepper.module.css`'s own spin-arrow rule.
+- **A table of one-declaration rules** (decided 2026-10-16): a run of
+  rules that differ only in one selector argument and each set a single
+  declaration (tech-geek-cards' `.famCelBut:nth-child( n )` cells, placing a
+  hand-laid mosaic) stays one line per rule, read as a table: the
+  declaration follows the `{`, the comment follows the closing `}`, the
+  selectors are padded so the declarations line up, and the comments align
+  like any run of lines. See tech-geek-cards' `ui/family-card.module.css`.
 - **CSS comments**: every rule gets one What/Why/How comment, written as
   `/* What: ... Why: ... How: ... */` one space after its own opening
   `{`, the same as any multi-line construct. Declarations get no comment
@@ -2817,6 +2824,13 @@ still passes.
     parent that uses it, in markup order. Every other section that uses it
     gets a one-line What/Why/How comment where the rule would otherwise
     sit, saying which region holds it.
+    - **The pointer counts as the rule** (decided 2026-10-16): regions and
+      spacing treat a pointer exactly as they would the rule it stands in
+      for. A pointer for an element with children of its own opens a
+      region named for its class, wrapping the pointer and those children's
+      rules (Home's Featured and Commission sections), and a parent whose
+      only child is a pointer still gets its region, so it's clear the
+      parent holds a child (tech-geek-cards' Halloween `titHalHea`).
 - **Blank lines between siblings in CSS** mirror the JSX sibling spacing
   rule under "### JSX": 3 blank lines around a section whose element
   contains elements that themselves have children, 2 around a section
