@@ -4957,6 +4957,16 @@ reference example:
   repeated-operation run, and give that run its own correct spacing
   (0-blank internally, then the normal tiering rules for whatever
   precedes/follows the run as a whole).
+  - **Animation timeline steps** (decided 2026-10-16): consecutive steps
+    added with the same method (`set`, `from`, `to`, `fromTo`, ...) form one
+    tight run, with 1 blank line wherever the method changes or another
+    call sits between them. Within a run, every argument lines up: targets
+    are padded so each object opens in one column, every object's closing
+    brace lines up (so the position argument after it does too), and the
+    properties line up by position, keys every row shares first,
+    alphabetized, then each row's own keys, alphabetized. A step written
+    across several lines keeps 1 blank line on each side. See
+    tech-geek-cards' Fourth of July entrance and fireworks.
 
 ### Long boolean expressions
 A "long boolean expression" is an `&&`/`||` chain where MORE THAN 2 of
