@@ -3113,7 +3113,10 @@ are renamed to this as their files come up in the design-system pass.
     editor). `wid` (a width, decided 2026-10-03, the counterpart of `hei`,
     e.g. `--pil-tag-wid`, the fixed column a pool row hands its pill). `ind` (an
     index, decided 2026-10-03, a position number the CSS multiplies out, e.g.
-    `--equ-tok-ind`, each boot splash token's place in its stagger). A keyword value a parent hands a child
+    `--equ-tok-ind`, each boot splash token's place in its stagger). `siz` (a
+    font size, decided 2026-10-16, since `fon` already means a font family,
+    e.g. `--bra-wor-siz`, the wordmark size a site sets for the shared bar in
+    techgeek-design). A keyword value a parent hands a child
     (decided 2026-10-03) takes the first 3 letters of the CSS property it
     feeds as its kind: `dis` (a `display`), `fle` (a `flex`), `whi` (a
     `white-space`), and `fig` (a `font-variant-numeric`, since it sets
