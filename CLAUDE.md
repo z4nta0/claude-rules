@@ -1157,6 +1157,10 @@ src/
       Item.`). A leading note about that one item merges onto the same
       line after the identity comment, per the merging rule below; a note
       covering several sibling items stays above the first of them.
+      Decided 2026-10-17: a one-line row in such a table gets its identity
+      comment too, after its closing brace, the same as a row that carries
+      a note of its own, so every row in every table reads the same way
+      (tech-geek-support's test page lists).
     - **A repeated-shape literal declared inside a function** has nowhere
       to carry that shape documentation, so when it reads nothing from
       its enclosing scope it's hoisted to a module-level `ALL_CAPS`
