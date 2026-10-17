@@ -247,10 +247,13 @@ pitch changes.
   - `theme-color`, which Discord uses for its embed's edge, and the favicon
     and `apple-touch-icon`, which some apps show beside the card.
 - **The copy**: the title stays under about 60 characters and the
-  description between about 100 and 125 (decided 2026-10-08, down from 160,
-  since mobile cards cut a summary off around 125), both written for a
-  person deciding whether to tap, matching the page's own title and
-  description unless a shorter version reads better.
+  description between 120 and 125 (decided 2026-10-08, down from 160,
+  since mobile cards cut a summary off around 125; raised from a minimum
+  of 100 on 2026-10-17, since link preview checkers flag a description
+  under 120 as short), both written for a person deciding whether to tap,
+  matching the page's own title and description unless a shorter version
+  reads better. The SEO suite checks every page's description against
+  both bounds.
 - **The image** (`public/og-image.png`, per the directory rules):
   - 1200x630 PNG (or JPG for a photograph), under 300 KB so WhatsApp shows it
     at all.
