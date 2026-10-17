@@ -391,6 +391,9 @@ in the way.
   jostle the bar, the row, or the line. Other buttons, cards, and rows still
   lift, and a stacked menu's rows may nudge sideways instead (tonys-toppers'
   phone menu).
+  Decided 2026-10-17: a small inline button that follows a label's text
+  (tech-geek-support's "?" help tips beside its form labels) shifts color
+  only too, since a lift would nudge it off its label's line.
 - **The flair**: one small, purposeful touch per element at most, such as an
   arrow that slides on hover, a gentle overshoot on something opening, or a
   check that pops in once. It never repeats on its own, loops, bounces
@@ -5956,6 +5959,9 @@ gradually alongside the whitespace rules above (started with `src/app.tsx`).
     suite's `PAG_HED_ARR`/`hedCheFun`/`hedRowObj`, which check each page's
     head tags; `Hed` is reserved for the `<header>` tag's class segment, never
     the word Head)
+  - `ctx` → `cot` (Context: found in tech-geek-support's `vite.config.ts`
+    (`ctxIndObj`); since `con` already carries four meanings, Phase A
+    escalation gave `cot`, so it became `cotIndObj`)
   This list grows every time a new instance is found; add to it rather
   than only fixing the one file where it turned up, since the same
   miscorrection reliably recurs in later files too.
