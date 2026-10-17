@@ -340,6 +340,14 @@ card count.
 - **Verified** by checking the rows at a spread of widths, a pixel either
   side of each breakpoint included, in every engine, and the responsive
   suite covers the widths it already measures.
+- **Exception, a centered odd card** (decided 2026-10-17): where a width
+  calls for fewer columns than divide the card count (three cards in two
+  columns once one row of three gets too narrow), the leftover card keeps the
+  others' width and sits centered in its own row, never left hanging at the
+  row's start or stretched across it. The rows above it stay full, and it's
+  used only where one row of every card no longer fits, since the
+  user's sites each have a section like this. See tech-geek-support's
+  Contact sidebar on a tablet.
 - **Existing projects** are brought in line the next time they're worked
   on.
 
