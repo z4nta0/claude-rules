@@ -1250,9 +1250,11 @@ src/
     documentation never goes there. The shape block follows the
     attached-declaration form under "### Large / design-rationale
     comments" (`<Name> = <Expanded Name>` name line, `@summary` listing
-    each field alphabetically, `@author`), and its `#region` rule
-    applies too. Files documented the older way (in the header) move
-    their shape blocks during the final file-by-file pass. Verify this
+    each field alphabetically as a ``- `key` (Type): ...`` bullet, with a
+    bare ` *` line before each bullet (decided 2026-10-18, as in
+    ease-my-life), `@author`), and its `#region` rule applies too. Files
+    documented the older way (in the header) move their shape blocks
+    during the final file-by-file pass. Verify this
     condition actually holds first (grep every instance of the property
     across the file and confirm they really do collapse to a small,
     genuinely fixed set of texts) rather than assuming it from a few
