@@ -1,7 +1,7 @@
 # User-Level CLAUDE.md
 
 Rules that apply to every project: development servers, language, linting,
-browser testing, required pages, multi-page scroll position, section links, SEO, social previews, images, card grids, interaction feedback, commit messages, copy, and code formatting, naming, and comments. A project's own CLAUDE.md
+browser testing, required pages, multi-page scroll position, section links, SEO, social previews, images, card grids, interaction feedback, forms, commit messages, copy, and code formatting, naming, and comments. A project's own CLAUDE.md
 describes that project and adds anything specific to it (scoped naming
 overrides, its own values).
 
@@ -507,6 +507,31 @@ in the way.
   engines, and that reduced motion turns the movement off.
 - **Existing projects** are brought in line in one pass the next time they're
   worked on, the same way the reduced motion rule was rolled out.
+
+## Forms: Announce The Result
+Decided 2026-10-18, after another project's contact form swapped itself for a
+thank-you panel with no announcement, and reese-roofing's only changed its
+submit button's label. Whatever a form does once it's sent (shows a thank-you
+panel, a "Sent" label, or an error, or opens an email app) is told to screen
+reader users too, per WCAG 2.2's 4.1.3 Status Messages, and keyboard focus is
+never lost along the way.
+- **Announce it through a live region**: a `role='status'` element (or
+  `role='alert'` for an error) that's in the page, empty, from the first
+  render, and gains its message once the form is sent, since a region added at
+  the moment it speaks is often missed. A visible confirmation can be the
+  region itself; one that only changes a focused control's label, which screen
+  readers don't announce, gets a visually hidden region beside it. See
+  reese-roofing's `forStaPar` in `pages/home/contact.tsx`.
+- **Focus never falls to the page**: when the focused control disappears (a
+  form replaced by a thank-you panel), focus moves to what replaces it, the
+  panel given `tabIndex={ -1 }` and a heading, and back to the form's first
+  field when the form returns. Moving focus to the panel announces it as well,
+  so there it can stand in for the live region.
+- **Verified** by the accessibility suite in all three engines: the region is
+  in the page and empty on load and holds the message once the form is sent,
+  and where something disappears, focus lands on its replacement.
+- **Existing projects** with forms are brought in line the next time they're
+  worked on.
 
 ## Commit messages
 
