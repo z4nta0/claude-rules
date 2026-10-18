@@ -4419,7 +4419,8 @@ how short the body is.
   lines separate each one from the next.
 - **A different, separate rule from the one above: once a complete `if`/
   `else if`/`else` construct finishes (a single standalone `if` with no
-  `else` at all, or a full chain) the very next line of code always
+  `else` at all, or a full chain), or a `for` or `while` loop finishes,
+  one-line or not (decided 2026-10-18), the very next line of code always
   gets 3 blank lines before it, unconditionally, no matter what that
   next line actually is** (another separate, unrelated `if`, a plain
   statement, a function call, ...) **and no matter whether the
@@ -5141,6 +5142,12 @@ reference example:
   repeated-operation run, and give that run its own correct spacing
   (0-blank internally, then the normal tiering rules for whatever
   precedes/follows the run as a whole).
+  - **Test assertions** (decided 2026-10-18): consecutive single-line
+    assertions in a test form one tight run with aligned comments, whether
+    each is awaited (`await expect( ... ).toHaveURL( ... )`, `await
+    expect.poll( ... )`) or not (`expect( ... ).toBe( ... )`), since each
+    performs the same operation, checking the page. An action between them
+    (a click, a scroll) ends the run.
   - **Animation timeline steps** (decided 2026-10-16): consecutive steps
     added with the same method (`set`, `from`, `to`, `fromTo`, ...) form one
     tight run, with 1 blank line wherever the method changes or another
