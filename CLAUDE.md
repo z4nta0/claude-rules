@@ -1574,8 +1574,8 @@ src/
   state or a width variant of an element opens its label with that state or
   the change it makes (`Hovered`, `Pressed`, `Motionless`, `Stacked`), and a
   `@media` or `@container` block's label opens with its condition (`Reduced
-  Motion`, `Narrow`, `Phone`), per the modifier class rule under "### CSS
-  modules and JS hooks". `Why:`/`How:` are real sentences
+  Motion`, `Narrow`, `Phone`), and no other word leads, per the modifier class
+  rule under "### CSS modules and JS hooks". `Why:`/`How:` are real sentences
   (capitalized start, subject + verb,
   often starting with "This" as the subject), not sentence fragments:
   e.g. `Why: This defines the fixed set of tabs that TabBarCom renders.`,
