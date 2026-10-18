@@ -634,17 +634,17 @@ touched, not swept all at once.
   value yet" in a stat/number display (e.g. a table cell rendering `—`
   instead of a number that hasn't been computed) is a display character,
   not prose punctuation, and is unaffected by this rule.
-- **Test titles are prose** (decided 2026-10-17): a test's title (the
-  string a `test()` call names it with) follows the same conventions as a
-  comment: initialisms keep their capitals and numbers of 1,000 or more take
-  thousands separators (`'the social preview image is a 1,200x630 PNG under
-  300 KB'`), the same as "### Comments" and "Token value comments" ask.
 - **Exception, a quote's attribution** (decided 2026-10-12): an em dash
   directly before the name of the person a quotation comes from (a quote's
   sign-off, e.g. "— Juli & Keeli" under the stylists' quote in
   hair-designs' Contact section) is the standard typographic mark for an
   attribution, not prose punctuation, and stays. Any em dash inside the
   quotation itself is still reworded.
+- **Test titles are prose** (decided 2026-10-17): a test's title (the
+  string a `test()` call names it with) follows the same conventions as a
+  comment: initialisms keep their capitals and numbers of 1,000 or more take
+  thousands separators (`'the social preview image is a 1,200x630 PNG under
+  300 KB'`), the same as "### Comments" and "Token value comments" ask.
 
 ## Code formatting rules
 
