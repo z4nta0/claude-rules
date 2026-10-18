@@ -3122,6 +3122,11 @@ still passes.
       `ch`), paragraphs use `--tex-wid-bas` (`pow-012 * 1em`, about 65
       characters) and small text `--tex-wid-sma` (`pow-011 * 1em`, about
       49).
+      - **The minimums apply only where the cap sets the width** (decided
+        2026-10-17): a column narrower than its text's cap (a two-column
+        grid of short cards, say) can't be lengthened by a cap, so lines
+        that fall under 45 or 40 characters there aren't a violation. Only
+        a line running past its maximum is.
       - **Headings are exempt** (decided 2026-10-01): a heading is never a
         long line of text, so it gets no text width cap; its container sets
         its width.
