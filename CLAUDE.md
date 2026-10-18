@@ -1654,6 +1654,10 @@ src/
     2026-10-07) names what that instance is for, ending in the component's
     own name: a React Router `<Route>` reads `What: Home Route.` or `What:
     Not Found Route.`
+  - **A fragment** (`<>...</>`, decided 2026-10-18) has no class and never
+    reaches the page, so its label names what it groups and ends in `Fragment`,
+    with no `Element`: reese-roofing's `What: Navigation Fragment.` and `What:
+    Home Page Fragment.`
   - **A layout that changes with the width says so** (decided 2026-10-18):
     an element's comment that describes how its children are laid out (in
     one row, side by side, on the left) names where that layout changes, such
