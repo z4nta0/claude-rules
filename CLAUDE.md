@@ -264,6 +264,14 @@ or business details change.
       each indexed route's component, and `index.html` carries none, since a
       canonical in the raw page would point every route at the home page. A
       one-page site keeps its canonical in `index.html`.
+      - **A site whose only other route is a `noindex` page counts as one
+        indexed page** (decided 2026-10-18, as in reese-roofing, whose only
+        other route is its 404 page): its canonical stays in `index.html`,
+        where crawlers that never run scripts can read it, rather than moving
+        into the home page's code. The 404 page then carries the home page's
+        canonical beside its `noindex`, which is accepted, since the `noindex`
+        keeps it out of search either way, and the project's CLAUDE.md records
+        the decision.
     - **Checked** by the SEO suite: the raw page, fetched without a browser,
       carries the home page's full title and description, and every route has
       exactly one description and its own title. See the-bernie-bears'
