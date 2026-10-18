@@ -915,8 +915,8 @@ can move code between files rather than just within one.
     but no region (decided 2026-10-17), the type sits 1 blank line above
     that block's `/**`, in place of the 3 blank lines a block usually takes
     before it, so the type, its documentation, and the declaration read as
-    one unit (reese-roofing's `LAY_CAS_ARR`). Either way, the type's comment and the
-    declaration's comment never share a column. A
+    one unit (reese-roofing's `LAY_CAS_ARR`). Either way, the type's
+    comment and the declaration's comment never share a column. A
     component's props type is the common case: it's named from the
     component's own segments under the acronym-reference rule (`ButBasCom`'s
     props are `BbcProTyp`), as in `ui/button.tsx`.
