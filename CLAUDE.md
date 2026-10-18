@@ -89,6 +89,12 @@ worked in Chromium but snapped shut in Firefox, which the user caught by hand.
   Chromium-only tool (the DevTools Protocol, e.g. reading a `mailto`
   navigation) runs in Chromium, and the report names it as Chromium-only
   rather than implying the other engines passed it.
+- **Chromium runs as full headless Chrome** (decided 2026-10-18): a
+  project's Chromium project sets `channel : 'chromium'`, Chrome's full
+  headless mode, rather than Playwright's default headless shell. In
+  reese-roofing the headless shell sometimes opened a Ctrl or middle click's
+  new tab without Playwright ever reporting it, failing about 1 run in 10,
+  while the full mode reported it in all 240 runs tried.
 - **Report the engines**: when reporting a verification, say which engines
   ran it.
 
@@ -176,11 +182,14 @@ any link on the web does.
     page load.
   - A menu or drawer closes only when the click was handled this way.
 - **A new tab click is left to the browser**: any click with Ctrl, Cmd,
-  Shift, or Alt held, or with any button but the main one (a middle click),
-  returns before `preventDefault()`, so the browser opens the link's own
-  address its usual way: a new tab for Ctrl, Cmd, or a middle click, a new
-  window for Shift, a download for Alt. The menu or drawer it came from
-  stays as it was.
+  Shift, or Alt held returns before `preventDefault()`, so the browser opens
+  the link's own address its usual way: a new tab for Ctrl or Cmd, a new
+  window for Shift, a download for Alt. A middle click never reaches the
+  handler at all, since Chromium, Firefox, and WebKit send it as `auxclick`
+  rather than `click`, and the browser opens it in a new tab on its own; the
+  handler still returns early for any button but the main one, as a
+  safeguard for an engine that does send it (corrected 2026-10-18). The menu
+  or drawer it came from stays as it was.
 - **Arriving with a hash** (a new tab, a bookmark, a shared address, or a
   link from another page): the section's page waits until it has rendered
   and the fonts have loaded, jumps to the section instantly (an arrival,
@@ -795,7 +804,11 @@ itself gets its own mandatory self-check.
   compiles under ease-my-life's automatic JSX runtime (`@vitejs/
   plugin-react`'s default, confirmed in `vite.config.ts`, meaning JSX
   never needs `React` in scope, unlike the older classic runtime) and
-  never calls `React.*` directly elsewhere in the file. This check runs
+  never calls `React.*` directly elsewhere in the file. React's types
+  (`React.MouseEvent`, `React.JSX.Element`) need no import either (decided
+  2026-10-18): `@types/react` declares them in a global `React` namespace, so
+  a file imports React only when its code calls something on it
+  (`React.useState`), never just for a type. This check runs
   on every file touched regardless of what the edit itself was about,
   since an import can go unused as a side effect of any other change to
   the file, not only a change to the imports themselves.
@@ -817,7 +830,9 @@ itself gets its own mandatory self-check.
   single line**, unlike the one-binding-per-`import` rule above, with
   one comment generalized to describe everything the statement exports
   (not a separate comment per binding). See `ui/conditional-controls.tsx`'s own
-  `export { CodConCom, conDraFun };` for the reference example. An exported
+  `export { CodConCom, conDraFun };` for the reference example. Its `What:`
+  label follows the count (decided 2026-10-18): `What: Named Export.` for a
+  single binding, `What: Named Exports.` for two or more. An exported
   TypeScript type joins that same statement, marked with an inline `type`
   (`export { aveEasFun, type EscEntTyp };`), which the tsconfig's
   `verbatimModuleSyntax` requires, rather than a separate `export type {
@@ -1599,6 +1614,10 @@ src/
     2026-10-07) names what that instance is for, ending in the component's
     own name: a React Router `<Route>` reads `What: Home Route.` or `What:
     Not Found Route.`
+  - **A layout that changes with the width says so** (decided 2026-10-18):
+    an element's comment that describes how its children are laid out (in
+    one row, side by side, on the left) names where that layout changes, such
+    as stacking below a breakpoint, so the comment holds at every width.
   - **Placement: NEVER a bare `//`/text comment as JSX children.**
     Anything that isn't wrapped in `{}` between an opening and closing tag
     is literal DOM text content, so a plain `// comment` placed after an
@@ -3098,7 +3117,9 @@ still passes.
     - **Position offsets follow their axis too** (decided 2026-10-01):
       `top` and `bottom` (and `scroll-margin-top`) use `--spa-ver-*`,
       `left` and `right` use `--spa-hor-*`, and an `inset` covering every
-      side is written as two values, vertical then horizontal. An offset
+      side is written as two values, vertical then horizontal, unless every
+      side takes the same value, which is written once (`inset : 0`,
+      decided 2026-10-18). An offset
       that mirrors another size references that size's token instead of
       the nearest step: a padding it lines up with, a border width it
       covers, or half an element's own size (e.g. a tooltip arrow at
@@ -4634,6 +4655,10 @@ while ( condition );
   data.
 
 ### JSX
+- **Character entities only where needed** (decided 2026-10-18): JSX text
+  uses the plain character (`'`, `“`, `…`) rather than an HTML entity
+  (`&apos;`, `&ldquo;`), and keeps an entity only where the plain character
+  would break the markup or fail lint.
 - No space after `<`/`</` or before `>`/`/>` on any element, including a
   one-line element with exactly one attribute: `<span>`, `</span>`,
   `<span className='brand-name'>`, `<img src='x' />` all stay tight. (An
