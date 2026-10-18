@@ -1408,7 +1408,10 @@ src/
   them (e.g. entries in the same array/object literal), pad each line so
   every comment's `//` starts at the same column, computed from the
   longest line in that run, same mechanism used for colon/import
-  alignment elsewhere in this doc.
+  alignment elsewhere in this doc. Decided 2026-10-17: every line in the
+  run counts toward that column, including lines with no comment of their
+  own (most CSS declarations), and they count when the 100-character
+  exception below picks the group that aligns.
   - **Exception, length mismatch too wide to align**: skip this
     alignment for any line whose own code portion (everything before its
     own `//`) is more than 100 characters away from the rest of the run.
@@ -5100,7 +5103,8 @@ identifiers) and also stays inline as one line, for the same reason.
   followed by exactly 1 blank line, then the final combining
   declaration. The operand group also sits 1 blank line below any
   declarations it reads (decided 2026-10-10), so it stays its own visible
-  block rather than joining their run.
+  block rather than joining their run. Decided 2026-10-17: the operands
+  are alphabetized, since none of them reads another.
 - Exactly 2 or fewer real-expression operands stay inline as-is,
   regardless of how many additional bare-identifier operands are also
   in the same chain (e.g. `canBigBoo && Math.random() < BIG_CHA_NUM` has
