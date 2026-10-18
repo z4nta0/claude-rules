@@ -1,7 +1,7 @@
 # User-Level CLAUDE.md
 
 Rules that apply to every project: development servers, language, linting,
-browser testing, required pages, multi-page scroll position, SEO, social previews, images, card grids, interaction feedback, commit messages, copy, and code formatting, naming, and comments. A project's own CLAUDE.md
+browser testing, required pages, multi-page scroll position, section links, SEO, social previews, images, card grids, interaction feedback, commit messages, copy, and code formatting, naming, and comments. A project's own CLAUDE.md
 describes that project and adds anything specific to it (scoped naming
 overrides, its own values).
 
@@ -109,7 +109,9 @@ default error.
   app's router gets the chance to.
 - **Links from it work**: any link back into a page's sections names the
   page's path (`/#contact`, not `#contact`), since a bare hash would jump
-  within the 404 page itself.
+  within the 404 page itself, and goes through the section link handler
+  under "## Section Links: No Hash In The Address", which navigates home to
+  the section.
 
 ## Multi-Page React Sites: Scroll Position
 Decided 2026-10-11. A React site with more than one route opens each page
@@ -130,7 +132,9 @@ alone; only its data router's `<ScrollRestoration />` handles it.
     than as arriving on a new page.
   - A link with a hash (`/#contact`) scrolls its target into view instead,
     following the stylesheet's `scroll-behavior`, which its reduced-motion
-    variant already turns off.
+    variant already turns off. A section link's plain click never puts the
+    hash in the address, per "## Section Links: No Hash In The Address", so
+    this covers an address that arrives with one.
   - Back and forward (a POP) are left to the browser, which returns the
     visitor to where they were.
 - **The implementation**: a `useScrTopFun` hook in `ui/scroll-top.ts`,
@@ -145,6 +149,70 @@ alone; only its data router's `<ScrollRestoration />` handles it.
   same, and back returns near the earlier position. See the-bernie-bears'
   `tests/interaction/navigation.spec.ts`.
 - **Existing projects** with more than one route get it the next time
+  they're worked on.
+
+## Section Links: No Hash In The Address
+Decided 2026-10-17, after tonys-toppers and hair-designs worked this way and
+reese-roofing was brought in line. A link to a section of a page (a nav
+link, a hero button, an estimate button) takes the visitor there without
+leaving `#section` in the address bar, so the address stays clean, while a
+Ctrl, Cmd, or middle click still opens that section in a new tab, the way
+any link on the web does.
+- **Applies to** every project with links to sections of a page, one-page
+  sites included. A project whose structure doesn't fit the helper below
+  (seal-and-shield) adapts it as closely as it can, and its CLAUDE.md says
+  where it differs.
+- **Each link keeps its real address**: its `href` names the page's path and
+  the section (`/#about`), never a bare `#about` or a `button`, so the
+  browser always has a real address to open in a new tab, copy, or show in
+  its status bar.
+- **A plain click** (the main button, no modifier key) has its default
+  cancelled with `preventDefault()` and then:
+  - **on the page holding the section**, scrolls the section into view,
+    smoothly unless the visitor asked for reduced motion, in which case it
+    jumps (`redMotFun()` from `utils/motion.ts`, per "### Reduced motion");
+  - **on any other page** (the 404 page), navigates to the section's page
+    inside the router, with the section's id as the hash, without a full
+    page load.
+  - A menu or drawer closes only when the click was handled this way.
+- **A new tab click is left to the browser**: any click with Ctrl, Cmd,
+  Shift, or Alt held, or with any button but the main one (a middle click),
+  returns before `preventDefault()`, so the browser opens the link's own
+  address its usual way: a new tab for Ctrl, Cmd, or a middle click, a new
+  window for Shift, a download for Alt. The menu or drawer it came from
+  stays as it was.
+- **Arriving with a hash** (a new tab, a bookmark, a shared address, or a
+  link from another page): the section's page waits until it has rendered
+  and the fonts have loaded, jumps to the section instantly (an arrival,
+  not a movement), then replaces the address with the same path and no hash
+  (`navigate( { hash : '' }, { replace : true } )`), so it doesn't add a
+  history entry. The effect is keyed on the router's `hash`, so it also runs
+  when a link from another page navigates in.
+- **The implementation**: `ui/section-link.ts` exports `modCliFun` (whether
+  a click is a modified one the browser should handle), `useSecLinFun`
+  (returns the function that scrolls to a section or navigates to its
+  page), and `useSecCliFun` (returns `secCliFun( cliEveObj, secIdeStr )`,
+  the one click handler every section link shares, reporting whether it
+  handled the click so a menu knows to close). Each link calls it from its
+  `onClick`. See hair-designs' `src/ui/section-link.ts`.
+  - **Decide by the path when ids repeat**: hair-designs scrolls in place
+    whenever an element with the section's id is on the page. Where another
+    page carries the same id (reese-roofing's 404 page has its own `top`
+    anchor), the helper scrolls in place only on the section's own page and
+    navigates there from every other one.
+  - **A link to the current page's own top** (a footer's back to top, which
+    belongs on every page) uses a small handler of its own: `modCliFun`,
+    then `preventDefault()` and a scroll to that page's top anchor. See
+    reese-roofing's `ui/footer.tsx`.
+- **Verified** by the interaction suite in all three engines: a plain click
+  on each section link lands on its section with the address unchanged, a
+  Ctrl or Cmd click (Playwright's `ControlOrMeta` modifier) and a middle
+  click each open a new tab (caught with `context().waitForEvent( 'page'
+  )`) that lands on the section and clears its hash, while the page clicked
+  from neither scrolls nor navigates, and a section link on the 404 page
+  reaches the section on its own page. See reese-roofing's
+  `tests/interaction/behavior.spec.ts`.
+- **Existing projects** with hash links are brought in line the next time
   they're worked on.
 
 ## SEO
