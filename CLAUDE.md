@@ -1622,7 +1622,13 @@ src/
   - **A layout that changes with the width says so** (decided 2026-10-18):
     an element's comment that describes how its children are laid out (in
     one row, side by side, on the left) names where that layout changes, such
-    as stacking below a breakpoint, so the comment holds at every width.
+    as stacking below a breakpoint, so the comment holds at every width. The
+    same goes for a file summary or a component's JSDoc that describes the
+    layout. A CSS rule's own comment is exempt, since its `@container`
+    variant sits directly below it and names the breakpoint. A row that wraps
+    where its content runs out of room rather than at a query names the
+    approximate width, measured across the three engines (`wrapping onto two
+    lines at about 345px wide and below`).
   - **Placement: NEVER a bare `//`/text comment as JSX children.**
     Anything that isn't wrapped in `{}` between an opening and closing tag
     is literal DOM text content, so a plain `// comment` placed after an
@@ -3017,9 +3023,13 @@ still passes.
     matches the element wherever it renders. A descendant tag selector
     reaching into the component's markup (`.pool-send svg`) is replaced
     this way as each module comes up.
-  - A class several components use (`btn`, `pill`, ...) has its
-    declarations copied into each module that uses it, attached to that
-    element's existing class.
+  - A class several components use (`btn`, `pill`, ...) has its declarations
+    copied into each module that uses it, attached to that element's existing
+    class. Each copy keeps its `display : inline-flex` or `inline-grid`
+    (decided 2026-10-18) even where its element is a flex or grid child, which
+    the browser treats as plain `flex` or `grid`, so every copy stays
+    identical; only a plain `block` or `inline-block` on such a child is a
+    no-op to remove.
   - A global rule is deleted once every element it styled has its own
     module copy.
   - Only what genuinely can't belong to one component stays global:
