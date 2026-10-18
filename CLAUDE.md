@@ -1670,6 +1670,13 @@ src/
     ordinary children list, not a further JS-expression boundary, no
     matter how many levels deep the `//` comment is nested under the
     outermost safe boundary.
+    - **An element inside a one-line ternary branch** (decided
+      2026-10-17, e.g. reese-roofing's submit button label, `{ senReqBoo ?
+      <span ...>Opening your email…</span> : 'Send request' }`) needs no
+      comment of its own: a trailing `//` there would swallow the rest of the
+      expression, so the expression's own `{ /* */ }` comment covers it, as
+      long as it says what the element is for. The ternary isn't split
+      across lines just to make room for one.
     - **Mandatory self-audit**: before calling a file's JSX comments
       done, run `grep -nE "(/>|</[a-zA-Z][a-zA-Z0-9.]*>)\s*//" ` and
       also `grep -nE "^\s*<[a-zA-Z][^/]*[^/]>\s*//"` (the "opening tag
@@ -4670,6 +4677,9 @@ while ( condition );
     elements); a button holding just text, or an icon plus text, doesn't.
     Decided 2026-10-14: an SVG `<g>` counts as block-level when it spans
     several lines and holds elements (tech-geek-cards' 404 stamp groups).
+    Decided 2026-10-17: so do an SVG's `<defs>` and `<pattern>` under the
+    same condition (reese-roofing's hero grid, whose `<defs>` holds the
+    `<pattern>` its `<rect>` fills).
   - **When two neighbors call for different counts, the bigger count
     wins** for the gap between them.
   - **A `{ cond && ( ... ) }` or `.map( ... )` wrapper** holding a
