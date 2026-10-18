@@ -632,6 +632,11 @@ touched, not swept all at once.
   value yet" in a stat/number display (e.g. a table cell rendering `—`
   instead of a number that hasn't been computed) is a display character,
   not prose punctuation, and is unaffected by this rule.
+- **Test titles are prose** (decided 2026-10-17): a test's title (the
+  string a `test()` call names it with) follows the same conventions as a
+  comment: initialisms keep their capitals and numbers of 1,000 or more take
+  thousands separators (`'the social preview image is a 1,200x630 PNG under
+  300 KB'`), the same as "### Comments" and "Token value comments" ask.
 - **Exception, a quote's attribution** (decided 2026-10-12): an em dash
   directly before the name of the person a quotation comes from (a quote's
   sign-off, e.g. "— Juli & Keeli" under the stylists' quote in
@@ -2385,7 +2390,9 @@ later, but don't invent one for anything else yet:
   double quotes instead, in JS, JSX attributes, and HTML alike (`alt="Tony's
   Toppers logo"`, `content="Tony's Toppers"`), rather than escaping it: a
   JSX attribute string can't escape a quote at all, and the text reads as
-  written. Any other string keeps single quotes.
+  written. Any other string keeps single quotes. Decided 2026-10-17: such a
+  string always switches to double quotes rather than escaping the
+  apostrophe (`"the bar's estimate button"`, never `'the bar\'s ...'`).
 - This only governs actual string-literal delimiters in code. Quotation
   marks used as ordinary English punctuation inside a `//`/`/* */` comment
   (e.g. quoting a UI phrase in a design-rationale comment) are prose, not
@@ -2854,7 +2861,10 @@ still passes.
     Side Padding, about 19.304px - 44.876px */`), and a color at an opacity
     is written `= <color> @ <alpha> opacity` (`/* Border Main Color =
     #1a1f24 @ 0.12 opacity */`). Every other derived note keeps its plain
-    wording (`the accent lightened by 0.204`). Decided 2026-10-10: the sign
+    wording (`the accent lightened by 0.204`). Decided 2026-10-17: a value
+    that takes a different step in another layout gives each its own sign,
+    `~= 33.876px, or ~= 14.572px in the stacked hero`, keeping `about` for a
+    value that runs between two bounds. Decided 2026-10-10: the sign
     still follows the color itself, `=` for an exact color and `~=` for a
     rounded one (seal-and-shield's `Accent Light Color ~= #4488f6 @ 0.5
     opacity`, whose hex is a rounded conversion).
@@ -3263,7 +3273,10 @@ are renamed to this as their files come up in the design-system pass.
     color tokens: the black in a `mask-image` (a mask reads only
     transparency), `transparent` and `currentColor`, a preview that has
     to show a fixed palette whatever the active theme (the theme picker's
-    rows), and seed data in JS. In ease-my-life the theme system writes
+    rows), and seed data in JS. Decided 2026-10-17: so is a color inside an
+    inline data URI (reese-roofing's select arrow), which can't read a custom
+    property; its declaration carries a note saying so and naming the role
+    the color stands in for. In ease-my-life the theme system writes
     only the original eight roles, so the newer ones keep one value across
     every theme for now.
   - **Shades of a role are tokens too** (decided 2026-10-02): a lighter
@@ -5194,7 +5207,11 @@ Three tiers:
     different *kinds* of code. This applies in both directions (declare →
     block, or block → declare) and also to "define a function, then call
     it" pairs. Only two instances of the *same kind* of code (e.g. two
-    plain declarations, or two sibling effects) can be "1".
+    plain declarations, or two sibling effects) can be "1". Decided
+    2026-10-17: a property assignment that reads the declarations just
+    above it (reese-roofing's `window.location.href = ...` after the two
+    encoded strings it joins) is a different kind of statement too, so it
+    sits 2 blank lines below them.
   - The same logic applies to two `useEffect`s specifically: 1 if they
     handle the exact same data, 2 if they operate on different (even if
     related/sibling) data while doing a similar kind of action, 3 otherwise.
