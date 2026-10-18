@@ -2723,7 +2723,10 @@ still passes.
   Primary`, `Stacked Footer Inner Div`), while a `@media` or `@container`
   block's own label opens with its condition (`Reduced Motion`, `Narrow`,
   `Phone`). These are the only places a word goes before the expansion rather
-  than after it. Existing classes
+  than after it. A word naming which instance a rule styles, for a shared
+  class styled under different parents or by position, follows the
+  expansion (decided 2026-10-18): `Open Toggle Line Span Top`, `Hovered Arrow
+  Icon Span In Drawer Link`. Existing classes
   keep their current names while they move into modules; renaming them
   to this rule belongs to the design-system pass.
   - **One element rendered as different tags** (decided 2026-10-02):
