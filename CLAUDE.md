@@ -202,7 +202,10 @@ any link on the web does.
     navigates there from every other one.
   - **A link to the current page's own top** (a footer's back to top, which
     belongs on every page) uses a small handler of its own: `modCliFun`,
-    then `preventDefault()` and a scroll to that page's top anchor. See
+    then `preventDefault()` and a scroll to that page's top anchor. Its
+    `href` is the bare `#top` (decided 2026-10-17), the one exception to the
+    real-address bullet above, since it means whichever page is showing, and
+    a new tab opened from it lands on that same page's top. See
     reese-roofing's `ui/footer.tsx`.
 - **Verified** by the interaction suite in all three engines: a plain click
   on each section link lands on its section with the address unchanged, a
