@@ -5147,7 +5147,9 @@ reference example:
     each is awaited (`await expect( ... ).toHaveURL( ... )`, `await
     expect.poll( ... )`) or not (`expect( ... ).toBe( ... )`), since each
     performs the same operation, checking the page. An action between them
-    (a click, a scroll) ends the run.
+    (a click, a scroll) ends the run. Consecutive actions with the same method
+    on different targets (two `.fill()` calls, decided 2026-10-18) form a
+    tight run of their own the same way.
   - **Animation timeline steps** (decided 2026-10-16): consecutive steps
     added with the same method (`set`, `from`, `to`, `fromTo`, ...) form one
     tight run, with 1 blank line wherever the method changes or another
