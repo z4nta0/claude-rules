@@ -1387,7 +1387,7 @@ src/
     and only moves to its own line above when the file's or language's
     syntax rules out a trailing one (an ESLint directive, which ESLint reads
     only at the start of a comment). A TypeScript triple-slash directive
-    takes its comment after it: `/// <reference types="vite/client" /> //
+    takes its comment after it: `/// <reference types='vite/client' /> //
     What: ...`, which TypeScript still reads.
   - **Known blind spot**: a bare `return {`/`return [` that opens a
     multi-line object/array literal is easy to skip, since it reads as
