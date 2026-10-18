@@ -1570,7 +1570,10 @@ src/
   APPENDED after all the real segment words, never inserted between them
   (e.g. `Indicator Record Object And Setter` is fine; `Left Offset Number`
   is not, since "Offset" sits between the two real segments; say that in
-  the Why/How sentences instead). `Why:`/`How:` are real sentences
+  the Why/How sentences instead). A CSS rule for a state of an element is
+  the exception: its label opens with the state word (`Hovered`, `Pressed`,
+  `Motionless`), per the modifier class rule under "### CSS modules and JS
+  hooks". `Why:`/`How:` are real sentences
   (capitalized start, subject + verb,
   often starting with "This" as the subject), not sentence fragments:
   e.g. `Why: This defines the fixed set of tabs that TabBarCom renders.`,
@@ -2706,8 +2709,10 @@ still passes.
   existing `.prog--warm` form). Its `What:` label expands the name in the
   order it's written (decided 2026-10-18): the base class's expansion, then
   the variant, so `.aboStoPar--lead` reads `About Story Paragraph Lead`, and
-  a state word on a variant's own rule still leads (`Hovered Button Base
-  Anchor Primary`). Existing classes
+  a rule for a state of the element (`:hover`, `:focus-visible`, a
+  reduced-motion variant) opens its label with that state (`Hovered Button
+  Base Anchor Primary`), the one place a word goes before the expansion
+  rather than after it. Existing classes
   keep their current names while they move into modules; renaming them
   to this rule belongs to the design-system pass.
   - **One element rendered as different tags** (decided 2026-10-02):
