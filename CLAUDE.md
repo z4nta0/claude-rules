@@ -1663,7 +1663,14 @@ src/
     variant sits directly below it and names the breakpoint. A row that wraps
     where its content runs out of room rather than at a query names the
     approximate width, measured across the three engines (`wrapping onto two
-    lines at about 345px wide and below`).
+    lines at about 345px wide and below`), in its CSS rule's comment as well,
+    since no variant below it names one. Also decided 2026-10-18:
+    - **A child of a container that hides at some width says so too**
+      (reese-roofing's bar links and estimate button, hidden with their row at
+      880px and below), so each comment reads true on its own.
+    - **An alignment change counts as a layout change** (a footer's lines
+      centered above a breakpoint and left-aligned below it), so the comment
+      names where it changes.
   - **Placement: NEVER a bare `//`/text comment as JSX children.**
     Anything that isn't wrapped in `{}` between an opening and closing tag
     is literal DOM text content, so a plain `// comment` placed after an
