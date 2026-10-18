@@ -396,7 +396,9 @@ allows it.
     `apple-touch-icon`, which browsers and apps require.
   - **Markup**: its intrinsic `width` and `height` attributes, so the page
     doesn't shift while it loads, and `loading='lazy'` when it starts below
-    the fold.
+    the fold. An image Vite inlines as a data URI (one under its 4 KB limit)
+    needs no `loading`, since there's nothing to fetch (decided 2026-10-18,
+    reese-roofing's footer logo mark).
 - **Rendered by a script, not by hand**: the originals are kept outside the
   served tree (e.g. `design/photos/`), per the directory rules on source
   artwork, and a script beside them writes the optimized copies into `src/`,
@@ -2701,7 +2703,11 @@ still passes.
   the same way; one that can't be expanded is raised with the user
   rather than guessed. A modifier (variant)
   class is its base class's name, then `--`, then the variant (the
-  existing `.prog--warm` form). Existing classes
+  existing `.prog--warm` form). Its `What:` label expands the name in the
+  order it's written (decided 2026-10-18): the base class's expansion, then
+  the variant, so `.aboStoPar--lead` reads `About Story Paragraph Lead`, and
+  a state word on a variant's own rule still leads (`Hovered Button Base
+  Anchor Primary`). Existing classes
   keep their current names while they move into modules; renaming them
   to this rule belongs to the design-system pass.
   - **One element rendered as different tags** (decided 2026-10-02):
@@ -4789,7 +4795,8 @@ attribute) are ordered into these 8 tiers, top to bottom:
      `inert`, booleans like `disabled` that decide whether the element
      renders or can be used at all, `noValidate`, which changes how a form
      submits like `required` does, and `rows`, which sizes a control like
-     `maxLength` does.
+     `maxLength` does, and (decided 2026-10-18) `loading`, which decides when
+     an image is fetched.
    - SVG elements specifically: every SVG geometry/presentation attribute
      (`viewBox`, `width`, `height`, `x`, `y`, `cx`, `cy`, `r`, `rx`, `ry`,
      `d`, `points`, `transform`, `fill`, `stroke`, `strokeWidth`,
