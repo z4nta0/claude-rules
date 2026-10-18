@@ -1667,10 +1667,16 @@ src/
     since no variant below it names one. Also decided 2026-10-18:
     - **A child of a container that hides at some width says so too**
       (reese-roofing's bar links and estimate button, hidden with their row at
-      880px and below), so each comment reads true on its own.
+      880px and below), so each comment reads true on its own. This covers
+      element comments, a summary, and a JSDoc, not a child's CSS rule that
+      only styles it, since its parent's rule and that rule's variant already
+      name the width.
     - **An alignment change counts as a layout change** (a footer's lines
       centered above a breakpoint and left-aligned below it), so the comment
       names where it changes.
+    - **A heading's wrap counts too** when its comment mentions it: a comment
+      saying a heading's line wraps names the measured width, the same as a row
+      (reese-roofing's hero headline, wrapping at about 368px wide and below).
   - **Placement: NEVER a bare `//`/text comment as JSX children.**
     Anything that isn't wrapped in `{}` between an opening and closing tag
     is literal DOM text content, so a plain `// comment` placed after an
