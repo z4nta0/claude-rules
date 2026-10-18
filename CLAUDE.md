@@ -1681,6 +1681,13 @@ src/
     - **A heading's wrap counts too** when its comment mentions it: a comment
       saying a heading's line wraps names the measured width, the same as a row
       (reese-roofing's hero headline, wrapping at about 368px wide and below).
+    - **A list's entry stays a row** at every width (decided 2026-10-18): an
+      entry of a vertical list keeps its own band even where its contents stack
+      inside it (reese-roofing's contact detail rows, `conRowDiv`, whose label
+      moves above its value at 540px and below, and the form's `forRowDiv`), so
+      its comments and class may call it a row. Only a layout block whose
+      columns become separate blocks of the page stops being called a row
+      (reese-roofing's contact layout, `conLayDiv`, at 960px and below).
   - **Placement: NEVER a bare `//`/text comment as JSX children.**
     Anything that isn't wrapped in `{}` between an opening and closing tag
     is literal DOM text content, so a plain `// comment` placed after an
