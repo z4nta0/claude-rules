@@ -4424,21 +4424,21 @@ how short the body is.
   gets 3 blank lines before it, unconditionally, no matter what that
   next line actually is** (another separate, unrelated `if`, a plain
   statement, a function call, ...) **and no matter whether the
-  construct's own branch(es) were written compact/single-line or as a
-  full multi-line block.** This is the same "a genuinely separate
+  construct's own branch(es) or loop body were written compact/single-line
+  or as a full multi-line block.** This is the same "a genuinely separate
   decision, always 3 apart" reasoning `try`/`catch` statements already
   get under "### try/catch statements" below, applied to if/else-if/else
-  constructs instead: by the time every branch of one conditional
-  decision has already been resolved, whatever comes next is a fresh
-  topic, never a continuation of the branch(es) that just closed, so it
-  can never collapse to the tighter 1-or-2-blank tiers a plain
-  relatedness guess might otherwise assign just because it sits right
-  next to the construct or touches similar-looking data. This stacks
+  constructs and loops instead: by the time every branch of one conditional
+  decision has been resolved, or a loop has run its last pass, whatever comes
+  next is a fresh topic, never a continuation of the branch(es) or loop body
+  that just closed, so it can never collapse to the tighter 1-or-2-blank
+  tiers a plain relatedness guess might otherwise assign just because it sits
+  right next to the construct or touches similar-looking data. This stacks
   with the bullet above rather than replacing it: that one is about
   several independent `if`s specifically sitting next to EACH OTHER;
   this one is about the boundary right after ANY if/else-if/else
-  construct ends, whatever comes after it. See `cloTouFun`'s own cleanup
-  dispatch for the reference example (`onboarding/page-tours.tsx`): its
+  construct or loop ends, whatever comes after it. See `cloTouFun`'s own
+  cleanup dispatch for the reference example (`onboarding/page-tours.tsx`): its
   `if ( neeCopFun( pagIdeStr ) ) ... else if ( pagIdeStr ===
   'explore_stats' ) ...` chain is followed by a separate, standalone
   `if ( pagIdeStr === 'explore_data' ) cleTasFun( actStoObj );`, which is
