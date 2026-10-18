@@ -911,7 +911,11 @@ can move code between files rather than just within one.
     declaration is wrapped in its own `// #region` (a JSDoc'd function or
     component), the type sits above that marker instead, with the same 1
     blank line between them, the gap a marker keeps from what it wraps
-    (decided 2026-10-05). Either way, the type's comment and the
+    (decided 2026-10-05). When the declaration has a JSDoc or shape block
+    but no region (decided 2026-10-17), the type sits 1 blank line above
+    that block's `/**`, in place of the 3 blank lines a block usually takes
+    before it, so the type, its documentation, and the declaration read as
+    one unit (reese-roofing's `LAY_CAS_ARR`). Either way, the type's comment and the
     declaration's comment never share a column. A
     component's props type is the common case: it's named from the
     component's own segments under the acronym-reference rule (`ButBasCom`'s
