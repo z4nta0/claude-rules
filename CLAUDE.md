@@ -3054,7 +3054,12 @@ still passes.
   contains elements that themselves have children, 2 around a section
   whose children are all simple (childless) elements, and 1 around a
   childless element's own rule. When two neighbors call for different
-  counts, the bigger count wins.
+  counts, the bigger count wins. Decided 2026-10-18: two sibling regions
+  always sit 3 blank lines apart (one region's `#endregion` and the next
+  one's `#region`), however simple their children, so every region reads as
+  its own block (seal-and-shield's footer brand and links regions). Stacked
+  `#endregion` markers keep their 1 blank line, and a region beside a plain
+  rule keeps the counts above.
 - **What moves into a module.** Everything that can, even at the cost of
   temporary duplication, which the design-system pass cleans up:
   - Every rule styling the file's own elements moves (cut, never copied,
