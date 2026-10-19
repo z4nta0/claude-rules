@@ -2972,7 +2972,12 @@ still passes.
     value that runs between two bounds. Decided 2026-10-10: the sign
     still follows the color itself, `=` for an exact color and `~=` for a
     rounded one (seal-and-shield's `Accent Light Color ~= #4488f6 @ 0.5
-    opacity`, whose hex is a rounded conversion).
+    opacity`, whose hex is a rounded conversion). Decided 2026-10-18: a
+    value built from several lengths, such as an elevation shadow's two
+    layers, gives every length at its computed value behind one `~=`, its
+    layers joined by `plus` (`/* Elevation Medium Shadow ~= 0 8.304px
+    25.572px plus 0 3.572px 8.304px -2.035px */`), never loosely rounded
+    behind `about`.
   - **Numbers of 1,000 or more take thousands separators** in every
     comment (decided 2026-10-07), since they read more easily: `1,130.0ms`,
     `@ 1,920px width`. Code values stay as the language requires
@@ -4165,6 +4170,12 @@ line, so only the rules that can't change what a tool reads apply.
       above the array instead, and leave that short identifier in its
       real position; it no longer widens the comment column. See
       `tab-stats.tsx`'s own `freSpeObj`/`metPilArr`.
+    - **Exception, a table whose rows carry a prose-length field**
+      (decided 2026-10-18) may write each row multi-line instead: its
+      short fields first, alphabetized and aligned, then 1 blank line, then
+      the prose field, the same split the long outlier rule gives a single
+      object, so every row reads the same way. See seal-and-shield's and
+      reese-roofing's `SER_REC_ARR`.
     - **Exception, stop aligning before a long/paragraph-length
       property.** Once a row's own value for a given property is
       genuinely prose-length (a sentence or more, varying wildly in
@@ -5224,6 +5235,11 @@ reference example:
     alphabetized, then each row's own keys, alphabetized. A step written
     across several lines keeps 1 blank line on each side. See
     tech-geek-cards' Fourth of July entrance and fireworks.
+  - **Property assignments** (decided 2026-10-18): consecutive assignments
+    that set the same kind of value on one object (a canvas's `.width =` and
+    `.height =`) form one tight run, with their `=` signs and comments
+    aligned, the same as a run of calls. See
+    seal-and-shield's `design/icons/render.mts`.
 
 ### Long boolean expressions
 A "long boolean expression" is an `&&`/`||` chain where MORE THAN 2 of
@@ -5341,7 +5357,14 @@ Three tiers:
     2026-10-17: a property assignment that reads the declarations just
     above it (reese-roofing's `window.location.href = ...` after the two
     encoded strings it joins) is a different kind of statement too, so it
-    sits 2 blank lines below them.
+    sits 2 blank lines below them. Decided 2026-10-18: so do a plain
+    reassignment of a variable that reads them (seal-and-shield's
+    `quiCouNum = stiPagBoo ? quiCouNum + 1 : 0` in `tests/support/states.ts`)
+    and a property set on an object declared just above it (its
+    `souImaObj.src = ...` after `const souImaObj = new Image()`, in
+    `design/icons/render.mts`), and a timer call (`window.setTimeout`)
+    after a run of state-setter calls sits 2 blank lines below the last
+    setter (its contact form's return timer).
   - The same logic applies to two `useEffect`s specifically: 1 if they
     handle the exact same data, 2 if they operate on different (even if
     related/sibling) data while doing a similar kind of action, 3 otherwise.
