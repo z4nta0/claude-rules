@@ -394,8 +394,10 @@ allows it.
   logos), it's optimized as below, and the user is told an SVG version would
   be better.
 - **Every non-SVG image gets the optimization it needs**:
-  - **Size**: no more than twice the largest size it's displayed at, which
-    covers high-density screens, and never enlarged.
+  - **Size**: no more than three times the largest size it's displayed at,
+    and never enlarged (decided 2026-10-18, up from twice): the densest
+    phone screens draw 3 device pixels per CSS pixel, so 3x keeps an image
+    sharp there. See seal-and-shield's logos.
   - **Format**: WebP, lossless for flat artwork such as a logo and lossy for
     a photograph, at the lowest quality that shows no difference from the
     original at 3x zoom (seal-and-shield's full logo at 0.95). The exception
