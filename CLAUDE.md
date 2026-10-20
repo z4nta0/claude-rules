@@ -3756,6 +3756,20 @@ line, so only the rules that can't change what a tool reads apply.
   onto the next line, so a long one (the Content-Security-Policy) stays
   whole.
 
+### Firestore security rules
+Decided 2026-10-20, for ease-my-life's `firestore.rules`. Firebase's rules
+language reads like JavaScript, so a rules file follows the JS rules as
+written: tabs, the 3-blank-line file start and 2-blank-line end, a
+file-level `/** ... */` header (`firestore.rules = Firestore Security
+Rules`, `@summary`, `@author`), a one-line What/Why/How `//` comment on
+every line, `#region` markers around each function and the service block,
+9-character/3-segment names for functions and path variables (`isaOwnFun`,
+`{uidValStr}`), parentheses spacing, the same blank-line tiering, and
+aligned comment columns in a run of `allow` lines. A `#region` holds the
+`rules_version` line, since a file's first real line is a region marker.
+The emulator suite (`npm run test:rules`) is what proves the file still
+parses. See ease-my-life's `firestore.rules`.
+
 ### Arrays and objects
 - **Once an array literal cannot stay on a single line, every one of its
   entries gets its own line, never 2+ entries packed onto one shared
