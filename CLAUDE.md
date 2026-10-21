@@ -3001,13 +3001,16 @@ still passes.
   string value, not CSS, and stays as written, the same as a JS query
   string.
 - **`@media` blocks**: a `@media` override is a variant of the element it
-  styles, so it sits directly under that element's base rule with its
-  other variants. The block gets its own What/Why/How comment after its
-  `{` and the usual 2 blank lines of padding inside it; each rule inside
-  is indented one more tab and formatted like any other rule. A global
-  `@media` block holding rules for several elements splits into one
-  block per element, each placed with its own element's variants. See
-  `ui/info-tip.module.css`.
+  styles, so it sits directly under that element's base rule with its other
+  variants. The block gets its own What/Why/How comment after its `{` and the
+  usual 2 blank lines of padding inside it; each rule inside is indented one
+  more tab and formatted like any other rule. A global `@media` block holding
+  rules for several elements splits into one block per element, each placed
+  with its own element's variants. See `ui/info-tip.module.css`. Inside a
+  block, rules follow the same spacing as anywhere else (decided 2026-10-21):
+  a variant sits directly under its base rule with 0 blank lines, as
+  reese-roofing's stacked hero logo and its ring do inside one `@container`
+  block.
 - **Reduced motion**: every `animation` or `transition` in a module
   gets a reduced-motion variant, per "### Reduced motion" above.
 - **`@keyframes`**: a keyframe only one module uses moves into that
@@ -5267,87 +5270,36 @@ reference example:
     relative order) followed by a `useRef` cluster (`newAddRef`,
     `opeEdiRef`, `froIndRef`, `preOpeRef`, likewise), since `useState`
     was the first shape to appear originally.
-  - **Even within the same keyword and the same plain/destructured
-    shape, a run further splits by whether each declaration's own
-    VALUE is single-line or spans multiple lines** (a function body,
-    an array/object literal, a multi-line `useMemo`/`useCallback`,
-    ...). Two adjacent single-line-valued declarations still tightly
-    group at 0-blank as normal, but any transition where EITHER side of
-    a pair is multi-line-valued breaks out of the run entirely and
-    falls back to relatedness tiering, symmetric in both directions
-    (entering a multi-line value, leaving one back to a single-line
-    value, or between two consecutive multi-line values): 2 blank
-    lines when the two are genuinely connected (one reads the other,
-    or they're sibling handlers building the same feature, e.g. a
-    Cancel/Save pair), 3 blank lines when they share no real data or
-    purpose. The multi-line value's own body is a separate block of
-    code, so the tighter 0/1-blank declaration-run tiers never apply
-    across it. E.g. `pwa.ts`'s own `staGraNum`/`finProFun`: `const
-    staGraNum = 2500;` followed by `const finProFun = () => { ... };`,
-    which reads staGraNum in its own body, gets 2 blank lines; in
-    `tab-data.tsx`, `canNewFun`/`savNewFun` (sibling draft handlers)
-    get 2, while `savNewFun` followed by the unrelated `draCarRef` gets
-    3. (An earlier version of this rule fixed every such transition at
-    1 blank line; files reviewed before 2026-09-25 get corrected in the
-    final file-by-file pass.)
-  - **A run also splits when it mixes standard-length (9-char/3-segment)
-    names with a non-standard, longer composite name** (e.g. a 4-segment
-    Initialism-compression case like `lmsLonPriNum`). Forcing the
-    shorter, standard names' own `=`/comment columns out to match a much
-    longer non-standard name defeats the whole point of keeping most
-    names at the compact standard length. Split into separate
-    sub-groups the same way as the other splits above: 1 blank line
-    between the sub-groups, 0-blank internally within each, each
-    sub-group's own alignment computed independently. E.g.
-    `utils/color.ts`'s own `lmsLonPriNum`/`lmsMedPriNum`/`lmsShoPriNum` (3 non-standard,
-    12-character Initialism-compression names) sit in their own group,
-    followed by a blank line, then `lmsLonNum`/`lmsMedNum`/`lmsShoNum`
-    (3 standard, 9-character names) in their own separately-aligned
-    group, even though all 6 are `const`, plain-shaped, and
-    single-line-valued, and the second group directly consumes values
-    from the first.
-  - **A run also splits off a declaration carrying a TypeScript type
-    annotation** (decided 2026-10-05), the same way it splits off a
-    longer non-standard name: `const curPicObj : Partial< PicRcdTyp > =
-    ...` sits 1 blank line apart from its plain-named neighbors, in its
-    own group, so the annotation never widens their `=` and comment
-    columns. Several annotated declarations next to each other form one
-    group, aligned among themselves. See `state/pending-mutations.ts`'s
-    own `curPicObj`, split from `hasPipBoo`/`perRunStr` above it.
-  - **This same run gets its `=` signs column-aligned**, the same
-    column-alignment mechanism used elsewhere in this doc (named imports,
-    object `:` alignment, ...): pad each line's own left-hand side
-    (everything before its own `=`, whether that's a bare name or a
-    destructured `[ a, b ]`/`{ a, b }` pattern) to the width of the
-    longest one in that run. This is usually a non-event in practice,
-    since the naming rules already produce same-length names within a
-    tightly-related group most of the time, but apply it explicitly
-    whenever a run's names (or their destructuring shapes) genuinely
-    differ in length, e.g. a mix of a plain name and a destructured
-    `[ a, b ]` pair, or a mix of prefixed and unprefixed names.
-  - The comment on each line in the run still gets column-aligned per the
-    usual "no blank lines between them" comment rule too, computed from
-    the single longest full line (code plus its own padding) in that run.
-  - The moment a declaration is followed by anything that ISN'T also a
-    plain `const`/`let` declaration, that's the end of THIS run; normal
-    relatedness tiering resumes, UNLESS what follows is itself the start
-    of a same-operation statement run (see the bullet below), which gets
-    its own fresh 0-blank grouping instead of reverting to 1-blank.
-  - **This 0-blank rule is strictly for a fresh `const`/`let`
-    declaration: a plain reassignment of an already-declared variable
-    (no `const`/`let` keyword at all, e.g. `iteFlaObj = { ... };`
-    reassigning a `let` declared earlier) is NOT a declaration for this
-    rule's own purposes, even when it sits directly next to a call that
-    consumes it and superficially looks like the same "declare, then use
-    it" shape.** That pairing falls back to plain "### General
-    relatedness tiering" below instead, which most commonly lands on
-    Related (1 blank line) via its own "a value used on the very next
-    line" case: e.g. `iteFlaObj = { autBoo : false, ... };` immediately
-    followed by `iteFlaMap.set( logRowObj.itemId, iteFlaObj );` in
-    `dayFlaFun` (`day-log.tsx`) gets exactly 1 blank line between them,
-    not 0, since the reassignment and the `.set()` call are two
-    genuinely different kinds of statement (an assignment, then a method
-    call) even though they're tightly related.
+  - **Even within the same keyword and the same plain/destructured shape, a
+    run further splits by whether each declaration's own VALUE is single-line
+    or spans multiple lines** (a function body, an array/object literal, a
+    multi-line `useMemo`/`useCallback`, ...). Two adjacent single-line-valued
+    declarations still tightly group at 0-blank as normal, but any transition
+    where EITHER side of a pair is multi-line-valued breaks out of the run,
+    symmetric in both directions (entering a multi-line value, leaving one
+    back to a single-line value, or between two consecutive multi-line
+    values): 1 blank line when the two are genuinely connected (one reads the
+    other, or they're sibling handlers building the same feature, e.g. a
+    Cancel/Save pair), the same type split by its multi-line value under "###
+    General relatedness tiering", and 3 blank lines when they share no real
+    data or purpose. E.g. `pwa.ts`'s own `staGraNum`/`finProFun`: `const
+    staGraNum = 2500;` followed by `const finProFun = () => { ... };`, which
+    reads staGraNum in its own body, gets 1 blank line; in `tab-data.tsx`,
+    `canNewFun`/`savNewFun` (sibling draft handlers) get 1, while `savNewFun`
+    followed by the unrelated `draCarRef` gets 3. (Decided 2026-10-21,
+    returning to 1 from the 2 used since 2026-09-25, when the tiers were
+    redefined by type of code.)
+  - **This 0-blank rule is strictly for a fresh `const`/`let` declaration: a
+    plain reassignment of an already-declared variable (no `const`/`let`
+    keyword at all, e.g. `iteFlaObj = { ... };` reassigning a `let` declared
+    earlier) is NOT a declaration for this rule's own purposes, even when it
+    sits directly next to a call that consumes it and superficially looks like
+    the same "declare, then use it" shape.** That pairing falls back to plain
+    "### General relatedness tiering" below instead: an assignment and a call
+    are two different types of code, so related ones sit 2 blank lines apart,
+    e.g. `iteFlaObj = { autBoo : false, ... };` immediately followed by
+    `iteFlaMap.set( logRowObj.itemId, iteFlaObj );` in `dayFlaFun`
+    (`day-log.tsx`) (decided 2026-10-21, up from 1).
 - **A run of consecutive statement-calls that all perform the same
   repeated operation on different data gets 0 blank lines between them
   too** (e.g. 8 back-to-back `rooStyObj.setProperty(...)` calls, one per
@@ -5476,44 +5428,32 @@ identifiers) and also stays inline as one line, for the same reason.
 ### General relatedness tiering
 Used for spacing between statements inside a function/block body (JSX
 siblings use their own nesting-depth rule under "### JSX" instead).
-Three tiers:
-- **Related (1 blank line)**: tightly, directly connected: a value used on
-  the very next line; two lines that are literally the same *kind* of code
-  working toward the same immediate step (e.g. two sibling `useState` calls
-  backing the same visual feature; parallel/mutually-exclusive branches of
-  one conditional). This does NOT cover two plain `const`/`let`
-  declarations, even when the second directly consumes the first: see
-  "### Variable declarations" above, which gets 0 blank lines instead.
-- **Somewhat related (2 blank lines)**: connected, but via a different
-  specific mechanism or a different *kind* of code, even when the
-  underlying data is identical. Two recurring shapes:
-  - Different mechanism, same overarching goal: e.g. a `ResizeObserver`
-    call and a `window.addEventListener('resize', ...)` call right after
-    it both exist to trigger the same re-measurement, but they're
-    different specific tools, so 2, not 1.
-  - Same data, different *kind* of code construct: a plain variable/state
-    declaration (or a function's own definition) immediately followed by a
-    function/effect/if-block/function-call that operates on that exact
-    same data (or the function itself being invoked) is 2, not 1, purely
-    because a plain declaration and a function/block/call are inherently
-    different *kinds* of code. This applies in both directions (declare →
-    block, or block → declare) and also to "define a function, then call
-    it" pairs. Only two instances of the *same kind* of code (e.g. two
-    plain declarations, or two sibling effects) can be "1". Decided
-    2026-10-17: a property assignment that reads the declarations just
-    above it (reese-roofing's `window.location.href = ...` after the two
-    encoded strings it joins) is a different kind of statement too, so it
-    sits 2 blank lines below them. Decided 2026-10-18: so do a plain
-    reassignment of a variable that reads them (seal-and-shield's
-    `quiCouNum = stiPagBoo ? quiCouNum + 1 : 0` in `tests/support/states.ts`)
-    and a property set on an object declared just above it (its
-    `souImaObj.src = ...` after `const souImaObj = new Image()`, in
-    `design/icons/render.mts`), and a timer call (`window.setTimeout`)
-    after a run of state-setter calls sits 2 blank lines below the last
-    setter (its contact form's return timer).
-  - The same logic applies to two `useEffect`s specifically: 1 if they
-    handle the exact same data, 2 if they operate on different (even if
-    related/sibling) data while doing a similar kind of action, 3 otherwise.
+Rewritten 2026-10-21. The tiers turn on the type of code on each side of the
+gap. A type is a kind of statement: declarations (`const`/`let`) are one type,
+function definitions another, calls (a statement that's a call, awaited or
+not) another, assignments (to a variable or a property) another, and blocks
+(an `if`/`else` chain, a loop, a `try`/`catch`) another. A tight run of the
+same type (0 blank lines) and the fixed counts other sections give (returns
+and exit guards, finished constructs, long boolean groups) come first; these
+tiers decide every other gap. Three tiers:
+- **Related (1 blank line)**: two pieces of the same type of code that belong
+  together but can't share one tight run. A declaration run splits this way by
+  keyword, shape, annotation, a non-standard name, or a multi-line value (see
+  "### Variable declarations" above), two calls toward the same goal sit 1
+  apart (a `ResizeObserver` call and the `window.addEventListener( 'resize',
+  ... )` call after it, both re-measuring; a timer call after a run of
+  state-setter calls, as in seal-and-shield's contact form), so do two effects
+  working on the same or related data, and so do the branches of one
+  `if`/`else if`/`else` chain.
+- **Somewhat related (2 blank lines)**: two different types of code that are
+  related, most often a declaration and the call, effect, or block that uses
+  it (in either direction), a function's definition and its call, an
+  assignment that reads the declarations just above it (reese-roofing's
+  `window.location.href = ...` after the two encoded strings it joins,
+  seal-and-shield's `quiCouNum = stiPagBoo ? quiCouNum + 1 : 0` in
+  `tests/support/states.ts`), a property set on an object declared just above
+  it (its `souImaObj.src = ...` after `const souImaObj = new Image()`), and a
+  test's action and the assertions that check it.
   - **Mutually-exclusive sibling branches involving a multi-line one**: a
     run of independent early-return `if`s dispatching on the same value
     (e.g. `if ( mode === 'a' ) return ...; if ( mode === 'b' ) return
@@ -5529,17 +5469,17 @@ Three tiers:
     finished `if` construct always gets 3 blank lines, per "### if/else,
     while, and for statements", and only the branches of one `if`/`else
     if`/`else` chain sit 1 blank line apart.
-- **Unrelated (3 blank lines)**: no real shared data and no real shared
-  purpose, including cases that only *look* structurally parallel. Two
-  independent "declare + guard clause" pairs that happen to share the same
-  shape but check entirely unrelated conditions (e.g. one checking that a
-  DOM ref exists, the next checking that a *different* DOM ref exists) are
-  still 3 apart, not 1 or 2, because what they actually check is unrelated.
-  When judging this, check for real data/behavior overlap (e.g. "does the
-  effect after this ref actually reference it in its own body or dependency
-  array?") rather than assuming a topical-sounding comment means they're
-  related; several calls in this file were revised from 2 down to 3 after
-  actually checking for shared data and finding none.
+- **Unrelated (3 blank lines)**: everything else: no real shared data and no
+  real shared purpose, including cases that only *look* structurally parallel.
+  Two independent "declare + guard clause" pairs that happen to share the same
+  shape but check entirely unrelated conditions (e.g. one checking that a DOM
+  ref exists, the next checking that a *different* DOM ref exists) are still 3
+  apart, not 1 or 2, because what they actually check is unrelated. When
+  judging this, check for real data/behavior overlap (e.g. "does the effect
+  after this ref actually reference it in its own body or dependency array?")
+  rather than assuming a topical-sounding comment means they're related;
+  several calls in this file were revised from 2 down to 3 after actually
+  checking for shared data and finding none.
 
 ### Naming conventions
 Applies to every named thing (variables, function/component declarations,
