@@ -599,7 +599,10 @@ part of a pre- or post-commit check.
     all, clean or not, keeping its fixes and logging what was still being
     found. And it stops at once, logging both versions, if a pass reverses a
     fix an earlier pass made, since a flip-flop is a rule question for the
-    user rather than a missed violation.
+    user rather than a missed violation. When a rule the audit checks changes
+    mid-audit (decided 2026-10-21), its count starts over from 0, both its
+    passes and its clean passes, and the first pass under the changed rule is
+    pass 1.
 - **The audits, in this order**, each covering one rule family, so a later
   audit doesn't undo an earlier one (moving and renaming come before comments,
   and spacing comes last):
