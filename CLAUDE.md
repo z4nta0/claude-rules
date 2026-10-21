@@ -1,7 +1,7 @@
 # User-Level CLAUDE.md
 
 Rules that apply to every project: development servers, language, linting,
-browser testing, required pages, multi-page scroll position, section links, SEO, social previews, images, card grids, interaction feedback, forms, commit messages, copy, and code formatting, naming, and comments. A project's own CLAUDE.md
+browser testing, required pages, multi-page scroll position, section links, SEO, social previews, images, card grids, interaction feedback, forms, full project audits, commit messages, copy, and code formatting, naming, and comments. A project's own CLAUDE.md
 describes that project and adds anything specific to it (scoped naming
 overrides, its own values).
 
@@ -542,6 +542,99 @@ never lost along the way.
   and where something disappears, focus lands on its replacement.
 - **Existing projects** with forms are brought in line the next time they're
   worked on.
+
+## Full Project Audits
+Decided 2026-10-21. Every so often, a project gets a full audit against every
+rule in this doc, so its code doesn't drift and grow messy over time. An
+audit takes hours, often runs overnight while the user sleeps, and is never
+part of a pre- or post-commit check.
+- **Only on request, one project at a time**: an audit starts only when the
+  user explicitly asks for a full audit of a named project, and never spans
+  several projects in one run. That request is also the user's go-ahead to
+  dispatch agents for it (see "Agents" below).
+- **Its own branch**: the audit runs on one branch for the whole project
+  (`audit-YYYY-MM-DD`, the date it starts), from a clean working tree. It's
+  never pushed or merged by Claude; the user reviews it and merges it like any
+  other branch.
+- **A progress file and a report**: `audit-progress.md` and `audit-report.md`
+  in the project root, both listed in `.git/info/exclude`, so they stay out of
+  the repo without touching its `.gitignore`.
+  - The progress file records every audit, its passes so far, and which file
+    batches are done, so a run can stop at any moment and the next session
+    resumes from it. A run spanning several nights is normal.
+  - The report lists what each audit found and fixed, every question logged
+    for the user, and anything that couldn't run. When the audit finishes, the
+    session ends with a short summary of it.
+- **Work in small, committed units**: a unit is one pass of one audit over one
+  batch of files, committed as soon as it's done, in the usual one-line
+  format, so a shutdown can only lose the unit in progress. Each commit gets
+  the lint and type check from "### Pre-commit rule check", while the
+  accessibility scan waits for the final check below, which covers every
+  audit commit at once.
+- **The 4:00 AM shutdown**: the user's machine shuts down at 4:00 AM local
+  time every day, so the clock (`date`) is checked before each unit. At 3:15
+  AM or later, no new unit starts: the one in progress is finished and
+  committed, the progress file and report are updated, any server Claude
+  started is stopped, and the run ends until the next session.
+- **Questions never block the run**: anything that needs the user's call (an
+  undefined case under "### Undefined cases: stop and ask", a rule two passes
+  disagree on, a step needing `sudo`) is logged in the report for the user to
+  go through the next day. The code in question is left as it is, never
+  guessed at, and the run keeps going with everything that doesn't depend on
+  the answer.
+- **Two kinds of audit**:
+  - **Mechanical audits** run a script, so the same code always gives the
+    same answer: lint and type check, em dashes, file boundaries, quotes,
+    parentheses spacing, import grouping and alignment, JSON format, and
+    exports at the end. One clean run after the fixes is enough.
+  - **Judgment audits** need the code read, and a reader's recall varies
+    from pass to pass, so each one repeats until 3 consecutive passes find
+    nothing. Every pass is a fresh agent reading the files in a different
+    order, so it doesn't just reconfirm the last pass.
+  - **Pass limits for judgment audits**: an audit stops after 10 passes in
+    all, clean or not, keeping its fixes and logging what was still being
+    found. And it stops at once, logging both versions, if a pass reverses a
+    fix an earlier pass made, since a flip-flop is a rule question for the
+    user rather than a missed violation.
+- **The audits, in this order**, each covering one rule family, so a later
+  audit doesn't undo an earlier one (moving and renaming come before comments,
+  and spacing comes last):
+  1. Lint, type check, and the scripted format checks (mechanical).
+  2. File structure: section order, file placement, folder dependencies, and
+     file size.
+  3. JS and TS naming, with every segment checked against the Known
+     miscorrections list and the project's scoped overrides.
+  4. CSS and markup naming: classes, custom properties, keyframes, hooks,
+     `data-*` attributes, and ids.
+  5. Comments: present on every line that needs one, in the right form and
+     place, including the JSX self-audit greps, JSDoc, and regions.
+  6. CSS values: tokens, token value comments, units, reduced motion,
+     `z-index`, and `!important`.
+  7. Spacing and alignment: blank-line tiers, column alignment, and ordering.
+  8. Copy rules.
+  9. Project requirements: the 404 page, SEO, social previews, images, card
+     grids, interaction feedback, and forms, checked partly through the test
+     suites.
+- **The final check**: once every audit is done, the mechanical audits run
+  again, then the project's full test suites, accessibility scan included, in
+  Chromium, Firefox, and WebKit, proving the fixes changed no behavior.
+  Anything they find is fixed before the summary.
+- **Shared checker scripts**: the mechanical checks live in
+  `~/projects/claude-rules/audit/`, so every project's audit runs the same
+  tools. They're written during the first audit, rebuilt from ease-my-life's
+  earlier rule pass where they can be recovered, and improved with each
+  project after.
+- **Agents**: at most 3 at once. They read and report, each on its own batch
+  of files, and only one of them applies fixes at a time, so no two edit the
+  same file. Only one test run happens at a time, since the suites share a
+  port and a dev server.
+- **Order of projects** (the user's plan): the smallest sites first, to
+  measure an audit's real time and token cost, working up to ease-my-life,
+  the biggest codebase, last.
+- **Unattended runs**: auto mode covers permission prompts. The user keeps
+  the machine from sleeping before the 4:00 AM shutdown and leaves the
+  session's window open. A usage limit reached overnight pauses the run, and
+  the progress file carries it to the next session.
 
 ## Commit messages
 
