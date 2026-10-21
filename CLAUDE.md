@@ -903,7 +903,9 @@ itself gets its own mandatory self-check.
   the named imports and 2 blank lines apart from them, written `import type
   { HolStaTyp } from './data-model.ts';` (never the inline `import { type
   HolStaTyp }`, which our `verbatimModuleSyntax` leaves behind as an empty
-  import in the build). One binding per statement, alphabetized and padded
+  import in the build). One binding per statement (decided 2026-10-21: a
+  namespace import, `import type * as TyeModTyp from 'typescript';`, names
+  one binding too, so it's allowed), alphabetized and padded
   among themselves the same way the named group is, since the extra `type`
   word shifts their columns.
 - **Side-effect imports form a fourth, last group** (decided 2026-10-07,
@@ -1331,6 +1333,12 @@ src/
   except when the block is wrapped in a `// #region Imports` marker (see
   "### Sectioning / fold regions" below), in which case that 3-blank gap
   moves to after the `// #endregion Imports` marker instead.
+- **Code that runs at the top level follows the in-function rules**
+  (decided 2026-10-21): the statements a script runs as it loads (its
+  Module Init steps, such as reese-roofing's `design/og-image/render.mts`
+  opening a browser, loading the card, and taking its screenshot) are
+  spaced by "### General relatedness tiering" and every other rule a
+  function body uses, the same as if they sat inside one.
 
 ### Comments
 - A comment sits glued (0 blank lines) to the specific line/block it
