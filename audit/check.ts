@@ -54,7 +54,7 @@ import type * as TyeModTyp from 'typescript'; // What: TypeScript Module Type. W
 
 // #region Types
 
-type TyeNodTyp = TyeModTyp.Node; // What: TypeScript Node Type. Why: The syntax walk and the spacing check both take a parsed node. How: This names the parser's own node type from the type-only import.
+type TyeNodTyp = TyeModTyp.Node; // What: TypeScript Node Type. Why: The syntax walk, the spacing check, and the parenthesis finder each take a parsed node. How: This names the parser's own node type from the type-only import.
 
 // #endregion Types
 
@@ -62,10 +62,8 @@ type TyeNodTyp = TyeModTyp.Node; // What: TypeScript Node Type. Why: The syntax 
 
 // #region Constants
 
-const CLO_PAR_STR = '\u0029';                                                                          // What: Closing Parenthesis String. Why: The parenthesis matcher counts every parenthesis in a span of source text, strings included, so a literal one in this file's own strings would throw off its count when the checker reads itself. How: This holds the character as an escape, which reads the same at run time.
 const COD_EXT_SET = new Set( [ '.ts', '.tsx', '.mts', '.js', '.jsx', '.mjs' ] );                       // What: Code Extension Set. Why: The TypeScript checks and the code file boundaries apply only to script files. How: This lists every script extension a project may use.
 const IMP_KIN_ARR = [ 'default', 'named', 'type', 'side-effect' ];                                     // What: Import Kind Array. Why: Import findings name the groups involved. How: This lists each import group's name at the index impKinFun gives it.
-const OPE_PAR_STR = '\u0028';                                                                          // What: Opening Parenthesis String. Why: The parenthesis matcher counts every parenthesis in a span of source text, strings included, so a literal one in this file's own strings would throw off its count when the checker reads itself. How: This holds the character as an escape, which reads the same at run time.
 const PLA_NAM_SET = new Set( [ '_headers', '_redirects', 'robots.txt', '.gitignore' ] );               // What: Plain Name Set. Why: Plain-text config files have their own boundary and comment rules. How: This lists their file names.
 const SKI_PAT_REG = /(^|\/)(package-lock\.json|.*\.(png|ico|woff2|jpg|jpeg|webp))$|(^|\/)baselines\//; // What: Skip Pattern RegExp. Why: Generated and binary files are exempt from every rule. How: This matches the lockfile, images, fonts, and screenshot baselines.
 
@@ -468,63 +466,54 @@ function codCheFun ( filPatStr : string, filTexStr : string ) : void {
 
 	// #region Syntax Walk
 
-	// #region cloFinFun
+	// #region parPosFun
 
 	/**
-	 * cloFinFun = Close Find Function
+	 * parPosFun = Parenthesis Position Function
 	 *
 	 * @summary
-	 * Finds the parenthesis that closes the one at a given position, by
-	 * counting every opening and closing parenthesis after it in the raw
-	 * text, strings and comments included. Returns -1 when the text ends
-	 * first, which the spacing check then reads as no close found.
+	 * Finds one of a node's own parentheses by reading it from the syntax
+	 * tree, so a parenthesis inside a string, a template literal, or a
+	 * comment never throws the search off. A call's argument list, a
+	 * function's parameter list, a condition, and a catch binding each open
+	 * and close with parenthesis tokens that are the node's direct children.
+	 * Returns -1 when the node has no such token, or only an empty one the
+	 * parser filled in after a syntax error, which each caller reads as
+	 * nothing to check.
 	 *
 	 * @author z4nta0 <https://github.com/z4nta0>
 	 *
-	 * @param opePosNum - Opening Position Number: The opening parenthesis's
-	 *                    position.
+	 * @param ownNodObj - Owner Node Object: The call, function, or statement
+	 *                    whose parenthesis is wanted.
+	 * @param tokKinNum - Token Kind Number: The syntax kind of the opening or
+	 *                    the closing parenthesis token.
 	 *
-	 * @returns The closing parenthesis's position, or -1 when there is none.
-	 * @see {@link chaIndNum}
+	 * @returns The parenthesis's position, or -1 when there is none.
 	 *
 	 * @example
 	 * ```ts
-	 * cloFinFun(4) // => 9 for the text if ( x )
+	 * parPosFun(curNodObj, tyeModObj.SyntaxKind.CloseParenToken)
+	 * // => 7 for the text if ( x )
 	 * ```
 	 *
 	*/
 
-	function cloFinFun ( opePosNum : number ) : number {
+	function parPosFun ( ownNodObj : TyeNodTyp, tokKinNum : TyeModTyp.SyntaxKind ) : number {
 
 
-		let depLevNum = 0; // What: Depth Level Number. Why: Nested parentheses have to close before the outer one does. How: This counts how many are open.
+		const parTokObj = ownNodObj.getChildren( souFilObj ).find( ( chiNodObj ) => chiNodObj.kind === tokKinNum ); // What: Parenthesis Token Object. Why: The node's own parenthesis is one of its direct children, never a character inside a nested string or comment. How: This finds the first child token of the wanted kind.
 
 
-		for ( let chaIndNum = opePosNum; chaIndNum < filTexStr.length; chaIndNum++ ) { // What: Close Search Loop. Why: The close is somewhere after the opening. How: This walks each character from the opening onward.
-
-
-			const curChaStr = filTexStr[ chaIndNum ]; // What: Current Character String. Why: Only parentheses change the depth. How: This reads the character at the loop's position.
-
-
-			if ( curChaStr === OPE_PAR_STR ) depLevNum++; // What: Opening Depth Step. Why: Each opening parenthesis goes one level deeper. How: This raises the depth.
-
-			else if ( curChaStr === CLO_PAR_STR && --depLevNum === 0 ) return chaIndNum; // What: Matching Close Return. Why: The close that brings the depth back to zero matches the opening. How: This lowers the depth and returns the position once it reaches zero.
-
-
-		}
+		if ( !parTokObj || parTokObj.pos === parTokObj.end ) return -1; // What: Missing Token Guard. Why: A node may have no parenthesis, or an empty one the parser filled in after a syntax error. How: This returns -1 so the caller sees nothing to check.
 
 
 
-		return -1; // What: Missing Close Return. Why: The text can end before the opening closes. How: This returns -1 so the caller sees no close.
+		return parTokObj.getStart( souFilObj ); // What: Token Start Return. Why: The spacing checks read the characters around the parenthesis itself. How: This returns the token's position after any leading whitespace or comments.
 
 
 	}
 
-	// #endregion cloFinFun
-
-
-
-	const parFinFun = ( froPosNum : number ) : number => filTexStr.indexOf( OPE_PAR_STR, froPosNum ); // What: Parenthesis Find Function. Why: A call's or condition's opening parenthesis follows its name or keyword. How: This returns the first opening parenthesis at or after a position, or -1.
+	// #endregion parPosFun
 
 
 
@@ -546,7 +535,7 @@ function codCheFun ( filPatStr : string, filTexStr : string ) : void {
 	 *
 	 * @param opePosNum - Opening Position Number: The opening parenthesis's
 	 *                    position.
-	 * @param cloPosNum - Closing Position Number: {@link cloFinFun}
+	 * @param cloPosNum - Closing Position Number: {@link cloPosNum}
 	 * @param solArgObj - Sole Argument Object: A call's only argument, or
 	 *                    null for anything else.
 	 * @param cheLabStr - Check Label String: The kind of list, which opens
@@ -575,11 +564,11 @@ function codCheFun ( filPatStr : string, filTexStr : string ) : void {
 		const aftOkaBoo = aftNewBoo || aftSpaBoo || aftTigBoo; // What: After Okay Boolean. Why: Any one of these spaces the opening correctly. How: This combines them.
 
 
-		if ( !aftOkaBoo ) addFinFun( filPatStr, posLinFun( opePosNum ), 'parens', `${ cheLabStr }: no space after ${ OPE_PAR_STR }` ); // What: Opening Space Check. Why: A non-empty list gets a space after its opening parenthesis. How: This records a finding when none of the allowed characters follows it.
+		if ( !aftOkaBoo ) addFinFun( filPatStr, posLinFun( opePosNum ), 'parens', `${ cheLabStr }: no space after (` ); // What: Opening Space Check. Why: A non-empty list gets a space after its opening parenthesis. How: This records a finding when none of the allowed characters follows it.
 
 
 
-		const befCloBoo = befChaStr === CLO_PAR_STR;                                                                   // What: Before Close Boolean. Why: A closing parenthesis may sit tight against another one. How: This checks for a closing parenthesis right before. // Stacked closing brackets stay tight, per the JSX stacked-bracket exception.
+		const befCloBoo = befChaStr === ')';                                                                           // What: Before Close Boolean. Why: A closing parenthesis may sit tight against another one. How: This checks for a closing parenthesis right before. // Stacked closing brackets stay tight, per the JSX stacked-bracket exception.
 		const befNewBoo = /\n\t*$/.test( filTexStr.slice( filTexStr.lastIndexOf( '\n', cloPosNum - 1 ), cloPosNum ) ); // What: Before Newline Boolean. Why: A wrapped list closes on its own line. How: This checks that only a newline and tabs sit before the close on its line.
 		const befSpaBoo = befChaStr === ' ';                                                                           // What: Before Space Boolean. Why: A one-line list closes with a space. How: This checks for a space before the close.
 		const befTigBoo = tigObjBoo && befChaStr === '}';                                                              // What: Before Tight Boolean. Why: A multi-line object argument's brace may sit tight. How: This checks for that brace right before the close.
@@ -587,7 +576,7 @@ function codCheFun ( filPatStr : string, filTexStr : string ) : void {
 		const befOkaBoo = befSpaBoo || befCloBoo || befNewBoo || befTigBoo; // What: Before Okay Boolean. Why: Any one of these spaces the close correctly. How: This combines them.
 
 
-		if ( !befOkaBoo ) addFinFun( filPatStr, posLinFun( cloPosNum ), 'parens', `${ cheLabStr }: no space before ${ CLO_PAR_STR }` ); // What: Closing Space Check. Why: A non-empty list gets a space before its closing parenthesis. How: This records a finding when none of the allowed characters precedes it.
+		if ( !befOkaBoo ) addFinFun( filPatStr, posLinFun( cloPosNum ), 'parens', `${ cheLabStr }: no space before )` ); // What: Closing Space Check. Why: A non-empty list gets a space before its closing parenthesis. How: This records a finding when none of the allowed characters precedes it.
 
 
 	}
@@ -647,20 +636,18 @@ function codCheFun ( filPatStr : string, filTexStr : string ) : void {
 
 
 			const aftPosNum = curNodObj.typeArguments ? curNodObj.typeArguments.end + 1 : curNodObj.expression.end; // What: After Position Number. Why: The parenthesis follows the callee, or its type arguments when it has them. How: This reads where the callee or the closing angle bracket ends.
-			const opePosNum = parFinFun( aftPosNum );                                                               // What: Opening Position Number. Why: The argument list starts at the first parenthesis after the callee. How: This finds it.
+			const cloPosNum = parPosFun( curNodObj, tyeModObj.SyntaxKind.CloseParenToken );                         // What: Closing Position Number. Why: The inner spacing check reads both ends. How: This reads the argument list's closing parenthesis from the syntax tree.
+			const opePosNum = parPosFun( curNodObj, tyeModObj.SyntaxKind.OpenParenToken );                          // What: Opening Position Number. Why: The gap and spacing checks start at the argument list's opening parenthesis. How: This reads it from the syntax tree.
 
 
-			if ( opePosNum >= 0 && opePosNum < curNodObj.end ) { // What: Found Parenthesis Branch. Why: A parenthesis past the call's own end belongs to other code. How: This checks only one found inside the call.
+			if ( opePosNum >= 0 && cloPosNum >= 0 ) { // What: Found Parentheses Branch. Why: A list the parser filled in after a syntax error has no parentheses to check. How: This checks only a call whose parentheses were both found.
 
 
 				const gapTexStr = filTexStr.slice( aftPosNum, opePosNum ); // What: Gap Text String. Why: Nothing may sit between a callee and its parenthesis. How: This reads the text between them.
 
 
-				if ( /\s/.test( gapTexStr ) ) addFinFun( filPatStr, posLinFun( opePosNum ), 'parens', `call: space before ${ OPE_PAR_STR }` ); // What: Call Gap Check. Why: A call never takes a space before its parenthesis. How: This records a finding when the gap holds whitespace.
+				if ( /\s/.test( gapTexStr ) ) addFinFun( filPatStr, posLinFun( opePosNum ), 'parens', 'call: space before (' ); // What: Call Gap Check. Why: A call never takes a space before its parenthesis. How: This records a finding when the gap holds whitespace.
 
-
-
-				const cloPosNum = cloFinFun( opePosNum ); // What: Closing Position Number. Why: The inner spacing check reads both ends. How: This finds the matching close.
 
 
 				if ( curNodObj.arguments.length === 0 ) { // What: Empty Arguments Branch. Why: An empty argument list stays tight. How: This checks the close sits right after the opening.
@@ -692,11 +679,12 @@ function codCheFun ( filPatStr : string, filTexStr : string ) : void {
 		if ( funNodBoo ) { // What: Declaration Spacing Branch. Why: A declaration takes a space before its parameter list, unless it's an arrow function, and inner spaces unless empty. How: This checks the parameter list of every kind of function.
 
 
-			const parNodArr = curNodObj.parameters; // What: Parameter Node Array. Why: The list's position and length decide the checks. How: This reads the parsed parameters.
-			const opePosNum = parNodArr.pos - 1;    // What: Opening Position Number. Why: The list's opening parenthesis sits just before its first parameter. How: This steps back one character from the list's start.
+			const cloPosNum = parPosFun( curNodObj, tyeModObj.SyntaxKind.CloseParenToken ); // What: Closing Position Number. Why: The inner spacing check reads both ends. How: This reads the parameter list's closing parenthesis from the syntax tree.
+			const opePosNum = parPosFun( curNodObj, tyeModObj.SyntaxKind.OpenParenToken );  // What: Opening Position Number. Why: The spacing checks start at the parameter list's opening parenthesis. How: This reads it from the syntax tree.
+			const parNodArr = curNodObj.parameters;                                         // What: Parameter Node Array. Why: An empty list stays tight. How: This reads the parsed parameters.
 
 
-			if ( filTexStr[ opePosNum ] === OPE_PAR_STR ) { // What: Parenthesized List Branch. Why: A lone arrow parameter has no parentheses to check. How: This checks only a list that opens with one.
+			if ( opePosNum >= 0 && cloPosNum >= 0 ) { // What: Parenthesized List Branch. Why: A lone arrow parameter has no parentheses to check, and neither does a list the parser filled in after a syntax error. How: This checks only a list whose parentheses were both found.
 
 
 				const befTigBoo = filTexStr[ opePosNum - 1 ] !== ' '; // What: Before Tight Boolean. Why: A declaration's name or keyword takes a space before its list. How: This checks for a missing space.
@@ -705,11 +693,8 @@ function codCheFun ( filPatStr : string, filTexStr : string ) : void {
 				const misSpaBoo = !arrFunBoo && befTigBoo && nonGenBoo; // What: Missing Space Boolean. Why: Only a named, non-generic function is held to the space. How: This combines the three conditions.
 
 
-				if ( misSpaBoo ) addFinFun( filPatStr, posLinFun( opePosNum ), 'parens', `declaration: no space before ${ OPE_PAR_STR }` ); // What: Declaration Space Check. Why: A space before the list marks a declaration, never a call. How: This records a finding when it's missing.
+				if ( misSpaBoo ) addFinFun( filPatStr, posLinFun( opePosNum ), 'parens', 'declaration: no space before (' ); // What: Declaration Space Check. Why: A space before the list marks a declaration, never a call. How: This records a finding when it's missing.
 
-
-
-				const cloPosNum = cloFinFun( opePosNum ); // What: Closing Position Number. Why: The inner spacing check reads both ends. How: This finds the matching close.
 
 
 				if ( parNodArr.length === 0 ) { // What: Empty Parameters Branch. Why: An empty parameter list stays tight. How: This checks the close sits right after the opening.
@@ -737,15 +722,21 @@ function codCheFun ( filPatStr : string, filTexStr : string ) : void {
 		if ( conNodBoo || catBinBoo ) { // What: Condition Spacing Branch. Why: A condition takes a space before its parenthesis and inner spaces. How: This checks every statement with a condition.
 
 
-			const froPosNum = tyeModObj.isDoStatement( curNodObj ) ? curNodObj.statement.end : curNodObj.getStart(); // What: From Position Number. Why: A do loop's condition follows its body, while every other condition follows its keyword. How: This starts the search after a do loop's body, or at the statement's start.
-			const opePosNum = parFinFun( froPosNum );                                                                // What: Opening Position Number. Why: The condition starts at the first parenthesis after that point. How: This finds it.
+			const cloPosNum = parPosFun( curNodObj, tyeModObj.SyntaxKind.CloseParenToken ); // What: Closing Position Number. Why: The inner spacing check reads both ends. How: This reads the condition's closing parenthesis from the syntax tree.
+			const opePosNum = parPosFun( curNodObj, tyeModObj.SyntaxKind.OpenParenToken );  // What: Opening Position Number. Why: The spacing checks start at the condition's opening parenthesis, which follows the keyword, or a do loop's body. How: This reads it from the syntax tree.
 
 
-			if ( filTexStr[ opePosNum - 1 ] !== ' ' ) addFinFun( filPatStr, posLinFun( opePosNum ), 'parens', `condition: no space before ${ OPE_PAR_STR }` ); // What: Condition Space Check. Why: A keyword takes a space before its condition. How: This records a finding when it's missing.
+			if ( opePosNum >= 0 && cloPosNum >= 0 ) { // What: Found Parentheses Branch. Why: A condition the parser filled in after a syntax error has no parentheses to check. How: This checks only a condition whose parentheses were both found.
+
+
+				if ( filTexStr[ opePosNum - 1 ] !== ' ' ) addFinFun( filPatStr, posLinFun( opePosNum ), 'parens', 'condition: no space before (' ); // What: Condition Space Check. Why: A keyword takes a space before its condition. How: This records a finding when it's missing.
 
 
 
-			spaCheFun( opePosNum, cloFinFun( opePosNum ), null, 'condition' ); // What: Condition Spacing Call. Why: A condition gets inner spaces. How: This checks both ends.
+				spaCheFun( opePosNum, cloPosNum, null, 'condition' ); // What: Condition Spacing Call. Why: A condition gets inner spaces. How: This checks both ends.
+
+
+			}
 
 
 		}
@@ -1105,7 +1096,7 @@ function howCheFun ( filPatStr : string, filTexStr : string ) : void {
 	filTexStr.split( '\n' ).forEach( ( linTexStr, linIndNum ) => { // What: Test Line Walk. Why: Each test is declared on its own line. How: This visits every line with its index.
 
 
-		if ( !/^\s*test\x28/.test( linTexStr ) ) return; // What: Test Line Guard. Why: Only a test's own line carries its How. How: This skips any line that doesn't open a test call, matching the parenthesis by its escape so the checker's own parenthesis matcher reads this file correctly.
+		if ( !/^\s*test\(/.test( linTexStr ) ) return; // What: Test Line Guard. Why: Only a test's own line carries its How. How: This skips any line that doesn't open a test call.
 
 
 
