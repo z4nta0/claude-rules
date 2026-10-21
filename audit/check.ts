@@ -12,6 +12,9 @@ import { readFileSync  } from 'node:fs';            // What: Read File Sync. Why
 import { resolve       } from 'node:path';          // What: Resolve. Why: createRequire needs an absolute path, and the project may be given as a relative one. How: This turns the argument into an absolute path.
 import { statSync      } from 'node:fs';            // What: Stat Sync. Why: A tracked entry can be a symlink to a folder, which has no text to check. How: This reads whether a path is a regular file.
 
+
+import type * as TyeModTyp from 'typescript'; // What: TypeScript Module Type. Why: The parser's node, module, and literal types describe what the checks read, while the module itself loads from the audited project at run time. How: This imports the package's types alone, which Node strips, so nothing loads from it here.
+
 // #endregion Imports
 
 
@@ -51,7 +54,7 @@ import { statSync      } from 'node:fs';            // What: Stat Sync. Why: A t
 
 // #region Types
 
-type TyeNodTyp = import( 'typescript' ).Node; // What: TypeScript Node Type. Why: The syntax walk and the spacing check both take a parsed node. How: This names the parser's own node type, which Node strips at run time.
+type TyeNodTyp = TyeModTyp.Node; // What: TypeScript Node Type. Why: The syntax walk and the spacing check both take a parsed node. How: This names the parser's own node type from the type-only import.
 
 // #endregion Types
 
@@ -89,7 +92,7 @@ if ( !rooDirStr ) { // What: Usage Guard. Why: The checker has nothing to read w
 
 const reqModFun = createRequire( join( rooDirStr, 'package.json' ) ); // What: Require Module Function. Why: TypeScript has to load from the audited project. How: This builds a require function that resolves packages from the project root.
 
-const tyeModObj : typeof import( 'typescript' ) = reqModFun( 'typescript' ); // What: TypeScript Module Object. Why: The code checks parse each script with the project's own TypeScript. How: This loads the project's typescript package.
+const tyeModObj : typeof TyeModTyp = reqModFun( 'typescript' ); // What: TypeScript Module Object. Why: The code checks parse each script with the project's own TypeScript. How: This loads the project's typescript package.
 
 const conKinSet = new Set( [ tyeModObj.SyntaxKind.IfStatement, tyeModObj.SyntaxKind.WhileStatement, tyeModObj.SyntaxKind.ForStatement, tyeModObj.SyntaxKind.ForOfStatement, tyeModObj.SyntaxKind.ForInStatement, tyeModObj.SyntaxKind.SwitchStatement, tyeModObj.SyntaxKind.DoStatement ] ); // What: Condition Kind Set. Why: Every if, loop, and switch shares the condition spacing rule. How: This lists the syntax kinds that carry a parenthesized condition, read from the project's own TypeScript.
 
@@ -186,7 +189,7 @@ function addFinFun ( filPatStr : string, fouLinNum : number, cheNamStr : string,
  *
 */
 
-function impKinFun ( impDecObj : import( 'typescript' ).ImportDeclaration ) : number {
+function impKinFun ( impDecObj : TyeModTyp.ImportDeclaration ) : number {
 
 
 	const impClaObj = impDecObj.importClause; // What: Import Clause Object. Why: The clause holds the bindings that decide the group. How: This reads it, which is missing for a side-effect import.
@@ -786,7 +789,7 @@ function codCheFun ( filPatStr : string, filTexStr : string ) : void {
 			const namBinObj = impClaObj?.namedBindings;                                                                           // What: Named Bindings Object. Why: Braced and namespace bindings have their own rules. How: This reads them, when the import has any.
 			const firEleStr = namBinObj && tyeModObj.isNamedImports( namBinObj ) ? namBinObj.elements[ 0 ]?.name.text ?? '' : ''; // What: First Element String. Why: A named import is alphabetized by its binding. How: This reads the first braced binding's name, or an empty string.
 			const impNamStr = impClaObj?.name ? impClaObj.name.text : firEleStr;                                                  // What: Import Name String. Why: Imports are alphabetized by binding name. How: This reads the default binding's name, or the first braced one.
-			const souPatStr = ( impDecObj.moduleSpecifier as import( 'typescript' ).StringLiteral ).text;                         // What: Source Path String. Why: A relative import names its file's extension. How: This reads the module the import comes from. // What: Type Assertion Note. Why: TypeScript types a module specifier as any expression. How: The parser only accepts a string literal there.
+			const souPatStr = ( impDecObj.moduleSpecifier as TyeModTyp.StringLiteral ).text;                                      // What: Source Path String. Why: A relative import names its file's extension. How: This reads the module the import comes from. // What: Type Assertion Note. Why: TypeScript types a module specifier as any expression. How: The parser only accepts a string literal there.
 
 
 			if ( impClaObj && impClaObj.name && impClaObj.namedBindings ) addFinFun( filPatStr, impLinNum, 'imports', 'one binding per import statement' ); // What: Mixed Binding Check. Why: A default and a named binding in one statement are two bindings. How: This records a finding for an import with both.
@@ -797,7 +800,7 @@ function codCheFun ( filPatStr : string, filTexStr : string ) : void {
 
 
 
-			if ( namBinObj && tyeModObj.isNamespaceImport( namBinObj ) ) addFinFun( filPatStr, impLinNum, 'imports', 'namespace import has no rule (undefined case)' ); // What: Namespace Import Check. Why: No rule covers import * as, so it's raised with the user. How: This records a finding for a namespace import.
+			if ( namBinObj && tyeModObj.isNamespaceImport( namBinObj ) && !impClaObj?.isTypeOnly ) addFinFun( filPatStr, impLinNum, 'imports', 'namespace import has no rule (undefined case)' ); // What: Namespace Import Check. Why: The user allowed import type * as for a package's types on 2026-10-21, but no rule covers a namespace import of values, so it's raised with the user. How: This records a finding for a namespace import that isn't type-only.
 
 
 
