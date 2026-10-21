@@ -88,8 +88,6 @@ const tooRecArr : TooRecTyp[] = [ // What: Tool Record Array. Why: The tools run
 
 ];
 
-
-
 let exiCodNum = 0; // What: Exit Code Number. Why: Every tool runs even after one fails, and the result reports whether any did. How: This turns to 1 once any tool fails.
 
 // #endregion Module State

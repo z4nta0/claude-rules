@@ -458,7 +458,9 @@ function codCheFun ( filPatStr : string, filTexStr : string ) : void {
 
 	const scrKinNum = extNamStr === '.tsx' || extNamStr === '.jsx' ? tyeModObj.ScriptKind.TSX : tyeModObj.ScriptKind.TS;  // What: Script Kind Number. Why: JSX only parses in TSX mode. How: This picks TSX for a .tsx or .jsx file and TS for the rest.
 	const souFilObj = tyeModObj.createSourceFile( filPatStr, filTexStr, tyeModObj.ScriptTarget.Latest, true, scrKinNum ); // What: Source File Object. Why: The checks walk the parsed syntax tree. How: This parses the text with parent links set, so each node can read its own source.
-	const posLinFun = ( chaPosNum : number ) : number => souFilObj.getLineAndCharacterOfPosition( chaPosNum ).line + 1;   // What: Position Line Function. Why: A finding reports a 1-based line. How: This asks the parsed file for a position's line and adds 1.
+
+
+	const posLinFun = ( chaPosNum : number ) : number => souFilObj.getLineAndCharacterOfPosition( chaPosNum ).line + 1; // What: Position Line Function. Why: A finding reports a 1-based line. How: This asks the parsed file for a position's line and adds 1.
 
 	// #endregion Source Parsing
 
@@ -751,7 +753,6 @@ function codCheFun ( filPatStr : string, filTexStr : string ) : void {
 	// #endregion visNodFun
 
 
-
 	visNodFun( souFilObj ); // What: Syntax Walk Call. Why: The quote and spacing checks cover the whole file. How: This starts the walk at the parsed file.
 
 	// #endregion Syntax Walk
@@ -854,6 +855,7 @@ function codCheFun ( filPatStr : string, filTexStr : string ) : void {
 
 			const colSetFun = ( patMatReg : RegExp ) : Set< number > => new Set( groLinArr.map( ( impLinNum ) => linTexArr[ impLinNum - 1 ].replace( /\t/g, '    ' ).search( patMatReg ) ) ); // What: Column Set Function. Why: Aligned lines put a mark at the same column. How: This returns the set of columns a pattern first matches at across the group, counting tabs as 4.
 
+
 			const namGroBoo = kinIndNum === 1;            // What: Named Group Boolean. Why: Braces only appear in the named and type groups. How: This checks for the named group.
 			const typGroBoo = kinIndNum === 2;            // What: Type Group Boolean. Why: Braces only appear in the named and type groups. How: This checks for the type group.
 			const braMisBoo = colSetFun( /\}/ ).size > 1; // What: Brace Misaligned Boolean. Why: A braced group lines up its closing braces. How: This checks for more than one brace column.
@@ -900,8 +902,6 @@ function codCheFun ( filPatStr : string, filTexStr : string ) : void {
 
 
 	} );
-
-
 
 	souFilObj.statements.forEach( ( staNodObj, staIndNum ) => { // What: Export Position Walk. Why: Every export statement sits at the very end. How: This checks each export statement's place.
 
