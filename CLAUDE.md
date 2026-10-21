@@ -3111,7 +3111,9 @@ still passes.
     carries its own What/Why/How stating its value. That stated value still
     follows the signs above (decided 2026-10-21): `=` for an exact value and
     `~=` for a rounded one, every length of a multi-length value at its
-    computed value, never a loose `about`. A not-yet-renamed component
+    computed value, never a loose `about`. Plain prose keeps its `about`
+    (a heading that wraps at about 368px), since it gives a size in passing
+    rather than stating a value. A not-yet-renamed component
     property is expanded as it's named and given its value, or "set by its
     parent" when a parent sets it.
   - The comments in one rule align their columns like any run of lines,
@@ -4904,7 +4906,10 @@ while ( condition );
   picIdeStr ) continue;` in `day-log.tsx`'s own `dayFlaFun` gets 3 blank
   lines before the next line, not the 1 an ordinary relatedness guess
   might otherwise assign just because neighboring lines touch the same
-  data.
+  data. Anything that works the same way counts as one too (decided
+  2026-10-21): a test's conditional `test.skip( cond, '...' )` ends the test
+  when its condition holds, so it takes the same 3 blank lines before and
+  after.
 
 ### JSX
 - **Character entities only where needed** (decided 2026-10-18): JSX text
@@ -5272,8 +5277,9 @@ reference example:
     was the first shape to appear originally.
   - **Even within the same keyword and the same plain/destructured shape, a
     run further splits by whether each declaration's own VALUE is single-line
-    or spans multiple lines** (a function body, an array/object literal, a
-    multi-line `useMemo`/`useCallback`, ...). Two adjacent single-line-valued
+    or spans multiple lines** (an array/object literal, a multi-line
+    `useMemo`/`useCallback`, ...; a function stored in a variable is a type of
+    its own, per "### General relatedness tiering"). Two adjacent single-line-valued
     declarations still tightly group at 0-blank as normal, but any transition
     where EITHER side of a pair is multi-line-valued breaks out of the run,
     symmetric in both directions (entering a multi-line value, leaving one
@@ -5282,13 +5288,14 @@ reference example:
     other, or they're sibling handlers building the same feature, e.g. a
     Cancel/Save pair), the same type split by its multi-line value under "###
     General relatedness tiering", and 3 blank lines when they share no real
-    data or purpose. E.g. `pwa.ts`'s own `staGraNum`/`finProFun`: `const
-    staGraNum = 2500;` followed by `const finProFun = () => { ... };`, which
-    reads staGraNum in its own body, gets 1 blank line; in `tab-data.tsx`,
-    `canNewFun`/`savNewFun` (sibling draft handlers) get 1, while `savNewFun`
-    followed by the unrelated `draCarRef` gets 3. (Decided 2026-10-21,
-    returning to 1 from the 2 used since 2026-09-25, when the tiers were
-    redefined by type of code.)
+    data or purpose (decided 2026-10-21, returning to 1 from the 2 used since
+    2026-09-25, when the tiers were redefined by type of code). A function
+    stored in a variable is a different type from the declarations around it:
+    `pwa.ts`'s own `const staGraNum = 2500;` followed by `const finProFun = ()
+    => { ... };`, which reads staGraNum, gets 2 blank lines, while
+    `tab-data.tsx`'s sibling draft handlers `canNewFun`/`savNewFun`, two arrow
+    functions, get 1, and `savNewFun` followed by the unrelated `draCarRef`
+    gets 3.
   - **A run also splits when it mixes standard-length (9-char/3-segment)
     names with a non-standard, longer composite name** (e.g. a 4-segment
     Initialism-compression case like `lmsLonPriNum`). Forcing the
@@ -5472,10 +5479,14 @@ identifiers) and also stays inline as one line, for the same reason.
 Used for spacing between statements inside a function/block body (JSX
 siblings use their own nesting-depth rule under "### JSX" instead).
 Rewritten 2026-10-21. The tiers turn on the type of code on each side of the
-gap. A type is a kind of statement: declarations (`const`/`let`) are one type,
-function definitions another, calls (a statement that's a call, awaited or
-not) another, assignments (to a variable or a property) another, and blocks
-(an `if`/`else` chain, a loop, a `try`/`catch`) another. A tight run of the
+gap. A type is a kind of statement: declarations (`const`/`let` holding a
+value) are one type, arrow functions (`const subForFun = ( ... ) => { ... }`)
+another, `function` functions (bare, or stored as `const fooFun = function (
+... ) { ... }`) another, calls (a statement that's a call, awaited or not)
+another, assignments (to a variable or a property) another, and blocks (an
+`if`/`else` chain, a loop, a `try`/`catch`) another. Decided 2026-10-21: a
+function stored in a variable is its own type, never a declaration, so a value
+and the arrow function that reads it are two types. A tight run of the
 same type (0 blank lines) and the fixed counts other sections give (returns
 and exit guards, finished constructs, long boolean groups) come first; these
 tiers decide every other gap. Three tiers:
@@ -5486,8 +5497,10 @@ tiers decide every other gap. Three tiers:
   apart (a `ResizeObserver` call and the `window.addEventListener( 'resize',
   ... )` call after it, both re-measuring; a timer call after a run of
   state-setter calls, as in seal-and-shield's contact form), so do two effects
-  working on the same or related data, and so do the branches of one
-  `if`/`else if`/`else` chain.
+  working on the same or related data, two arrow functions that belong
+  together (a form's field and submit handlers, a Cancel/Save pair) when
+  either spans several lines (one-line ones that belong together form a tight
+  run), and the branches of one `if`/`else if`/`else` chain.
 - **Somewhat related (2 blank lines)**: two different types of code that are
   related, most often a declaration and the call, effect, or block that uses
   it (in either direction), a function's definition and its call, an
@@ -5547,6 +5560,9 @@ gradually alongside the whitespace rules above (started with `src/app.tsx`).
     way initialisms are, since its first three letters, `Bas`, already mean
     Base (`SOU_B64_STR`, `pngB64Str`); its `What:` expansion reads
     `Base64`.
+  - **TypeScript is `tye`** (decided 2026-10-21), since `typ` is the Type
+    segment every type name ends in: claude-rules' checker loads the compiler
+    as `tyeModObj`. Its `What:` expansion reads `TypeScript`.
 - **Known miscorrections: check every segment against this list before
   finalizing a name.** In practice, segments built from a word with a
   strong, ubiquitous conventional abbreviation (the kind used constantly
