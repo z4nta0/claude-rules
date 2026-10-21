@@ -412,10 +412,13 @@ allows it.
 - **Rendered by a script, not by hand**: the originals are kept outside the
   served tree (e.g. `design/photos/`), per the directory rules on source
   artwork, and a script beside them writes the optimized copies into `src/`,
-  the same way the social preview card is rendered. So a new or replaced
-  image gets the same treatment, and every image can be rebuilt at a new
-  size. Encoding through Playwright's Chromium canvas, as seal-and-shield
-  did, needs no new dependency.
+  the same way the social preview card is rendered. So a new or replaced image
+  gets the same treatment, and every image can be rebuilt at a new size.
+  Encoding through Playwright's Chromium canvas, as seal-and-shield did, needs
+  no new dependency. A script is written only when an image needs it (decided
+  2026-10-21): it exists to shrink large images while keeping their originals,
+  so an image that's already small enough (reese-roofing's favicon PNGs) stays
+  as it is, with no script or original.
 - **Reported**: the commit gives the size before and after, and the rendering
   baselines are refreshed only for the encoding change, checked in all three
   engines.
@@ -481,16 +484,17 @@ in the way.
     leaves the same way, rather than appearing or vanishing at once.
   - **Result of an action**: the change itself animates, such as a label
     cross-fading to its new text or an added item easing in.
-- **Links in a row and text links shift color only** (decided 2026-10-11):
-  a bar's row of pill links, a bar's icon toggle (the phone menu's bars),
-  and a text link (in a footer line, a menu's contact block) don't lift on
-  hover, since a color change already reads clearly there and a lift would
-  jostle the bar, the row, or the line. Other buttons, cards, and rows still
-  lift, and a stacked menu's rows may nudge sideways instead (tonys-toppers'
-  phone menu).
-  Decided 2026-10-17: a small inline button that follows a label's text
-  (tech-geek-support's "?" help tips beside its form labels) shifts color
-  only too, since a lift would nudge it off its label's line.
+- **Links in a row and text links shift color only** (decided 2026-10-11): a
+  bar's row of pill links, a bar's icon toggle (the phone menu's bars), and a
+  text link (in a footer line, a menu's contact block) don't lift on hover,
+  since a color change already reads clearly there and a lift would jostle the
+  bar, the row, or the line. Other buttons, cards, and rows still lift, a card
+  that isn't a link included, as presentation (decided 2026-10-21,
+  reese-roofing's service cards), and a stacked menu's rows may nudge sideways
+  instead (tonys-toppers' phone menu). Decided 2026-10-17: a small inline
+  button that follows a label's text (tech-geek-support's "?" help tips beside
+  its form labels) shifts color only too, since a lift would nudge it off its
+  label's line.
 - **The flair**: one small, purposeful touch per element at most, such as an
   arrow that slides on hover, a gentle overshoot on something opening, or a
   check that pops in once. It never repeats on its own, loops, bounces
@@ -623,7 +627,8 @@ part of a pre- or post-commit check.
   `~/projects/claude-rules/audit/`, so every project's audit runs the same
   tools. They're written during the first audit, rebuilt from ease-my-life's
   earlier rule pass where they can be recovered, and improved with each
-  project after.
+  project after. They follow every rule in this doc, the same as project code
+  (decided 2026-10-21), so they can be reviewed like any other code.
 - **Agents**: at most 3 at once. They read and report, each on its own batch
   of files, and only one of them applies fixes at a time, so no two edit the
   same file. Only one test run happens at a time, since the suites share a
@@ -1038,22 +1043,28 @@ can move code between files rather than just within one.
   The order follows the dependency direction: types describe everything
   below them, constants feed helpers, helpers feed hooks, hooks feed
   components.
-- **Order within a section: define before use.** Anything a declaration
-  reads sits above it, so a reader never has to scroll down to learn what
-  a name means, and a `const` is never read before its own line. When two
+- **Order within a section: define before use.** Anything a declaration reads
+  sits above it, so a reader never has to scroll down to learn what a name
+  means, and a `const` is never read before its own line. When two
   declarations in the same section don't depend on each other, they're
   alphabetized (case-insensitive) as the tie-break. Decided 2026-09-27:
   define-before-use also wins over the section order itself and over the
-  Components section's "private first" split. A constant built by
-  calling a helper at load time (e.g. `tabs/data/reminders-manager.tsx`'s
-  own `REM_MAT_ARR`, built with `paiSubFun`) sits in Helpers right after
-  the helper it calls, not in Constants, and an exported component that a
-  private one renders comes before it; "private first, then exported" only
-  orders components that don't depend on each other. Decided 2026-10-10:
-  a helper that reads a value Module Init creates with a top-level `await`
+  Components section's "private first" split. A constant built by calling a
+  helper at load time (e.g. `tabs/data/reminders-manager.tsx`'s own
+  `REM_MAT_ARR`, built with `paiSubFun`) sits in Helpers right after the
+  helper it calls, not in Constants, and an exported component that a private
+  one renders comes before it; "private first, then exported" only orders
+  components that don't depend on each other. Decided 2026-10-10: a helper
+  that reads a value Module Init creates with a top-level `await`
   (seal-and-shield's icon script's `renPngFun`, which draws in the browser
-  page Module Init opens) sits in Module Init right after that value, for
-  the same reason.
+  page Module Init opens) sits in Module Init right after that value, for the
+  same reason. Decided 2026-10-21: alphabetical order wins over keeping a
+  tight run of declarations together (a test file's settings run included)
+  unless an entry's order matters, and then the entries whose order matters
+  form their own group first, 1 blank line before the rest. Constants and
+  types (`ALL_CAPS` and `PascalCase` names) never share one run. See
+  reese-roofing's `tests/responsive/layout.spec.ts`, whose drawer limit,
+  layout cases, and width list sit in that order.
 - **Type placement** (decided 2026-10-05). A type sits next to what uses
   it, keeping define-before-use:
   - **Used by one standalone declaration**: the type sits directly above
@@ -1142,11 +1153,15 @@ can move code between files rather than just within one.
   changes, the existing data is rewritten with the generator's
   `--reformat` flag, which reuses the data already on disk instead of
   simulating new random history.
-- **Extension and naming.** A file uses `.jsx` only when it actually
-  contains JSX, and `.js` otherwise (in TypeScript, `.tsx` and `.ts` the same
-  way; see "## Language: TypeScript"). Every filename is kebab-case
-  (`tab-today.tsx`, `onboarding-seed-data.ts`). Renaming a file means
-  updating every import of it in the same change.
+- **Extension and naming.** A file uses `.jsx` only when it actually contains
+  JSX, and `.js` otherwise (in TypeScript, `.tsx` and `.ts` the same way; see
+  "## Language: TypeScript"). Every filename is kebab-case (`tab-today.tsx`,
+  `onboarding-seed-data.ts`). Renaming a file means updating every import of
+  it in the same change. A vendor file (a font, an icon set) is renamed too
+  (decided 2026-10-21), converted to kebab case word for word and dropping
+  only punctuation, with every reference following: reese-roofing's
+  `Fraunces-VariableFont_opsz,wght.woff2` became
+  `fraunces-variable-font-opsz-wght.woff2`.
 - **What a file holds.** A file is either one domain module (a family of
   related pure functions/constants, usually exported as one namespace
   object, e.g. `cadence.ts`) or one main component plus the private
@@ -1686,7 +1701,10 @@ src/
   any other comment prose: `URL`, `SVG`, `CSS`, `HTML`, `JSON`, `PNG`,
   `ARIA`, `SEO`, and the like, e.g. `CAR_URL_STR` → `Card URL String` and
   `lomSvgUrl` → `Logo-Mark SVG URL`. The identifier itself keeps its
-  camelCase segment (`Url`, `Svg`).
+  camelCase segment (`Url`, `Svg`). A name used in prose reads as prose too
+  (decided 2026-10-21): a suite's or folder's name is written as an ordinary
+  word, initialisms capitalized (`the SEO suite`), unless the text names the
+  folder or file itself (`tests/seo/`).
   When the name being expanded follows the 9-char/3-segment (or 6-char
   property) naming rule, expand each segment to its actual full word, in
   the SAME ORDER the segments appear in the name, never reordered, and
@@ -2708,10 +2726,12 @@ one file at a time. Hooks go first because a module hashes its class names,
 and any other file still finding those elements by class (a tour or help
 selector, a `querySelector` elsewhere) would break silently while the build
 still passes.
-- **JS never finds elements by class name.** Anything that locates an
-  element (`querySelector`/`querySelectorAll`, `closest`, `matches`, a tour
-  or help catalog's selector fields, test and verification scripts) uses a
-  `data-*` attribute instead.
+- **JS never finds elements by class name.** Anything production code uses to
+  locate an element (`querySelector`/`querySelectorAll`, `closest`, `matches`,
+  a tour or help catalog's selector fields) uses a `data-*` attribute instead.
+  Tests may find or group elements by class (decided 2026-10-21), since a test
+  only reads the page: reese-roofing's layout check groups a grid's cards by
+  their shared first class.
 - **State that CSS reacts to is an attribute, not a class.** Use the
   matching `aria-*` attribute where one already means that state
   (`aria-expanded`, `aria-pressed`, `aria-current`, `aria-disabled`, ...),
@@ -2880,7 +2900,10 @@ still passes.
   than after it. A word naming which instance a rule styles, for a shared
   class styled under different parents or by position, follows the
   expansion (decided 2026-10-18): `Open Toggle Line Span Top`, `Hovered Arrow
-  Icon Span In Drawer Link`. Existing classes
+  Icon Span In Drawer Link`. A rule whose selectors style different
+  elements together (decided 2026-10-21) is labelled by what they are as a
+  group rather than by one class: reese-roofing's `Form Field Controls`, for
+  its input, select, and textarea. Existing classes
   keep their current names while they move into modules; renaming them
   to this rule belongs to the design-system pass.
   - **One element rendered as different tags** (decided 2026-10-02):
@@ -3012,12 +3035,13 @@ still passes.
   `fadeOut`, `spin`, `flip`, ...). Like class names, existing keyframes
   keep their current names while they move into modules; renaming them
   belongs to the design-system pass, where this rule may be refined.
-  - **A shared keyframe names its role** (decided 2026-10-02): a keyframe
-    in the global sheet that several elements play names segment 1 after
-    what those elements are (`card`, `check`, `confetti`, `footer`, ...)
-    rather than their HTML tag, since shared elements are mostly generic
-    `<div>`s and `<span>`s and a tag says nothing about what moves, e.g.
-    `cardRemoveSlideOut` or `overlayOpenFadeIn`.
+  - **A shared keyframe names its role** (decided 2026-10-02): a keyframe that
+    several elements play, in the global sheet or kept in one module (decided
+    2026-10-21: reese-roofing's `blockEnterFadeIn` and `menuItemOpenFadeIn`),
+    names segment 1 after what those elements are (`card`, `check`,
+    `confetti`, `footer`, ...) rather than their HTML tag, since shared
+    elements are mostly generic `<div>`s and `<span>`s and a tag says nothing
+    about what moves, e.g. `cardRemoveSlideOut` or `overlayOpenFadeIn`.
 - **A rule with more than one selector** puts each selector on its own
   line, ending with `,`, and only the last one carries the `{` and the
   rule's comment, the same "once it's multi-line, one entry per line"
@@ -3080,8 +3104,11 @@ still passes.
   - A declaration that also needs a real explanation (the tricky-value
     exception above) keeps both: the token comment first, then the
     What/Why/How in its own `/* */` right after it on the same line.
-  - Token definitions in `:root` are exempt, since each already carries
-    its own What/Why/How stating its value. A not-yet-renamed component
+  - Token definitions in `:root` are exempt from this form, since each already
+    carries its own What/Why/How stating its value. That stated value still
+    follows the signs above (decided 2026-10-21): `=` for an exact value and
+    `~=` for a rounded one, every length of a multi-length value at its
+    computed value, never a loose `about`. A not-yet-renamed component
     property is expanded as it's named and given its value, or "set by its
     parent" when a parent sets it.
   - The comments in one rule align their columns like any run of lines,
@@ -3237,12 +3264,14 @@ still passes.
     replacing an earlier rule that only commented tokens whose names didn't
     say what they were), and a run of tokens column-aligns its comments
     like any other run of lines, under the same 100-character exception.
-    - **Exception, a scale** (decided 2026-09-29): tokens that form a
-      scale of steps (font sizes, and every scale like them) are ordered
-      smallest to biggest instead of alphabetically, so the steps read in
-      order (`m02`, `m01`, `bas`, `p01`, `p02`, ... rather than
-      alphabetically, which would put `bas` first and `m02` after
-      `m01`).
+    - **Exception, a scale** (decided 2026-09-29): tokens that form a scale of
+      steps (font sizes, and every scale like them) are ordered smallest to
+      biggest instead of alphabetically, so the steps read in order (`m02`,
+      `m01`, `bas`, `p01`, `p02`, ... rather than alphabetically, which would
+      put `bas` first and `m02` after `m01`). A token in a scale section that
+      isn't one of its steps (reese-roofing's sideways elevation shadow)
+      follows the steps, 1 blank line apart (decided 2026-10-21), so it reads
+      as set apart from the scale.
     - **Exception, the core design numbers** (decided 2026-09-29): the
       user's own section of core design numbers always comes first inside
       `:root`, ahead of the alphabetized token sections, and is never
@@ -3546,7 +3575,10 @@ are renamed to this as their files come up in the design-system pass.
     opacity, an `opacity` on an SVG shape or a strength a component takes as a
     prop. An SVG attribute can't read a custom property, so the shape sets it
     through its `style` instead (`style={{ opacity : 'var( --cdn-pow-001-rec
-    )' }}`).
+    )' }}`). Decided 2026-10-21: so does a filter factor (`saturate`,
+    `brightness`, `contrast`) with a power within 10%, read as a plain number:
+    reese-roofing's frosted bar uses `saturate( var( --cdn-pow-002 ) )`, about
+    175.5%, for its 180%.
 - **Examples mapped from today's tokens**: `--bg` → `--bac-pag-col`,
   `--surface` → `--bac-sur-col`, `--text` → `--tex-mai-col`, `--muted` →
   `--tex-mut-col`, `--accent-soft` → `--acc-tin-col`, `--warm` →
@@ -3841,10 +3873,13 @@ line, so only the rules that can't change what a tool reads apply.
   order); otherwise lines are alphabetized, e.g. the headers within one
   `_headers` block. A Content-Security-Policy's directives follow the
   convention: `default-src` first, then the rest alphabetized.
-- **`.gitignore` re-includes get their own block** (decided 2026-10-03):
-  every `!` line goes in a block of its own after all the other blocks,
-  alphabetized within it, since a re-include only works after the pattern
-  it overrides.
+- **`.gitignore` re-includes get their own block** (decided 2026-10-03): every
+  `!` line goes in a block of its own after all the other blocks, alphabetized
+  within it, since a re-include only works after the pattern it overrides.
+  Decided 2026-10-21: Vite's template pair, `.vscode/*` with its
+  `!.vscode/extensions.json` re-include, stays even in a project with no
+  `.vscode/` folder yet, so the editor's extension recommendations can be
+  shared once one is added.
 - **Long values stay on one line**: Netlify can't continue a header value
   onto the next line, so a long one (the Content-Security-Policy) stays
   whole.
@@ -5330,10 +5365,12 @@ reference example:
     assertions in a test form one tight run with aligned comments, whether
     each is awaited (`await expect( ... ).toHaveURL( ... )`, `await
     expect.poll( ... )`) or not (`expect( ... ).toBe( ... )`), since each
-    performs the same operation, checking the page. An action between them
-    (a click, a scroll) ends the run. Consecutive actions with the same method
-    on different targets (two `.fill()` calls, decided 2026-10-18) form a
-    tight run of their own the same way.
+    performs the same operation, checking the page. An action between them (a
+    click, a scroll) ends the run. Consecutive actions with the same method on
+    different targets (two `.fill()` calls, decided 2026-10-18) form a tight
+    run of their own the same way. An action and the assertion run that checks
+    it sit 2 blank lines apart, in either order (decided 2026-10-21), as two
+    kinds of statement working on the same thing.
   - **Animation timeline steps** (decided 2026-10-16): consecutive steps
     added with the same method (`set`, `from`, `to`, `fromTo`, ...) form one
     tight run, with 1 blank line wherever the method changes or another
