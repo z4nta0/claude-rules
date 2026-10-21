@@ -5289,6 +5289,49 @@ reference example:
     followed by the unrelated `draCarRef` gets 3. (Decided 2026-10-21,
     returning to 1 from the 2 used since 2026-09-25, when the tiers were
     redefined by type of code.)
+  - **A run also splits when it mixes standard-length (9-char/3-segment)
+    names with a non-standard, longer composite name** (e.g. a 4-segment
+    Initialism-compression case like `lmsLonPriNum`). Forcing the
+    shorter, standard names' own `=`/comment columns out to match a much
+    longer non-standard name defeats the whole point of keeping most
+    names at the compact standard length. Split into separate
+    sub-groups the same way as the other splits above: 1 blank line
+    between the sub-groups, 0-blank internally within each, each
+    sub-group's own alignment computed independently. E.g.
+    `utils/color.ts`'s own `lmsLonPriNum`/`lmsMedPriNum`/`lmsShoPriNum` (3 non-standard,
+    12-character Initialism-compression names) sit in their own group,
+    followed by a blank line, then `lmsLonNum`/`lmsMedNum`/`lmsShoNum`
+    (3 standard, 9-character names) in their own separately-aligned
+    group, even though all 6 are `const`, plain-shaped, and
+    single-line-valued, and the second group directly consumes values
+    from the first.
+  - **A run also splits off a declaration carrying a TypeScript type
+    annotation** (decided 2026-10-05), the same way it splits off a
+    longer non-standard name: `const curPicObj : Partial< PicRcdTyp > =
+    ...` sits 1 blank line apart from its plain-named neighbors, in its
+    own group, so the annotation never widens their `=` and comment
+    columns. Several annotated declarations next to each other form one
+    group, aligned among themselves. See `state/pending-mutations.ts`'s
+    own `curPicObj`, split from `hasPipBoo`/`perRunStr` above it.
+  - **This same run gets its `=` signs column-aligned**, the same
+    column-alignment mechanism used elsewhere in this doc (named imports,
+    object `:` alignment, ...): pad each line's own left-hand side
+    (everything before its own `=`, whether that's a bare name or a
+    destructured `[ a, b ]`/`{ a, b }` pattern) to the width of the
+    longest one in that run. This is usually a non-event in practice,
+    since the naming rules already produce same-length names within a
+    tightly-related group most of the time, but apply it explicitly
+    whenever a run's names (or their destructuring shapes) genuinely
+    differ in length, e.g. a mix of a plain name and a destructured
+    `[ a, b ]` pair, or a mix of prefixed and unprefixed names.
+  - The comment on each line in the run still gets column-aligned per the
+    usual "no blank lines between them" comment rule too, computed from
+    the single longest full line (code plus its own padding) in that run.
+  - The moment a declaration is followed by anything that ISN'T also a
+    plain `const`/`let` declaration, that's the end of THIS run; normal
+    relatedness tiering resumes, UNLESS what follows is itself the start
+    of a same-operation statement run (see the bullet below), which gets
+    its own fresh 0-blank grouping instead of reverting to 1-blank.
   - **This 0-blank rule is strictly for a fresh `const`/`let` declaration: a
     plain reassignment of an already-declared variable (no `const`/`let`
     keyword at all, e.g. `iteFlaObj = { ... };` reassigning a `let` declared
