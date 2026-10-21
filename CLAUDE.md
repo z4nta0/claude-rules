@@ -5302,9 +5302,10 @@ reference example:
     function stored in a variable is a type of its own rather than a
     declaration (decided 2026-10-21): `pwa.ts`'s own `const staGraNum =
     2500;` followed by `const finProFun = () => { ... };`, which reads
-    staGraNum, gets 2 blank lines, while `tab-data.tsx`'s sibling draft
-    handlers `canNewFun`/`savNewFun`, two arrow functions, get 1, and
-    `savNewFun` followed by the unrelated `draCarRef` gets 3.
+    staGraNum, gets 2 blank lines, `tab-data.tsx`'s sibling draft handlers
+    `canNewFun`/`savNewFun`, two multi-line arrow functions, get 3, as any two
+    functions do, and `savNewFun` followed by the unrelated `draCarRef` gets
+    3.
   - **A run also splits when it mixes standard-length (9-char/3-segment)
     names with a non-standard, longer composite name** (e.g. a 4-segment
     Initialism-compression case like `lmsLonPriNum`). Forcing the
@@ -5506,10 +5507,16 @@ tiers decide every other gap. Three tiers:
   apart (a `ResizeObserver` call and the `window.addEventListener( 'resize',
   ... )` call after it, both re-measuring; a timer call after a run of
   state-setter calls, as in seal-and-shield's contact form), so do two effects
-  working on the same or related data, two arrow functions that belong
-  together (a form's field and submit handlers, a Cancel/Save pair) when
-  either spans several lines (one-line ones that belong together form a tight
-  run), and the branches of one `if`/`else if`/`else` chain.
+  working on the same or related data, and the branches of one `if`/`else
+  if`/`else` chain.
+- **Functions always sit 3 apart** (decided 2026-10-21), whatever their
+  relation, one calling the other included, at any level: two functions, of
+  either kind and with or without a region, get 3 blank lines between them.
+  The one exception is a run of one-line functions that need no JSDoc
+  summary, which group tightly (0, aligned) when they belong together. A type
+  placed directly above the function or declaration it describes (see "Type
+  placement") counts as part of it, so the gap above the type is the gap that
+  declaration would take.
 - **Somewhat related (2 blank lines)**: two different types of code that are
   related, most often a declaration and the call, effect, or block that uses
   it (in either direction), a function's definition and its call, an
