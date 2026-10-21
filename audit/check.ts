@@ -1159,8 +1159,8 @@ function htmCheFun ( filPatStr : string, filTexStr : string ) : void {
 
 
 
-	const scrBlaStr = filTexStr.replace( /(<(script|style)\b[^>]*>)([\s\S]*?)(<\/\2>)/g, ( matTexStr, opeTagStr, tagNamStr, conTexStr, cloTagStr ) => opeTagStr + conTexStr.replace( /[^\n]/g, ' ' ) + cloTagStr ); // What: Script Blanked String. Why: JSON-LD stays valid JSON, and inline styles and scripts follow their own languages. How: This blanks each script or style element's contents, keeping its tags and newlines, and leaves the whole match and the tag name unread.
-	const bodTexStr = scrBlaStr.replace( /<!--[\s\S]*?-->/g, ( matTexStr ) => matTexStr.replace( /[^\n]/g, ' ' ) );                                                                                                 // What: Body Text String. Why: Comments are prose, not markup. How: This blanks each comment, keeping its newlines.
+	const scrBlaStr = filTexStr.replace( /(?<=<(script|style)\b[^>]*>)[\s\S]*?(?=<\/\1>)/g, ( conTexStr ) => conTexStr.replace( /[^\n]/g, ' ' ) ); // What: Script Blanked String. Why: JSON-LD stays valid JSON, and inline styles and scripts follow their own languages. How: This blanks each script or style element's contents, keeping its newlines, matching only the contents through a lookbehind for the opening tag and a lookahead for its closing tag.
+	const bodTexStr = scrBlaStr.replace( /<!--[\s\S]*?-->/g, ( matTexStr ) => matTexStr.replace( /[^\n]/g, ' ' ) );                                // What: Body Text String. Why: Comments are prose, not markup. How: This blanks each comment, keeping its newlines.
 
 
 	for ( const matResObj of bodTexStr.matchAll( /=\s*"([^"]*)"/g ) ) { // What: Attribute Quote Loop. Why: Every double-quoted attribute value needs checking. How: This visits each one.
