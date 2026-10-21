@@ -1322,23 +1322,24 @@ src/
   JS hooks".
 
 ### Top-level (module scope)
-- Between any two distinct top-level declarations (a comment block, a
-  `const`, a `function`, an `export` statement, ...) always use 3 blank
-  lines, regardless of how related they seem (e.g. a component and a
-  constant it reads from still get 3, not fewer, purely because they're
-  both top-level).
-- Import statements are the one exception within top-level scope: no blank
-  lines between individual `import` lines: they're one tight block. The
-  gap between that whole block and whatever follows it is still 3,
-  except when the block is wrapped in a `// #region Imports` marker (see
-  "### Sectioning / fold regions" below), in which case that 3-blank gap
-  moves to after the `// #endregion Imports` marker instead.
-- **Code that runs at the top level follows the in-function rules**
-  (decided 2026-10-21): the statements a script runs as it loads (its
-  Module Init steps, such as reese-roofing's `design/og-image/render.mts`
-  opening a browser, loading the card, and taking its screenshot) are
-  spaced by "### General relatedness tiering" and every other rule a
-  function body uses, the same as if they sat inside one.
+Rewritten 2026-10-21: code outside a function is formatted exactly like code
+inside one. The old rule that set every two top-level declarations 3 blank
+lines apart, however related, is gone.
+- **Every gap follows the in-function rules**: declarations, functions,
+  calls, assignments, and blocks at the top level are spaced by "### Variable
+  declarations" and "### General relatedness tiering", the same as in a
+  function body. File-level constants that belong together form a tight run,
+  a multi-line one sits 1 apart from them, and an `if`/`else` block that uses
+  them sits 2 below; a script's load-time steps (reese-roofing's
+  `design/og-image/render.mts` opening a browser, loading the card, and
+  taking its screenshot) are spaced the same way. The fixed counts other
+  rules set still apply, as they do inside a function: a design-rationale
+  block's 3 blank lines before it, regions' marker spacing, and 3 blank
+  lines between two sections' regions.
+- Import statements form one tight block, with no blank lines between
+  individual `import` lines. The block is wrapped in a `// #region Imports`
+  marker (see "### Sectioning / fold regions" below), and the file's header
+  comment follows it 3 blank lines down.
 
 ### Comments
 - A comment sits glued (0 blank lines) to the specific line/block it
@@ -1346,7 +1347,7 @@ src/
 - If a comment's own target is genuinely ambiguous (unclear what it's
   actually describing), don't guess a glue point; treat it as its own
   freestanding unit, with whatever blank-line count applies on both sides
-  given its surroundings (3 if it sits between top-level declarations).
+  given its surroundings.
 - **Every line of code gets a comment.** Rare exceptions: a closing
   bracket alone on its own line (a function/object/array/block's `}`,
   `]`, `)`, or a combination like `});`/`};`) never gets one. A bare
@@ -2380,16 +2381,16 @@ later, but don't invent one for anything else yet:
   - `<Name>` on both markers is the function's own literal name,
     unexpanded, e.g. `// #region TabBarCom` / `// #endregion TabBarCom`,
     not its Title Case expansion.
-  - **This supersedes the function-comment placement rule above**: the 3
-    blank lines that otherwise sit before a top-level declaration now sit
-    before the `// #region` marker instead of before the JSDoc's opening
-    `/**`. Between the marker and the JSDoc's own `/**`, use exactly 1
-    blank line (per the "Placement" bullet above); nothing else about
-    the JSDoc block itself changes.
+  - **This supersedes the function-comment placement rule above**: the gap
+    that would otherwise sit before the function (by the tiers, at any
+    level) now sits before the `// #region` marker instead of before the
+    JSDoc's opening `/**`. Between the marker and the JSDoc's own `/**`,
+    use exactly 1 blank line (per the "Placement" bullet above); nothing
+    else about the JSDoc block itself changes.
   - Symmetrically on the close side: exactly 1 blank line between the
-    function's own closing `}` and the `// #endregion` marker, then the
-    normal 3 blank lines after `// #endregion` before whatever top-level
-    thing comes next.
+    function's own closing `}` and the `// #endregion` marker, then
+    whatever gap the tiers give after `// #endregion` before what comes
+    next.
 - **The whole import-statement block**: a file's entire run of `import`
   lines (see "### Import statements" above) gets wrapped as a single
   `// #region Imports` / `// #endregion Imports` region: one region for
@@ -2403,10 +2404,9 @@ later, but don't invent one for anything else yet:
     `import`. Between the marker and the first `import` line, use exactly
     1 blank line.
   - Symmetrically on the close side: exactly 1 blank line between the
-    last `import` line and the `// #endregion Imports` marker, then the
-    normal 3 blank lines after it before whatever top-level thing comes
-    next, the same as the 3-blank-line gap that used to sit directly
-    after the import block per "### Top-level (module scope)" above.
+    last `import` line and the `// #endregion Imports` marker, then 3 blank
+    lines after it before the file's header comment, which a
+    design-rationale block's own placement sets.
   - Nothing about the imports themselves changes: still no blank lines
     between individual `import` lines, still the default/named grouping
     with its own 2-blank-line separator inside the region.
@@ -2554,8 +2554,8 @@ later, but don't invent one for anything else yet:
   - Symmetrically on the close side: exactly 1 blank line between the
     LAST declaration's own closing `}` (or its own `// #endregion`
     marker, if it has one) and this section's own `// #endregion`
-    marker, then the normal 3 blank lines after `// #endregion` before
-    whatever top-level thing comes next.
+    marker, then 3 blank lines after `// #endregion` before whatever comes
+    next, since a section-intro region is a section of its own.
   - See `store.ts`'s own "Pick Log Subsystem" (wrapping `logRowFun`,
     itself already its own nested `#region logRowFun`) and "Done-Gated
     Pick Mutations Mechanism" (wrapping `dropStalePendingUpdates`
@@ -3880,7 +3880,7 @@ line, so only the rules that can't change what a tool reads apply.
   and 1 blank line between the block and the comment it sits above. There's
   no file-level summary, the same as HTML.
 - **Spacing**: 3 blank lines between one block (its summary, comment, and
-  lines) and the next, the same as top-level JS declarations. A block's own
+  lines) and the next. A block's own
   lines sit together with no blank lines.
 - **Indentation**: tabs, which Netlify accepts for a `_headers` block's
   header lines.
