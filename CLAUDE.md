@@ -5278,24 +5278,22 @@ reference example:
   - **Even within the same keyword and the same plain/destructured shape, a
     run further splits by whether each declaration's own VALUE is single-line
     or spans multiple lines** (an array/object literal, a multi-line
-    `useMemo`/`useCallback`, ...; a function stored in a variable is a type of
-    its own, per "### General relatedness tiering"). Two adjacent single-line-valued
+    `useMemo`/`useCallback`, ...). Two adjacent single-line-valued
     declarations still tightly group at 0-blank as normal, but any transition
     where EITHER side of a pair is multi-line-valued breaks out of the run,
     symmetric in both directions (entering a multi-line value, leaving one
     back to a single-line value, or between two consecutive multi-line
     values): 1 blank line when the two are genuinely connected (one reads the
-    other, or they're sibling handlers building the same feature, e.g. a
-    Cancel/Save pair), the same type split by its multi-line value under "###
-    General relatedness tiering", and 3 blank lines when they share no real
-    data or purpose (decided 2026-10-21, returning to 1 from the 2 used since
-    2026-09-25, when the tiers were redefined by type of code). A function
-    stored in a variable is a different type from the declarations around it:
-    `pwa.ts`'s own `const staGraNum = 2500;` followed by `const finProFun = ()
-    => { ... };`, which reads staGraNum, gets 2 blank lines, while
-    `tab-data.tsx`'s sibling draft handlers `canNewFun`/`savNewFun`, two arrow
-    functions, get 1, and `savNewFun` followed by the unrelated `draCarRef`
-    gets 3.
+    other, or both feed the same step), the same type split by its multi-line
+    value under "### General relatedness tiering", and 3 blank lines when they
+    share no real data or purpose (decided 2026-10-21, returning to 1 from the
+    2 used since 2026-09-25, when the tiers were redefined by type of code). A
+    function stored in a variable is a type of its own rather than a
+    declaration (decided 2026-10-21): `pwa.ts`'s own `const staGraNum =
+    2500;` followed by `const finProFun = () => { ... };`, which reads
+    staGraNum, gets 2 blank lines, while `tab-data.tsx`'s sibling draft
+    handlers `canNewFun`/`savNewFun`, two arrow functions, get 1, and
+    `savNewFun` followed by the unrelated `draCarRef` gets 3.
   - **A run also splits when it mixes standard-length (9-char/3-segment)
     names with a non-standard, longer composite name** (e.g. a 4-segment
     Initialism-compression case like `lmsLonPriNum`). Forcing the
