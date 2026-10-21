@@ -15,9 +15,9 @@
 import { execFileSync } from 'node:child_process';
 import { readFileSync, statSync } from 'node:fs';
 import { createRequire } from 'node:module';
-import { join, extname, basename } from 'node:path';
+import { join, extname, basename, resolve } from 'node:path';
 
-const rooDirStr = process.argv[ 2 ];
+const rooDirStr = process.argv[ 2 ] ? resolve( process.argv[ 2 ] ) : '';
 
 if ( !rooDirStr ) { console.error( 'usage: node check.ts <project-root>' ); process.exit( 2 ); }
 
