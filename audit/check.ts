@@ -4,8 +4,9 @@
 // CLAUDE.md against one project, so the same code always gives the same
 // answer: em dashes, file boundaries, trailing whitespace and space
 // indentation, quotes, parentheses spacing, import grouping and alignment,
-// exports at the end, JSON format, comment block widths, and plain-text config
-// boundaries. Lint and type check run separately (see run.sh).
+// exports at the end, JSON format, comment block widths, plain-text config
+// boundaries, and test Hows that never say what they check. Lint and type
+// check run separately (see run.sh).
 //
 // Usage: node ~/projects/claude-rules/audit/check.ts <project-root>
 // Prints one finding per line as `file:line: [check] message`, then a count,
@@ -447,6 +448,24 @@ function plaCheFun ( filStr : string, texStr : string ) : void {
 
 }
 
+// ---------- test Hows name a check ----------
+function howCheFun ( filStr : string, texStr : string ) : void {
+
+	if ( !filStr.endsWith( '.spec.ts' ) ) return;
+
+	texStr.split( '\n' ).forEach( ( linStr, ind ) => {
+
+		// A test's How names what it asserts, so it says what it checks, waits for, or compares.
+		if ( !/^\s*test\(/.test( linStr ) ) return;
+
+		const howStr = ( linStr.match( /How: (.*)$/ ) || [ '', '' ] )[ 1 ];
+
+		if ( !/\b(check|wait|confirm|compare|fail)/i.test( howStr ) ) addFinFun( filStr, ind + 1, 'test-how', 'the test\'s How never says what it checks' );
+
+	} );
+
+}
+
 for ( const filStr of filLisArr ) {
 
 	const texStr = readFileSync( join( rooDirStr, filStr ), 'utf8' );
@@ -463,6 +482,7 @@ for ( const filStr of filLisArr ) {
 	htmCheFun( filStr, texStr );
 	tsxCheFun( filStr, texStr );
 	plaCheFun( filStr, texStr );
+	howCheFun( filStr, texStr );
 
 }
 
