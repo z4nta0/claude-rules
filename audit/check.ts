@@ -5,8 +5,9 @@
 // answer: em dashes, file boundaries, trailing whitespace and space
 // indentation, quotes, parentheses spacing, import grouping and alignment,
 // exports at the end, JSON format, comment block widths, plain-text config
-// boundaries, and test Hows that never say what they check. Lint and type
-// check run separately (see run.sh).
+// boundaries, CSS sibling regions closer than 3 blank lines, and test Hows
+// that never say what they check. Lint and type check run separately (see
+// run.sh).
 //
 // Usage: node ~/projects/claude-rules/audit/check.ts <project-root>
 // Prints one finding per line as `file:line: [check] message`, then a count,
@@ -448,6 +449,30 @@ function plaCheFun ( filStr : string, texStr : string ) : void {
 
 }
 
+// ---------- CSS sibling regions sit 3 blank lines apart ----------
+function regCheFun ( filStr : string, texStr : string ) : void {
+
+	if ( extname( filStr ) !== '.css' ) return;
+
+	const linArr = texStr.split( '\n' );
+
+	linArr.forEach( ( linStr, ind ) => {
+
+		// An #endregion followed straight by a #region closes one sibling and opens the next.
+		if ( !linStr.includes( '#endregion' ) ) return;
+
+		let nexInd = ind + 1;
+
+		while ( nexInd < linArr.length && linArr[ nexInd ].trim() === '' ) nexInd++;
+
+		const gapNum = nexInd - ind - 1;
+
+		if ( nexInd < linArr.length && /#region/.test( linArr[ nexInd ] ) && !linArr[ nexInd ].includes( '#endregion' ) && gapNum !== 3 ) addFinFun( filStr, ind + 1, 'regions', `${ gapNum } blank lines between sibling regions (want 3)` );
+
+	} );
+
+}
+
 // ---------- test Hows name a check ----------
 function howCheFun ( filStr : string, texStr : string ) : void {
 
@@ -483,6 +508,7 @@ for ( const filStr of filLisArr ) {
 	tsxCheFun( filStr, texStr );
 	plaCheFun( filStr, texStr );
 	howCheFun( filStr, texStr );
+	regCheFun( filStr, texStr );
 
 }
 

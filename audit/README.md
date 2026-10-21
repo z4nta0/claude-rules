@@ -11,7 +11,8 @@ same answer.
   block comment widths, quotes (JS, JSX, CSS, and HTML attributes),
   parentheses spacing (calls, declarations, conditions, and CSS), import
   grouping, order, extensions, and alignment, exports at the end, JSON format,
-  plain-text config comments, and test Hows that never say what
+  plain-text config comments, CSS sibling regions closer than 3 blank
+  lines, and test Hows that never say what
   they check (a How names the assertions its test makes). It loads TypeScript from the project's own
   `node_modules`, so Node 23.6 or newer runs it directly.
 
