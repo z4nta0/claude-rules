@@ -1821,6 +1821,13 @@ lines apart, however related, is gone.
     these long single-line comments actually readable on screen without
     changing the file's real line structure. Turn it on when working in
     this codebase.
+- **Size and case words match the styling** (decided 2026-10-22): a comment
+  calls text small only when it's set below the body's own size (in
+  seal-and-shield, `--fon-siz-bas` against the body's `--fon-siz-p01`), so
+  text at the body size is never small, however short it is. Text set with
+  `text-transform : uppercase` is uppercase, never small capitals, which
+  names small caps, a separate letterform (`font-variant-caps`). See
+  seal-and-shield's eyebrow labels.
 - **JSX elements get exactly the same comment treatment as everything
   else**: every element, one comment each.
   - **The `What:` for a native HTML/SVG element**: pretend the element
