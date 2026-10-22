@@ -5521,7 +5521,10 @@ tiers decide every other gap. Three tiers:
   placement") counts as part of it, so the gap above the type is the gap that
   declaration would take.
 - **Somewhat related (2 blank lines)**: two different types of code that are
-  related, most often a declaration and the call, effect, or block that uses
+  related. The test (decided 2026-10-21): do they affect each other (one sets
+  or changes what the other reads), or are they two pieces of logic solving
+  one problem, so that together they'd read as a single piece of the function
+  or file? If so they're related, and if not they sit 3 apart. Most often a declaration and the call, effect, or block that uses
   it (in either direction), a function's definition and its call, an
   assignment that reads the declarations just above it (reese-roofing's
   `window.location.href = ...` after the two encoded strings it joins,
