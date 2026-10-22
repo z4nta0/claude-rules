@@ -2766,6 +2766,14 @@ one, whether the motion comes from CSS or from JS.
   hover fade, say) still get their reduced-motion variant. See `ui/
   picker-strip.tsx`'s own `data-motion-force-active` and `tabs/settings/
   previews.module.css`.
+- **Comments describe the normal motion** (decided 2026-10-22): a comment
+  describing an animation, a transition, or a stagger says what it does
+  normally, and doesn't repeat that it stops or jumps under reduced motion,
+  since this rule already guarantees that everywhere. Only the code that
+  handles reduced motion (a `@media` variant, a `redMotFun()` branch) and its
+  own comment say what happens there. See seal-and-shield's scroll reveal,
+  whose sections describe their blocks fading in one after another, while
+  `reveal.ts`'s timer comment says they appear at once under reduced motion.
 - The modules migrated before this rule were brought in line in one
   pass; everything else is checked as its file is next touched.
 
