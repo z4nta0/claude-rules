@@ -2297,6 +2297,12 @@ under the old rule keeps it only if it passes the test below.
     `@returns A promise that settles once <the work> is done, with no
     value.`, and its `@example` ends `// => Promise<void>`. A wrapped
     `@returns` continues under its own text.
+  - An async function that resolves with a value (decided 2026-10-22):
+    `@returns A promise that resolves with <the value>.`, so a reader sees
+    it has to be awaited, while its `@example` shows the value the caller
+    ends up with (`fakNetFun(page, 200) // => { couNum : 0 }`), since a bare
+    `Promise<...>` would only restate the signature's type. See
+    seal-and-shield's `tests/support/netlify.ts`.
 - A blank ` *` line.
 - **`@example`**: matches whichever return type applies.
   - A JSX-returning component: a ` ```tsx ``` ` fenced block whose one
