@@ -6532,6 +6532,18 @@ gradually alongside the whitespace rules above (started with `src/app.tsx`).
   `className`; see `ui/button.tsx`'s own `ButBasCom`), and React's own
   hooks (`useState`, `useRef`, `useLayoutEffect`, `useEffect`,
   `useCallback`, ...).
+- **A package's default import is named like any other binding** (decided
+  2026-10-22): the name a default import binds is ours to choose, so it
+  follows the 9-character/3-segment rule even where the package's own
+  documentation spells it differently (`react`, `reactHooks`, `tseslint`), in
+  a tool config as anywhere else. A key the tool itself requires stays exactly
+  as written and maps to the renamed binding (`plugins : { react : reaPluObj,
+  'react-hooks' : rehPluObj }`). A named import (`{ chromium }`) is the
+  library's own export name, so it keeps the library's spelling. See
+  seal-and-shield's `eslint.config.ts` (`reaPluObj`, `rehPluObj`, and
+  `tyeEslObj`, TypeScript ESLint Object) and `vite.config.ts` (`reaPluFun`).
+  Existing projects are brought in line the next time their configs are
+  worked on.
 - **Generic JS API-shape exemption**: separately from the React/DOM
   exemptions above, a hand-rolled object that deliberately mirrors a
   well-known, generic (non-React) API shape keeps that shape's own
