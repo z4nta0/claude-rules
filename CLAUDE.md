@@ -1,7 +1,7 @@
 # User-Level CLAUDE.md
 
 Rules that apply to every project: development servers, language, linting,
-browser testing, required pages, multi-page scroll position, section links, SEO, social previews, images, card grids, interaction feedback, forms, full project audits, commit messages, copy, and code formatting, naming, and comments. A project's own CLAUDE.md
+browser testing, required pages, multi-page scroll position, section links, SEO, social previews, images, card grids, grid layout, spacing tiers, interaction feedback, forms, full project audits, commit messages, copy, and code formatting, naming, and comments. A project's own CLAUDE.md
 describes that project and adds anything specific to it (scoped naming
 overrides, its own values).
 
@@ -450,6 +450,41 @@ card count.
   Contact sidebar on a tablet.
 - **Existing projects** are brought in line the next time they're worked
   on.
+
+## Layout: Grid First
+Decided 2026-10-22, for projects started on or after that date
+(group-planner is the first). Existing projects keep their flexbox layouts
+and aren't converted.
+- **Grid is the layout tool**: an element that lays out its children uses
+  `display : grid` (or `inline-grid`). Flexbox is used only where it does
+  something grid can't, and that rule's comment says what (for example, a
+  row of items that wraps onto new lines while each keeps its own content
+  width, which grid can't do without fixed tracks).
+- **Named areas place children**: a grid's children are placed through
+  `grid-template-areas` on the parent and `grid-area` on each child, since
+  a named layout is easier to read and reason about than line numbers.
+- **Except where names need a workaround**: when named areas would cause
+  complications for a particular element (a list whose item count changes,
+  a child spanning an unknown number of tracks), that element is placed
+  another way (auto placement or line numbers), and its rule's comment
+  says why.
+- **Centering uses grid too**: `place-items` or `place-content`, never a
+  flex column used only to center something.
+- **The Card Grids rule still applies** to a grid of cards.
+
+## Spacing Tiers
+Decided 2026-10-22, for projects started on or after that date
+(group-planner is the first). Every gap, margin, and padding that separates
+parts of a page reads a tier by how big a boundary it marks, rather than a
+spacing step picked case by case, so the biggest divisions always get the
+most space and the same kind of division always gets the same space.
+- **The tiers, largest first**: the page's frame (between the nav, the
+  footer, or an app's tab bar and the main content); then sections inside
+  the main content; then on down to the smallest separations. An app's
+  screens don't divide as cleanly as a site's pages, so each project's
+  CLAUDE.md lists what falls in each of its tiers.
+- **The top tier's value is chosen first**, with the user, and the rest are
+  worked out from it, recorded in the project's CLAUDE.md.
 
 ## Interaction Feedback
 Decided 2026-10-08. Every user interaction gets an animation or transition, so
