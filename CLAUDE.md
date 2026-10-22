@@ -5522,16 +5522,17 @@ tiers decide every other gap. Three tiers:
   declaration would take.
 - **Somewhat related (2 blank lines)**: two different types of code that are
   related. The test (decided 2026-10-21): do they affect each other (one sets
-  or changes what the other reads), or are they two pieces of logic solving
-  one problem, so that together they'd read as a single piece of the function
-  or file? If so they're related, and if not they sit 3 apart. Most often a declaration and the call, effect, or block that uses
-  it (in either direction), a function's definition and its call, an
-  assignment that reads the declarations just above it (reese-roofing's
-  `window.location.href = ...` after the two encoded strings it joins,
-  seal-and-shield's `quiCouNum = stiPagBoo ? quiCouNum + 1 : 0` in
-  `tests/support/states.ts`), a property set on an object declared just above
-  it (its `souImaObj.src = ...` after `const souImaObj = new Image()`), and a
-  test's action and the assertions that check it.
+  or changes what the other reads), or are they two pieces of logic solving one
+  problem, so that together they'd read as a single piece of the function or
+  file? If so they're related, and if not they sit 3 apart. Most often a
+  declaration and the call, effect, or block that uses it (in either
+  direction), a function's definition and its call, an assignment that reads
+  the declarations just above it (reese-roofing's `window.location.href = ...`
+  after the two encoded strings it joins, seal-and-shield's `quiCouNum =
+  stiPagBoo ? quiCouNum + 1 : 0` in `tests/support/states.ts`), a property set
+  on an object declared just above it (its `souImaObj.src = ...` after `const
+  souImaObj = new Image()`), and a test's action and the assertions that check
+  it.
   - **Mutually-exclusive sibling branches involving a multi-line one**: a
     run of independent early-return `if`s dispatching on the same value
     (e.g. `if ( mode === 'a' ) return ...; if ( mode === 'b' ) return
