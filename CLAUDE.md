@@ -463,6 +463,10 @@ and aren't converted.
 - **Named areas place children**: a grid's children are placed through
   `grid-template-areas` on the parent and `grid-area` on each child, since
   a named layout is easier to read and reason about than line numbers.
+- **An area is named after its child's class** (decided 2026-10-22), such
+  as `grid-area : nofTitHea`, since the class already says what the child
+  is and what kind of element it is. A grid with only one cell, holding
+  whichever single child is there, needs no named area at all.
 - **Except where names need a workaround**: when named areas would cause
   complications for a particular element (a list whose item count changes,
   a child spanning an unknown number of tracks), that element is placed
@@ -485,6 +489,18 @@ most space and the same kind of division always gets the same space.
   CLAUDE.md lists what falls in each of its tiers.
 - **The top tier's value is chosen first**, with the user, and the rest are
   worked out from it, recorded in the project's CLAUDE.md.
+- **Tokens** (decided 2026-10-22): each tier is a pair of tokens in the
+  global stylesheet's Tier Tokens region, `--tie-ver-001` and
+  `--tie-hor-001` for tier 1 through `--tie-ver-005` and `--tie-hor-005`
+  for tier 5, numbered like the horizontal rhythm's steps and split by axis
+  like the spacing families they read, so vertical and horizontal stay
+  separate under "Gaps follow the direction they run". Unlike other scales,
+  they're listed in tier order, largest first. Each reads one spacing step.
+- **A control's own padding is outside the tiers** (decided 2026-10-22):
+  the space inside a button or a text field shapes the control itself
+  rather than separating parts of the page, so it keeps reading spacing
+  steps directly. So does a page's side gutter, which keeps content off the
+  screen's edges rather than separating anything.
 
 ## Interaction Feedback
 Decided 2026-10-08. Every user interaction gets an animation or transition, so
