@@ -453,7 +453,7 @@ card count.
 
 ## Layout: Grid First
 Decided 2026-10-22, for projects started on or after that date
-(group-planner is the first). Existing projects keep their flexbox layouts
+(come-hang is the first). Existing projects keep their flexbox layouts
 and aren't converted.
 - **Grid is the layout tool**: an element that lays out its children uses
   `display : grid` (or `inline-grid`). Flexbox is used only where it does
@@ -478,7 +478,7 @@ and aren't converted.
 
 ## Spacing Tiers
 Decided 2026-10-22, for projects started on or after that date
-(group-planner is the first). Every gap, margin, and padding that separates
+(come-hang is the first). Every gap, margin, and padding that separates
 parts of a page reads a tier by how big a boundary it marks, rather than a
 spacing step picked case by case, so the biggest divisions always get the
 most space and the same kind of division always gets the same space.
