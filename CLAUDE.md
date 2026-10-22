@@ -610,13 +610,17 @@ part of a pre- or post-commit check.
   2. File structure: section order, file placement, folder dependencies, and
      file size.
   3. JS and TS naming, with every segment checked against the Known
-     miscorrections list and the project's scoped overrides.
+     miscorrections list and the project's scoped overrides, and every
+     `What:` label and `@param` expansion matching its name exactly.
   4. CSS and markup naming: classes, custom properties, keyframes, hooks,
      `data-*` attributes, and ids.
   5. Comments: present on every line that needs one, in the right form and
-     place, including the JSX self-audit greps, JSDoc, and regions.
+     place, including the JSX self-audit greps, JSDoc, and regions, and
+     accurate: each comment says what its code really does, at every width
+     and on every page.
   6. CSS values: tokens, token value comments, units, reduced motion,
-     `z-index`, and `!important`.
+     `z-index`, and `!important`, with every value a comment quotes matching
+     what it resolves to.
   7. Spacing and alignment: blank-line tiers, column alignment, and ordering.
   8. Copy rules.
   9. Project requirements: the 404 page, SEO, social previews, images, card
