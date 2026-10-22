@@ -3263,6 +3263,13 @@ still passes.
       rules (Home's Featured and Commission sections), and a parent whose
       only child is a pointer still gets its region, so it's clear the
       parent holds a child (tech-geek-cards' Halloween `titHalHea`).
+    - **A pointer's label ends in Pointer** (decided 2026-10-22): its
+      `What:` is the expansion of the base class it stands in for, then the
+      word `Pointer` (`What: Form Field Div Pointer.`), even when the element
+      also carries a modifier, whose own rule keeps its own label. A pointer
+      has no closing brace to end it, so where it sits directly above its own
+      variant it would otherwise read as that rule's comment, and a search for
+      `Pointer.` lists every one. See seal-and-shield's `contact.module.css`.
 - **Blank lines between siblings in CSS** mirror the JSX sibling spacing
   rule under "### JSX": 3 blank lines around a section whose element
   contains elements that themselves have children, 2 around a section
