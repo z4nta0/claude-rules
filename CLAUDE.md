@@ -3801,6 +3801,14 @@ are renamed to this as their files come up in the design-system pass.
   app`); only what a container can't measure, such as the viewport's
   height, stays `@media`. In ease-my-life the set is 440, 500, 560, 640,
   720, 760, and 880px, plus a 750px height query.
+- **The horizontal rhythm counts up from its narrowest step** (decided
+  2026-10-22): its tokens are a run of viewport fractions with no base in the
+  middle to count plus or minus from, so they're named as incremental steps
+  rather than by distance from `bas`: `--hor-rhy-min` for the narrowest, then
+  `-001`, `-002`, ... (three digits, like the core design numbers' powers), up
+  to `--hor-rhy-max` for the widest. Its comments read `Horizontal Rhythm 3`,
+  `Horizontal Rhythm Minimum`, and `Horizontal Rhythm Maximum`. See
+  seal-and-shield's `styles.css`.
 - **The core design numbers are exempt** from this naming pattern (see
   the exception under "The global stylesheet" above): they're named and
   ordered as the user writes them.
