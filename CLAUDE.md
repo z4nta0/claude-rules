@@ -1128,6 +1128,19 @@ can move code between files rather than just within one.
   types (`ALL_CAPS` and `PascalCase` names) never share one run. See
   reese-roofing's `tests/responsive/layout.spec.ts`, whose drawer limit,
   layout cases, and width list sit in that order.
+- **A constant computed at load sits by where its value comes from**
+  (decided 2026-10-22). An `ALL_CAPS` value worked out purely from what's
+  already in the code stays in Constants, even though it runs code to get
+  there: a path or URL built from `import.meta.url`, a string joined from
+  other constants, a number derived from another constant. One whose value
+  comes from outside the code when the file loads is startup setup, and goes
+  in Module state with the rest of the script's setup: reading a file, an
+  environment variable, or the command line, the clock, or anything fetched.
+  It keeps its `ALL_CAPS` name either way, since it never changes once set.
+  See seal-and-shield's `design/icons/render.mts`, whose `SOU_B64_STR` (the
+  mark read from disk) sits in Module state, and its
+  `design/og-image/render.mts`, whose `OUT_PAT_STR` (a path built from the
+  script's own address) stays in Constants.
 - **Type placement** (decided 2026-10-05). A type sits next to what uses
   it, keeping define-before-use:
   - **Used by one standalone declaration**: the type sits directly above
