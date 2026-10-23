@@ -1,7 +1,7 @@
 # User-Level CLAUDE.md
 
 Rules that apply to every project: development servers, language, linting,
-browser testing, required pages, multi-page scroll position, section links, SEO, social previews, images, card grids, grid layout, spacing tiers, interaction feedback, forms, full project audits, commit messages, copy, and code formatting, naming, and comments. A project's own CLAUDE.md
+browser testing, required pages, multi-page scroll position, section links, skip links and modal layers, SEO, social previews, images, card grids, grid layout, spacing tiers, interaction feedback, forms, full project audits, commit messages, copy, and code formatting, naming, and comments. A project's own CLAUDE.md
 describes that project and adds anything specific to it (scoped naming
 overrides, its own values).
 
@@ -228,6 +228,72 @@ any link on the web does.
   `tests/interaction/behavior.spec.ts`.
 - **Existing projects** with hash links are brought in line the next time
   they're worked on.
+
+## Skip Link And Modal Layers
+Decided 2026-10-23, after seal-and-shield's audit, whose accessibility scan
+kept flagging its open phone menu for "bypass" (most projects have the same
+menu). Every page or screen of every project, website and app alike, opens
+with a skip link, the first thing on the page, that takes a keyboard user
+straight to its main content, which also settles that check.
+- **Every project gets one**, on every page or screen, whatever its bar,
+  tab bar, or sidebar looks like and wherever it's drawn: it's a basic
+  usability feature, the first stop a keyboard user meets, not something
+  added only where a scan asks for it.
+- **Each project decides what its main content is**: a website's is usually
+  everything between the bar and the footer, while an app chooses the part of
+  each screen a person came to use (ease-my-life's open tab, past its tab
+  bar). The choice is recorded in the project's CLAUDE.md, and that element
+  is the one marked as the `<main>` the skip link targets.
+- **Why it's needed**: WCAG 2.2's 2.4.1 Bypass Blocks asks for a way past
+  blocks repeated on every page. A `<main>` landmark and real headings already
+  meet it for screen reader users, and axe passes the check on either one, but
+  someone using only a keyboard still has to Tab through every link in the bar
+  before reaching the page. The skip link is what helps them.
+- **The link**:
+  - It's the first focusable element on every page or screen, rendered by
+    the shared component each one starts with (a website's bar, an app's
+    root) so none can miss it, reading "Skip to main content".
+  - Its `href` is the bare `#main`, the same exception as a back to top link's
+    `#top` under "## Section Links: No Hash In The Address", since it means
+    whichever page is showing.
+  - It sits above the top edge of the screen until it's focused, and on
+    `:focus` (not `:focus-visible`, so it appears however focus arrives) it
+    slides down into view over the bar, layered just above it. It's styled as
+    one of the site's buttons, with the hover, press, and focus ring feedback
+    under "## Interaction Feedback" and a reduced-motion variant.
+- **The target**: every page's `<main>` carries `id='main'` (a navigation
+  target, so its id keeps its plain name) and `tabIndex={ -1 }`, so it can
+  take focus without joining the Tab order. The global stylesheet's Base
+  Elements region removes its focus outline (`main:focus { outline : none }`),
+  since it's where a jump lands, not a control, and a ring around the whole
+  page would only confuse.
+- **A plain click** returns early for a modified click (`modCliFun`), then
+  cancels the default and focuses the `<main>`, so the address keeps no hash
+  and the next Tab continues into the content. Enter on the focused link sends
+  the same click.
+- **A modal layer and axe's bypass check**: a modal, drawer, phone menu, or any
+  other pop-up that dims the page and makes everything behind it inert
+  (`inert` on the layer's siblings, closing on Escape and on a tap of the
+  dimmer) hides the `<main>` and the headings along with the rest of the page
+  while it's open. On a page with no skip link, axe then finds no way past
+  the repeated blocks and reports `bypass` as needing review, pointed at
+  `html`. That result is expected rather than a fault: inside an open modal
+  there's nothing repeated to skip, keyboard and screen reader users are held
+  in the layer on purpose, and Escape gives them the page back. It goes away
+  once the skip link is in place, since axe accepts the skip link ("Valid
+  skip link found") even while the layer has made it inert along with the
+  page, as seal-and-shield's open phone menu showed on 2026-10-23. So an audit
+  that meets the review on a project without a skip link logs it as expected
+  and adds the link, and on a project with one, any `bypass` result is a real
+  problem to look at.
+- **Verified** by the suites in all three engines: the interaction suite
+  checks that the first Tab on every page lands on the skip link, on screen,
+  and that a plain click on it moves focus to the `<main>` with the address
+  unchanged; the Tab walk measures each stop once its transitions finish, so a
+  link that slides in on focus is judged where it lands; and the feedback
+  probe focuses a control that only appears on focus before hovering it. See
+  seal-and-shield's `ui/nav.tsx` and `tests/interaction/behavior.spec.ts`.
+- **Existing projects** get it the next time they're worked on.
 
 ## SEO
 Decided 2026-10-08. Every project gets an SEO pass early on, once its pages
@@ -723,9 +789,9 @@ part of a pre- or post-commit check.
      what it resolves to.
   7. Spacing and alignment: blank-line tiers, column alignment, and ordering.
   8. Copy rules.
-  9. Project requirements: the 404 page, SEO, social previews, images, card
-     grids, interaction feedback, and forms, checked partly through the test
-     suites.
+  9. Project requirements: the 404 page, the skip link, SEO, social
+     previews, images, card grids, interaction feedback, and forms, checked
+     partly through the test suites.
 - **The final check**: once every audit is done, the mechanical audits run
   again, then the project's full test suites, accessibility scan included, in
   Chromium, Firefox, and WebKit, proving the fixes changed no behavior.
