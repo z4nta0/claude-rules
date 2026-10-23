@@ -2501,6 +2501,13 @@ comments in `src/ui/bg-flourish.tsx` for the reference examples.
   content (right after the file's own leading 3 blank lines) when it
   has none. See `constants.ts` (no imports) and `state/tour-bus.ts` (has
   imports) for the two placement variants.
+  - **It describes only its own file** (decided 2026-10-23): what that file
+    is for and what it holds, clearly enough that a reader knows what's
+    stored there and what isn't, and nothing about how other files behave
+    (that every module turns its own motion off, say). A short line naming
+    where the rest lives is fine. See seal-and-shield's `styles/styles.css`,
+    whose summary walks through its token, base element, and body state
+    regions and ends by saying component styles live in their modules.
 - **Name/title line**: if the comment is attached to a specific
   declaration (the thing it immediately precedes), use that
   declaration's own name and expansion, exactly like a function
