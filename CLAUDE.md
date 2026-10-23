@@ -555,7 +555,10 @@ in the way.
   instead (tonys-toppers' phone menu). Decided 2026-10-17: a small inline
   button that follows a label's text (tech-geek-support's "?" help tips beside
   its form labels) shifts color only too, since a lift would nudge it off its
-  label's line.
+  label's line. Decided 2026-10-22: a card that isn't a link may fade in a
+  shadow with its lift in place of the color shift (seal-and-shield's service
+  cards), since the deeper shadow already reads as the card rising, and a
+  color change could make it look clickable when it isn't.
 - **The flair**: one small, purposeful touch per element at most, such as an
   arrow that slides on hover, a gentle overshoot on something opening, or a
   check that pops in once. It never repeats on its own, loops, bounces
