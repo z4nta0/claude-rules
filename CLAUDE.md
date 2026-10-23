@@ -572,6 +572,14 @@ in the way.
     strong bounce is kept for rare celebrations.
   - Movement stays small: a few pixels of travel, and scales within a few
     percent, except an element opening from nothing.
+  - **They govern feedback only** (decided 2026-10-22): motion that isn't a
+    response to a control, such as a page's entrance on load, content
+    revealed on scroll, or an ambient loop like a slow pulse, falls outside
+    these limits, though it still gets its reduced-motion variant and stays
+    calm. A staggered open (a menu's rows arriving one after another) keeps
+    each item's own animation within the limits, while the whole cascade may
+    finish later. See seal-and-shield's scroll reveal, hero entrance, logo
+    ring, and phone menu.
 - **It follows the motion rules**: every transition gets its reduced-motion
   variant per "### Reduced motion", where the state still changes, just
   without the movement, and it animates compositor properties per "###
