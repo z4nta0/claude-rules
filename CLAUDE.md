@@ -3230,7 +3230,11 @@ still passes.
   - **Numbers of 1,000 or more take thousands separators** in every
     comment (decided 2026-10-07), since they read more easily: `1,130.0ms`,
     `@ 1,920px width`. Code values stay as the language requires
-    (`calc( 1920px / ... )`).
+    (`calc( 1920px / ... )`). The rule covers quantities (sizes, durations,
+    counts, widths, file sizes); a number that names something rather than
+    measuring it stays as written (decided 2026-10-22): a port (`5197`), a
+    year (`2026`), a version, a status code, or a hex color, as in
+    seal-and-shield's `tests/playwright.config.ts`.
   - A declaration that also needs a real explanation (the tricky-value
     exception above) keeps both: the token comment first, then the
     What/Why/How in its own `/* */` right after it on the same line.
