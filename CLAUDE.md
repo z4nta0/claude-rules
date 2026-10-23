@@ -1859,6 +1859,14 @@ lines apart, however related, is gone.
     2026-10-07) names what that instance is for, ending in the component's
     own name: a React Router `<Route>` reads `What: Home Route.` or `What:
     Not Found Route.`
+    - **One that carries a class expands its class** (decided 2026-10-22),
+      ending in the component's own name in place of `Element`, so it stays
+      in step with its CSS rule and its plain siblings while still saying
+      what it is in the code: seal-and-shield's 404 page `<Link>` with
+      `butBasAnc` and `--primary` reads `What: Button Base Anchor Primary
+      Link.`, beside its sibling `<a>`'s `Button Base Anchor Secondary
+      Element`. Only a library component with no class of its own keeps the
+      purpose-based label.
   - **A fragment** (`<>...</>`, decided 2026-10-18) has no class and never
     reaches the page, so its label names what it groups and ends in `Fragment`,
     with no `Element`: reese-roofing's `What: Navigation Fragment.` and `What:
