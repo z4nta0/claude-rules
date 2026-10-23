@@ -343,7 +343,9 @@ pitch changes.
   under 120 as short), both written for a person deciding whether to tap,
   matching the page's own title and description unless a shorter version
   reads better. The SEO suite checks every page's description against
-  both bounds.
+  both bounds, where a page that keeps `index.html`'s description (a
+  `noindex` page) is covered by the home page's check (decided 2026-10-22),
+  since it's the same tag.
 - **The image** (`public/og-image.png`, per the directory rules):
   - 1200x630 PNG (or JPG for a photograph), under 300 KB so WhatsApp shows it
     at all.
