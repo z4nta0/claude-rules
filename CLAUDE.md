@@ -3375,7 +3375,15 @@ still passes.
     seal-and-shield's gutter), never `about <low> to <high>`, so it reads the
     same as every comment quoting it. Plain prose keeps its `about`
     (a heading that wraps at about 368px), since it gives a size in passing
-    rather than stating a value. A not-yet-renamed component
+    rather than stating a value. Where the value goes (decided 2026-10-23):
+    a token with a real numeric value states it in its What label, right
+    after the name (`What: Vertical Rhythm Base Plus 4 ~= 4.080.`, `What:
+    Gutter Side Padding, about 19.304px - 44.876px.`), so a section reads as
+    a table of names and sizes, scale steps and layout sizes alike. A color
+    states no value, since the editor's swatch shows it beside the code (see
+    the swatch reminder under "The global stylesheet"), a font stack spells
+    itself out, and an easing curve's four numbers aren't one value, so those
+    leave the label as the bare name. A not-yet-renamed component
     property is expanded as it's named and given its value, or "set by its
     parent" when a parent sets it.
   - The comments in one rule align their columns like any run of lines,
@@ -3544,6 +3552,18 @@ still passes.
     replacing an earlier rule that only commented tokens whose names didn't
     say what they were), and a run of tokens column-aligns its comments
     like any other run of lines, under the same 100-character exception.
+    - **The Color Tokens region opens with the swatch reminder** (decided
+      2026-10-23), verbatim, 1 blank line after the region's marker and 1
+      before its first token:
+      ```
+      /* CTRL+ALT+C to toggle color swatches on and off *Requires Extension Toggle by Peng Lv */
+      ```
+      The shortcut is rarely used and easy to forget, so every project's
+      sheet carries it where the colors are. It's the one comment in the
+      sheet that skips the What/Why/How template, since it's a note to
+      whoever edits the file rather than a description of code. See
+      ease-my-life's `styles/styles.css`. Existing projects get it the next
+      time they're worked on.
     - **A token's comment says what it is, never who reads it** (decided
       2026-10-22): its Why and How give the token's role (the brand's strong
       blue, for actions and accents) and how its value is built, never a list
