@@ -917,7 +917,9 @@ itself gets its own mandatory self-check.
   checks above and before committing. Pure tooling or docs changes skip it.
   - **What it runs**: axe-core through Playwright on every page and its main
     states (each page at phone and desktop widths, open menus and drawers,
-    error pages), in all three engines per "## Testing: Every Browser
+    error pages, and each form's result states, such as its thank-you
+    message and its error, reached by faking the server's answer, decided
+    2026-10-22), in all three engines per "## Testing: Every Browser
     Engine", plus scripted checks axe can't make: the announced name of
     every link and button in the accessibility tree, a Tab walk checking
     focus order, no keyboard traps, and visible focus, reflow at 320px wide
