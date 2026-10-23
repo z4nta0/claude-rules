@@ -2020,6 +2020,16 @@ lines apart, however related, is gone.
   children or a function's own steps, may stay a list, and then it names every
   item. seal-and-shield's comments audit kept finding token roles, file
   summaries, and suite notes whose lists missed an item, pass after pass.
+  - **Summaries and imports always name kinds** (decided 2026-10-23): a file
+    summary, a section-intro summary, and an import's comment describe what
+    they cover by kind, with up to 3 examples, and never as a complete list,
+    since what they describe is spread across the file and a list of it goes
+    stale with every change (seal-and-shield's contact summary, now "its
+    thank-you message and error rise in and sink out", and its test files'
+    `expect` imports, now "asserts on what each check reads"). The checkable
+    list allowance above is for a comment about one element or one function,
+    where the whole list is in view, and a shape block still documents every
+    field of its shape.
 - **Size and case words match the styling** (decided 2026-10-22): a comment
   calls text small only when it's set below the body's own size (in
   seal-and-shield, `--fon-siz-bas` against the body's `--fon-siz-p01`), so
