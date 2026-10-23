@@ -5542,9 +5542,10 @@ reference example:
   - **Test steps are calls** (decided 2026-10-18, revised 2026-10-22): a
     test's actions (a click, a fill, a page open) and its assertions
     (`expect( ... )`, awaited or not, and a helper that only asserts) are all
-    calls, one type of code, so an action and the check that follows it, or a
-    check and the next action, sit 1 blank line apart like any two related
-    calls. Consecutive single-line assertions still form one tight run with
+    calls, one type of code, and so is awaiting a promise an earlier step
+    started (`await newTabPro;`, the new tab a click opens), so an action and
+    the check that follows it, or a check and the next action, sit 1 blank
+    line apart like any two related calls. Consecutive single-line assertions still form one tight run with
     aligned comments, since each performs the same operation, checking the
     page, and so do consecutive actions with the same method on different
     targets (two `.fill()` calls); a different call between them ends the run.
