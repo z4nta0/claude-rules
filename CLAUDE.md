@@ -558,7 +558,12 @@ in the way.
   label's line. Decided 2026-10-22: a card that isn't a link may fade in a
   shadow with its lift in place of the color shift (seal-and-shield's service
   cards), since the deeper shadow already reads as the card rising, and a
-  color change could make it look clickable when it isn't.
+  color change could make it look clickable when it isn't. Also decided
+  2026-10-22: the lift is for cards that repeat as items, such as a grid of
+  service cards; a one-off panel holding information or controls (an info
+  card, a form's panel) doesn't lift, since moving a whole panel, or a form
+  under every field it holds, reads as the layout shifting rather than as
+  feedback. See seal-and-shield's About info card and quote panel.
 - **The flair**: one small, purposeful touch per element at most, such as an
   arrow that slides on hover, a gentle overshoot on something opening, or a
   check that pops in once. It never repeats on its own, loops, bounces
