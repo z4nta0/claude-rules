@@ -3499,6 +3499,21 @@ still passes.
       rounded corner) stays literal. Numbers inside an SVG's own drawing
       space (path coordinates, `viewBox`, `strokeWidth`) are not CSS
       lengths, scale with the SVG, and are exempt.
+    - **A distance that clears part of the layout reads its tokens**
+      (decided 2026-10-22): a JavaScript threshold meant to clear something
+      the stylesheet sizes (the line just below a fixed bar where a section
+      counts as being read, a scroll offset that leaves room for the bar) is
+      built at run time from that thing's own token plus a spacing step for
+      the margin, never a literal that only happens to match it, so it
+      follows the layout when the token changes. A helper resolves a length
+      token to pixels the way the page does, through a hidden probe sized by
+      it, since a computed custom property comes back unresolved
+      (seal-and-shield's `utils/rhythm.ts` `tokPxlFun( '--nav-bar-hei' )`).
+      Its line carries the usual token value comment. A number that only
+      tunes behavior, with no part of the layout to clear (a 40px "has
+      scrolled" check, a drag distance), stays literal, as above. See
+      seal-and-shield's `ui/nav.tsx`, whose active section line is the bar's
+      height plus `--spa-ver-p03`.
     - **Text measure is font based** (decided 2026-10-01): a paragraph's `max-width` comes from the
       project's main body font, not from either rhythm. Paragraph text
       targets 66 characters per line and must land within 45 to 75; small
