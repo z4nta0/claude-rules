@@ -1,7 +1,7 @@
 # User-Level CLAUDE.md
 
 Rules that apply to every project: development servers, language, linting,
-browser testing, required pages, multi-page scroll position, section links, skip links and modal layers, SEO, social previews, images, card grids, grid layout, spacing tiers, interaction feedback, forms, full project audits, commit messages, copy, and code formatting, naming, and comments. A project's own CLAUDE.md
+browser testing, security testing, required pages, multi-page scroll position, section links, skip links and modal layers, SEO, social previews, images, card grids, grid layout, spacing tiers, interaction feedback, forms, full project audits, commit messages, copy, and code formatting, naming, and comments. A project's own CLAUDE.md
 describes that project and adds anything specific to it (scoped naming
 overrides, its own values).
 
@@ -97,6 +97,60 @@ worked in Chromium but snapped shut in Firefox, which the user caught by hand.
   while the full mode reported it in all 240 runs tried.
 - **Report the engines**: when reporting a verification, say which engines
   ran it.
+
+## Testing: Security
+Decided 2026-10-23. Every project has a security suite in `tests/security/`,
+run in all three engines like every other suite, so a change that weakens a
+protection fails a test rather than shipping. Every project gets the baseline
+below, and an app adds the app checks, its suite growing with the app.
+- **The baseline, every project**:
+  - **The headers policy**: the hosting headers file (Netlify's `_headers`)
+    sends a Content-Security-Policy with `default-src 'self'`, `object-src
+    'none'`, `base-uri` and `form-action` limited, `frame-ancestors 'none'`,
+    and no `'unsafe-eval'`, nor `'unsafe-inline'` unless the project's
+    CLAUDE.md records why it's needed; plus `X-Frame-Options: DENY`,
+    `Strict-Transport-Security` of at least a year with `includeSubDomains`,
+    `X-Content-Type-Options: nosniff`, a `Referrer-Policy`, and a
+    `Permissions-Policy`.
+  - **The policy in practice**: every page and state, loaded from the
+    production build (`vite preview`, since the dev server injects inline
+    scripts a strict policy blocks) with the headers file's headers applied to
+    each response, reports zero CSP violations.
+  - **New tab links**: every link that opens a new tab carries `rel` with
+    `noopener` and `noreferrer`, so the page it opens can't reach back.
+  - **No secrets shipped**: the built files hold no private keys or provider
+    tokens, checked by pattern across the build output. A key meant for the
+    browser (a Firebase web config) is allowed, and the project's CLAUDE.md
+    names it.
+  - **Dependencies**: `npm audit` of the shipped dependencies finds no high or
+    critical advisory. Offline, the check skips with a message rather than
+    passing silently.
+  - **Checks that read files run once**: the headers file, the build output,
+    and the audit don't change with the engine, so those checks run in the
+    Chromium project only, and say so.
+- **Apps add**:
+  - **Signed-out access**: every screen and route behind sign-in refuses a
+    signed-out visitor.
+  - **Data access**: one user can never read or change another user's data,
+    checked against the real access rules (Firestore through its emulator, as
+    ease-my-life's `tests/rules/` does).
+  - **Untrusted input**: anything a person can type is shown as text, never
+    run or rendered as HTML, checked with script-like input in each field that
+    displays it again.
+  - **Sessions**: signing out clears the session, and an expired one sends
+    the visitor back to sign in.
+  - **Browser storage**: nothing secret is kept in local storage beyond what
+    the sign-in library itself keeps there.
+  - **Payments and webhooks**: each one verifies its signature and refuses an
+    unsigned or replayed event.
+  - **Abuse limits**: where the backend has rate limits (sign-in attempts,
+    writes), a test shows they hold.
+- **It grows with the project**: a new surface (an API route, an upload, a
+  third-party script, a new origin in the policy) adds its checks in the same
+  change. come-hang's suite grows as the app is built.
+- **Existing projects** get the baseline the next time they're worked on, and
+  an app's existing access rule tests (ease-my-life's) count toward its data
+  access checks.
 
 ## Required Pages: 404
 Decided 2026-10-08. Every project has a 404 page, so a mistyped or outdated
@@ -790,8 +844,8 @@ part of a pre- or post-commit check.
   7. Spacing and alignment: blank-line tiers, column alignment, and ordering.
   8. Copy rules.
   9. Project requirements: the 404 page, the skip link, SEO, social
-     previews, images, card grids, interaction feedback, and forms, checked
-     partly through the test suites.
+     previews, images, card grids, interaction feedback, forms, and the
+     security suite, checked partly through the test suites.
 - **The final check**: once every audit is done, the mechanical audits run
   again, then the project's full test suites, accessibility scan included, in
   Chromium, Firefox, and WebKit, proving the fixes changed no behavior.
