@@ -5538,16 +5538,16 @@ reference example:
   repeated-operation run, and give that run its own correct spacing
   (0-blank internally, then the normal tiering rules for whatever
   precedes/follows the run as a whole).
-  - **Test assertions** (decided 2026-10-18): consecutive single-line
-    assertions in a test form one tight run with aligned comments, whether
-    each is awaited (`await expect( ... ).toHaveURL( ... )`, `await
-    expect.poll( ... )`) or not (`expect( ... ).toBe( ... )`), since each
-    performs the same operation, checking the page. An action between them (a
-    click, a scroll) ends the run. Consecutive actions with the same method on
-    different targets (two `.fill()` calls, decided 2026-10-18) form a tight
-    run of their own the same way. An action and the assertion run that checks
-    it sit 2 blank lines apart, in either order (decided 2026-10-21), as two
-    kinds of statement working on the same thing.
+  - **Test steps are calls** (decided 2026-10-18, revised 2026-10-22): a
+    test's actions (a click, a fill, a page open) and its assertions
+    (`expect( ... )`, awaited or not, and a helper that only asserts) are all
+    calls, one type of code, so an action and the check that follows it, or a
+    check and the next action, sit 1 blank line apart like any two related
+    calls. Consecutive single-line assertions still form one tight run with
+    aligned comments, since each performs the same operation, checking the
+    page, and so do consecutive actions with the same method on different
+    targets (two `.fill()` calls); a different call between them ends the run.
+    See seal-and-shield's `tests/interaction/behavior.spec.ts`.
   - **Animation timeline steps** (decided 2026-10-16): consecutive steps
     added with the same method (`set`, `from`, `to`, `fromTo`, ...) form one
     tight run, with 1 blank line wherever the method changes or another
@@ -5693,8 +5693,7 @@ tiers decide every other gap. Three tiers:
   after the two encoded strings it joins, seal-and-shield's `quiCouNum =
   stiPagBoo ? quiCouNum + 1 : 0` in `tests/support/states.ts`), a property set
   on an object declared just above it (its `souImaObj.src = ...` after `const
-  souImaObj = new Image()`), and a test's action and the assertions that check
-  it.
+  souImaObj = new Image()`).
   - **Mutually-exclusive sibling branches involving a multi-line one**: a
     run of independent early-return `if`s dispatching on the same value
     (e.g. `if ( mode === 'a' ) return ...; if ( mode === 'b' ) return
