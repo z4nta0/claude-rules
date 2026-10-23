@@ -3222,7 +3222,10 @@ still passes.
     carries its own What/Why/How stating its value. That stated value still
     follows the signs above (decided 2026-10-21): `=` for an exact value and
     `~=` for a rounded one, every length of a multi-length value at its
-    computed value, never a loose `about`. Plain prose keeps its `about`
+    computed value, never a loose `about`, and a value between two bounds in
+    the fixed `about <low> - <high>` wording (decided 2026-10-22,
+    seal-and-shield's gutter), never `about <low> to <high>`, so it reads the
+    same as every comment quoting it. Plain prose keeps its `about`
     (a heading that wraps at about 368px), since it gives a size in passing
     rather than stating a value. A not-yet-renamed component
     property is expanded as it's named and given its value, or "set by its
