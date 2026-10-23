@@ -5383,11 +5383,14 @@ reference example:
   lines apart). This is a correction to (and takes priority over)
   "### General relatedness tiering" below, whose own "Related" tier does
   NOT cover plain declarations at all anymore.
-  - **A test file's top-level settings group tightly** (decided
-    2026-10-11): constants that configure a spec or a test config (a
-    pattern, a width, a limit, a URL), even ones used by different checks,
-    read as one block of configuration and sit at 0 blank lines, aligned,
-    as seal-and-shield's do.
+  - **A test file's or script's top-level settings group tightly**
+    (decided 2026-10-11, extended to scripts 2026-10-22): constants that
+    configure a spec, a test config, or a script's run (a pattern, a width,
+    a size list, a limit, a URL or output path), even ones used by different
+    checks or steps, read as one block of configuration and sit at 0 blank
+    lines, aligned, as seal-and-shield's do (its `design/og-image/render.mts`
+    and `design/icons/render.mts`). A setting with its own JSDoc or region
+    keeps that block's fixed spacing.
   - **Only same-keyword declarations (all `const`, or all `let`) group
     this tightly.** A run that would otherwise mix `const` and `let`
     splits into two separate sub-groups by keyword instead (each 0-blank
