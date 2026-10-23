@@ -581,7 +581,11 @@ in the way.
     one, and every reduced-motion variant names both selectors, since the
     shown state's rule outranks the base. A shape that morphs between two
     states without leaving (a menu toggle's bars turning into a cross) keeps
-    one curve both ways. See seal-and-shield's `ui/nav.module.css`.
+    one curve both ways. See seal-and-shield's `ui/nav.module.css`. A hover
+    lift moves the element rather than making it appear, so it takes the
+    decelerating curve both ways, the same as every button's lift, while a
+    shadow that fades in with it is an indicator, arriving on decelerate and
+    leaving on accelerate (seal-and-shield's service cards).
   - Movement stays small: a few pixels of travel, and scales within a few
     percent, except an element opening from nothing.
   - **They govern feedback only** (decided 2026-10-22): motion that isn't a
