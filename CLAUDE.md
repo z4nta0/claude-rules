@@ -2011,18 +2011,17 @@ lines apart, however related, is gone.
 - **Lists in comments** (decided 2026-10-23): a comment doesn't try to list
   everywhere something is used or everything a file or section holds, since
   such a list goes stale the moment a use is added and an audit then finds it
-  incomplete. It names the role or the kind of thing instead, and may add up
-  to 3 common examples, as general kinds rather than specific classes or
-  names: kinds of property (padding, margins, borders, gaps), kinds of element
-  (sections, footers, lists, images), or kinds of page part (the bar, cards,
-  panels). Where nothing has a common example, the role alone is enough. A
+  incomplete. It names the role or the kind of thing instead, and may add one
+  example, a general kind rather than a specific class or name, such as a kind
+  of property (padding), a kind of element (a footer), or a kind of page part
+  (a card). Where nothing has a common example, the role alone is enough. A
   list that's short and checkable on the spot, such as an element's own
   children or a function's own steps, may stay a list, and then it names every
   item. seal-and-shield's comments audit kept finding token roles, file
   summaries, and suite notes whose lists missed an item, pass after pass.
   - **Summaries and imports always name kinds** (decided 2026-10-23): a file
     summary, a section-intro summary, and an import's comment describe what
-    they cover by kind, with up to 3 examples, and never as a complete list,
+    they cover by kind, with at most one example, and never as a complete list,
     since what they describe is spread across the file and a list of it goes
     stale with every change (seal-and-shield's contact summary, now "its
     thank-you message and error rise in and sink out", and its test files'
@@ -2030,6 +2029,13 @@ lines apart, however related, is gone.
     list allowance above is for a comment about one element or one function,
     where the whole list is in view, and a shape block still documents every
     field of its shape.
+  - **One example is enough** (decided 2026-10-23): when a comment needs an
+    example to explain an idea ("such as ..."), it gives one, the single
+    example that conveys the idea best, never a run of them. "Such as" marks
+    a typical case, not a list, so a second or third example only adds words
+    and invites the reader to treat it as complete. A comment about one
+    element or one function may still list what's in view, under the
+    checkable list allowance above.
 - **Size and case words match the styling** (decided 2026-10-22): a comment
   calls text small only when it's set below the body's own size (in
   seal-and-shield, `--fon-siz-bas` against the body's `--fon-siz-p01`), so
@@ -3666,8 +3672,8 @@ still passes.
       incomplete in turn (spacing that also sets offsets and motion distances,
       a border width that also draws a focus ring). A scale whose steps each
       exist for one purpose (the two text widths) keeps naming it. Either kind
-      may add up to 3 common examples of its use, as general kinds, per "Lists
-      in comments" under "### Comments".
+      may add one common example of its use, as a general kind, per "Lists in
+      comments" under "### Comments".
     - **Exception, a scale** (decided 2026-09-29): tokens that form a scale of
       steps (font sizes, and every scale like them) are ordered smallest to
       biggest instead of alphabetically, so the steps read in order (`m02`,
