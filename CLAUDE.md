@@ -3569,12 +3569,19 @@ still passes.
       blue, for actions and accents) and how its value is built, never a list
       of the elements, sections, or files that read it. Such a list is only
       useful if it's complete, it can't be kept complete by hand as elements
-      come and go, and a search for the token's name answers it anyway. A
-      token that exists for one thing (the bar's height) names that thing as
-      its role. The same goes for an `@font-face` rule, which says which
-      typeface and weight it loads and its role (the display font's extra
-      bold), not where that weight appears. See seal-and-shield's
-      `styles.css` and `fonts.css`.
+      come and go, and a search for the token's name answers it anyway. A token
+      that exists for one thing (the bar's height) names that thing as its
+      role. The same goes for an `@font-face` rule, which says which typeface
+      and weight it loads and its role (the display font's extra bold), not
+      where that weight appears. See seal-and-shield's `styles.css` and
+      `fonts.css`. A step of a scale (decided 2026-10-23) names its scale and
+      its place in it, not the kinds of properties that use it, since those are
+      its readers and the list grows stale as uses come and go: `This is the
+      horizontal spacing scale's step 3 below its base.`, with its size in the
+      What label. seal-and-shield's audit found every use-based scale role
+      incomplete in turn (spacing that also sets offsets and motion distances,
+      a border width that also draws a focus ring). A scale whose steps each
+      exist for one purpose (the two text widths) keeps naming it.
     - **Exception, a scale** (decided 2026-09-29): tokens that form a scale of
       steps (font sizes, and every scale like them) are ordered smallest to
       biggest instead of alphabetically, so the steps read in order (`m02`,
