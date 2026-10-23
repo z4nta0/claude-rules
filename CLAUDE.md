@@ -574,7 +574,14 @@ in the way.
     runs longer, up to about 400ms.
   - Easing comes from the easing tokens: decelerate for things arriving,
     accelerate for things leaving, and the gentle overshoot for flair. The
-    strong bounce is kept for rare celebrations.
+    strong bounce is kept for rare celebrations. An indicator that appears
+    and disappears with a state (an active dot, a hover underline) arrives
+    and leaves too (decided 2026-10-22): its shown state's rule carries the
+    decelerating transition and its hidden state's rule the accelerating
+    one, and every reduced-motion variant names both selectors, since the
+    shown state's rule outranks the base. A shape that morphs between two
+    states without leaving (a menu toggle's bars turning into a cross) keeps
+    one curve both ways. See seal-and-shield's `ui/nav.module.css`.
   - Movement stays small: a few pixels of travel, and scales within a few
     percent, except an element opening from nothing.
   - **They govern feedback only** (decided 2026-10-22): motion that isn't a
