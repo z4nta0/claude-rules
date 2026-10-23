@@ -3293,7 +3293,11 @@ still passes.
   line, ending with `,`, and only the last one carries the `{` and the
   rule's comment, the same "once it's multi-line, one entry per line"
   reasoning as array entries and JSX attributes. See
-  `ui/number-stepper.module.css`'s own spin-arrow rule.
+  `ui/number-stepper.module.css`'s own spin-arrow rule. The comment always
+  sits one space after its `{` (decided 2026-10-23), even when an earlier
+  selector in its list is longer, since the selector lines aren't a run of
+  commented lines to align (seal-and-shield's `ui/nav.module.css`, whose
+  active and hovered link underline rule lists its longer selector first).
 - **A table of one-declaration rules** (decided 2026-10-16): a run of
   rules that differ only in one selector argument and each set a single
   declaration (tech-geek-cards' `.famCelBut:nth-child( n )` cells, placing a
