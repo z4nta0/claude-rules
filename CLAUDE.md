@@ -5704,7 +5704,14 @@ reference example:
     that set the same kind of value on one object (a canvas's `.width =` and
     `.height =`) form one tight run, with their `=` signs and comments
     aligned, the same as a run of calls. See
-    seal-and-shield's `design/icons/render.mts`.
+    seal-and-shield's `design/icons/render.mts`. Decided 2026-10-23: so do
+    assignments to variables that work as a pair, doing the same thing to
+    each (seal-and-shield's `design/logos/render.mts`, which halves
+    `curHeiNum` and `curWidNum` side by side). Assignments that do different
+    things, or whose order matters because one reads what the other is about
+    to change (a counter updated against the old position, then the position
+    stored, in `tests/accessibility/scripted.spec.ts`), stay related
+    assignments 1 apart.
 
 ### Long boolean expressions
 A "long boolean expression" is an `&&`/`||` chain where MORE THAN 2 of
