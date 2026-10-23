@@ -3530,7 +3530,14 @@ still passes.
       tunes behavior, with no part of the layout to clear (a 40px "has
       scrolled" check, a drag distance), stays literal, as above. See
       seal-and-shield's `ui/nav.tsx`, whose active section line is the bar's
-      height plus `--spa-ver-p03`.
+      height plus `--spa-ver-p03`. The same holds in CSS (decided
+      2026-10-22): padding, a margin, or an offset that clears a fixed element
+      (a page's top padding under a fixed bar, a `scroll-margin-top`, a
+      height that leaves the bar's room) reads that element's own token,
+      plus a spacing step for any extra room, never the spacing step nearest
+      its size, so the two can't drift apart. See seal-and-shield's hero,
+      whose top padding is `--nav-bar-hei` (`hero.module.css`), and its 404
+      page, which adds `--spa-ver-p05` to it.
     - **Text measure is font based** (decided 2026-10-01): a paragraph's `max-width` comes from the
       project's main body font, not from either rhythm. Paragraph text
       targets 66 characters per line and must land within 45 to 75; small
