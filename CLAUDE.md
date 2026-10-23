@@ -3478,7 +3478,12 @@ still passes.
       `left` and `right` use `--spa-hor-*`, and an `inset` covering every
       side is written as two values, vertical then horizontal, unless every
       side takes the same value, which is written once (`inset : 0`,
-      decided 2026-10-18). An offset
+      decided 2026-10-18). Decided 2026-10-22: the three-value form (top,
+      then both sides, then bottom) is used only where the top and bottom
+      differ while the two sides match, as seal-and-shield's service card
+      shadow layer covers a thicker top border (`services.module.css`), since
+      its middle value still reads as the horizontal axis; a case that would
+      need four values is raised with the user. An offset
       that mirrors another size references that size's token instead of
       the nearest step: a padding it lines up with, a border width it
       covers, or half an element's own size (e.g. a tooltip arrow at
