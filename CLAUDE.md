@@ -3429,6 +3429,12 @@ still passes.
     element that needs no styling of its own (a plain `<div>` grouping a
     column) has no class to name a region after, so its children's rules
     sit at its parent's level. It never gains a class just to name one.
+  - **An element whose only class is a modifier** (decided 2026-10-23), a
+    trigger applied now and then with no base class beside it, still opens
+    its region under the base name that modifier is built from, with the
+    modifier's rule first inside it where a base rule would sit. See
+    seal-and-shield's `contact.module.css`, whose `quoReqFor` region opens
+    with `.quoReqFor--returning`, the form's fade-in as it comes back.
   - **A class shared across sections** (decided 2026-10-14): when
     elements under several different parents in one module share a class
     (tech-geek-cards' Home `secInnDiv`, inside three of its sections), its
