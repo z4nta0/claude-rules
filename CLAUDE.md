@@ -5526,7 +5526,11 @@ reference example:
   repeated operation on different data gets 0 blank lines between them
   too** (e.g. 8 back-to-back `rooStyObj.setProperty(...)` calls, one per
   palette token), the same principle as consecutive plain declarations
-  above, just for calls instead of declarations. Column-align their
+  above, just for calls instead of declarations. The same operation means
+  the same function or method each time (decided 2026-10-22): calls to
+  different functions, such as different state setters each setting their
+  own piece of state, are related calls 1 blank line apart instead, even
+  when they look alike. Column-align their
   comments the same way (computed from the single longest line in the
   run). This is the exception the bullet above refers to: a
   declaration immediately followed by the FIRST call of such a run does
@@ -5667,8 +5671,9 @@ tiers decide every other gap. Three tiers:
   keyword, shape, annotation, a non-standard name, or a multi-line value (see
   "### Variable declarations" above), two calls toward the same goal sit 1
   apart (a `ResizeObserver` call and the `window.addEventListener( 'resize',
-  ... )` call after it, both re-measuring; a timer call after a run of
-  state-setter calls, as in seal-and-shield's contact form), so do two effects
+  ... )` call after it, both re-measuring; consecutive calls to different state
+  setters, and the timer call after them, as in seal-and-shield's contact
+  form), so do two effects
   working on the same or related data, and the branches of one `if`/`else
   if`/`else` chain.
 - **Functions always sit 3 apart** (decided 2026-10-21), whatever their
