@@ -4495,28 +4495,25 @@ parses. See ease-my-life's `firestore.rules`.
       above the array instead, and leave that short identifier in its
       real position; it no longer widens the comment column. See
       `tab-stats.tsx`'s own `freSpeObj`/`metPilArr`.
-    - **Exception, a table whose rows carry a prose-length field**
-      (decided 2026-10-18) may write each row multi-line instead: its
-      short fields first, alphabetized and aligned, then 1 blank line, then
-      the prose field, the same split the long outlier rule gives a single
-      object, so every row reads the same way. See seal-and-shield's and
-      reese-roofing's `SER_REC_ARR`.
-    - **Exception, stop aligning before a long/paragraph-length
-      property.** Once a row's own value for a given property is
-      genuinely prose-length (a sentence or more, varying wildly in
-      length row to row, as opposed to a short string/number that just
-      happens to differ a little), padding every shorter row's closing
-      `}` out to match the single longest one would mean tens or
-      hundreds of meaningless trailing spaces, which hurts readability
-      instead of helping it. Align every property up through the last
-      one whose values stay short across every row, then leave that
-      long property and the closing `}` completely unaligned/natural,
-      each row ending wherever its own value happens to end. See
-      `help/mode.tsx`'s own `NAV_TAB_ARR` (`icoStr`/`labStr`/`desStr`,
-      the `NAV_HEL_OBJ` tip's own tab-description catalog): `icoStr`
-      and `labStr` line up across all 5 rows, but
-      `desStr` (a full sentence or more per row) and the closing `}`
-      after it are left natural.
+    - **Rows stay one line only while they can align** (decided
+      2026-10-22, replacing the earlier allowances to stop aligning before
+      a prose field or to write prose rows multi-line by choice): a stack
+      stays one row per line, alphabetized, aligned, and tight (0 blank
+      lines between rows) only when, at every position, the longest value
+      is within 25 characters of the shortest, so no row is padded by
+      more than 25 spaces. When any position spreads wider (most often a
+      sentence of prose, whose length varies from row to row), every row
+      is written multi-line instead and follows the ordinary multi-line
+      object rules: an identity comment on its opening `{`, its
+      properties alphabetized and aligned, the 2-blank open and close
+      padding, 1 blank line between rows, and a property more than 100
+      characters longer than the rest moved last behind 1 blank line, per
+      the long outlier rule. See seal-and-shield's `ABO_VAL_ARR`
+      (`pages/home/about.tsx`), whose rows keep `desStr` first since no
+      line runs 100 characters past `titStr`, and its `SER_REC_ARR`, whose
+      longer descriptions sit last. Existing tables (ease-my-life's
+      `help/mode.tsx` `NAV_TAB_ARR`, which stopped aligning before its
+      `desStr`) are brought in line the next time they're worked on.
 - An object literal with 2+ properties gets split to one property per line
   (even if it would otherwise still fit on one line character-count-wise)
   whenever at least one property's value is a non-trivial expression
