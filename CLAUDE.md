@@ -5767,6 +5767,12 @@ identifiers) and also stays inline as one line, for the same reason.
   with nothing, gets 2 blank lines before `isBigBoo` even though
   `isBigBoo` directly consumes it and would normally tight-group at
   0-blank.
+  - **A chain of combiners** (decided 2026-10-23): when one combining
+    boolean feeds another, the combiners form a chain 1 blank line apart,
+    the way an operand group sits 1 above its combiner, and only the last
+    one takes the 2 blank lines after it. See seal-and-shield's
+    `tests/responsive/layout.spec.ts`, whose `cenOddBoo` sits 1 above
+    `shoRowBoo`, which then sits 2 above the check that reads it.
   - **Exception, a standalone `return` immediately consuming the
     combining boolean still gets its own mandatory 3 blank lines
     before it, not this rule's own 2**, per "### Return and continue
