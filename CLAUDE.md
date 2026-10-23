@@ -314,7 +314,10 @@ or business details change.
 - **Verified like everything else**: a scripted check in the test suite
   confirms each route's title, description, robots directives, canonical,
   and structured data in all three engines, and the project's CLAUDE.md
-  records which kind of site it is and its live URL.
+  records which kind of site it is and its live URL. A page that keeps
+  `index.html`'s description or structured data (a `noindex` page such as
+  the 404 page) is covered by the home page's checks of them (decided
+  2026-10-22), since they're the same tags.
 
 ## Social Previews
 Decided 2026-10-08. Every project gets a complete social preview, so a link
