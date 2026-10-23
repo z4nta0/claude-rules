@@ -604,6 +604,11 @@ never lost along the way.
   region itself; one that only changes a focused control's label, which screen
   readers don't announce, gets a visually hidden region beside it. See
   reese-roofing's `forStaPar` in `pages/home/contact.tsx`.
+- **An in-progress label needs no region of its own** (decided 2026-10-22):
+  a label that only shows while the request is out (a submit button reading
+  "Sending..."), and gives way to a result that is announced, isn't a status
+  message itself, since an announcement of it would usually be cut off by the
+  result's own. See seal-and-shield's contact form.
 - **Focus never falls to the page**: when the focused control disappears (a
   form replaced by a thank-you panel), focus moves to what replaces it, the
   panel given `tabIndex={ -1 }` and a heading, and back to the form's first
