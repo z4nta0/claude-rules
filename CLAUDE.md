@@ -5673,12 +5673,20 @@ tiers decide every other gap. Three tiers:
   apart (a `ResizeObserver` call and the `window.addEventListener( 'resize',
   ... )` call after it, both re-measuring; consecutive calls to different state
   setters, and the timer call after them, as in seal-and-shield's contact
-  form), so do two effects
-  working on the same or related data, and the branches of one `if`/`else
-  if`/`else` chain.
+  form), and the branches of
+  one `if`/`else if`/`else` chain.
 - **Functions always sit 3 apart** (decided 2026-10-21), whatever their
   relation, one calling the other included, at any level: two functions, of
   either kind and with or without a region, get 3 blank lines between them.
+  Anything holding a function body counts as a function here (decided
+  2026-10-22), not only a declaration or a stored arrow: a call whose
+  function argument spans several lines, such as an effect (`useEffect( ()
+  => { ... } )`), a `useCallback` or `useMemo`, a test (`test( '...', async
+  () => { ... } )`), or a `.then( () => { ... } )`. So a function and the
+  effect that reads the state it sets sit 3 apart, as do two effects working
+  on the same data (seal-and-shield's `sucEndFun` and its Form Focus effect,
+  and `navSecFun` and the Modal Menu effect). A one-line call (a setter, a
+  click, an `expect`) stays a plain call, spaced by the tiers.
   The one exception is a run of one-line functions that need no JSDoc
   summary, which group tightly (0, aligned) when they belong together. A type
   placed directly above the function or declaration it describes (see "Type
