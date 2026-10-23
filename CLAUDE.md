@@ -935,12 +935,12 @@ itself gets its own mandatory self-check.
     the commit, and anything axe marks as needing review is listed for the
     user to check by hand, since automated tools catch only part of real
     accessibility problems.
-  - **Setup**: `playwright` and `@axe-core/playwright` are installed as dev
-    dependencies, the scan lives in the project's test suite so it reruns
-    the same way every time, and the browsers are installed per "## Testing:
-    Every Browser Engine" (with any `sudo` step handed to the user). A
-    project without the scan gets it set up before its next commit that
-    needs it.
+  - **Setup**: `@playwright/test` (which brings in `playwright`) and
+    `@axe-core/playwright` are installed as dev dependencies, the scan lives in
+    the project's test suite so it reruns the same way every time, and the
+    browsers are installed per "## Testing: Every Browser Engine" (with any
+    `sudo` step handed to the user). A project without the scan gets it set up
+    before its next commit that needs it.
   - **Report it**: the commit report says the scan ran, in which engines,
     and what it found and fixed, the same way the rule check below is
     reported.
