@@ -5869,7 +5869,15 @@ tiers decide every other gap. Three tiers:
   a line it doesn't touch. See seal-and-shield's `ui/nav.tsx`, whose scroll
   effect sits 3 below `isaHomBoo` though it sets the state declared above
   it, and `pages/home/home.tsx`, whose hash effect sits 2 below
-  `navRouFun`, which it calls.
+  `navRouFun`, which it calls. The read-or-set test applies only below a
+  declaration run split into groups (decided 2026-10-23). Below a single
+  declaration, or a run that isn't split, the ordinary test decides: two
+  pieces of logic solving one problem sit 2 apart, and unrelated ones 3, so
+  a line can sit 2 below a declaration it never names when both are steps of
+  one procedure. See seal-and-shield's `utils/rhythm.ts`, whose probe removal
+  sits 2 below the height it measured, and `tests/interaction/
+  behavior.spec.ts`, whose submit click sits 2 below the post counter that
+  counts what the click sends.
 - **Unrelated (3 blank lines)**: everything else: no real shared data and no
   real shared purpose, including cases that only *look* structurally parallel.
   Two independent "declare + guard clause" pairs that happen to share the same
