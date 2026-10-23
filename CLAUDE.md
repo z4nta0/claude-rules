@@ -5709,6 +5709,16 @@ tiers decide every other gap. Three tiers:
     finished `if` construct always gets 3 blank lines, per "### if/else,
     while, and for statements", and only the branches of one `if`/`else
     if`/`else` chain sit 1 blank line apart.
+- **A gap is judged by the statement right above it** (decided 2026-10-22),
+  never by a run that statement ends. Below a run of declarations split
+  into groups (by keyword, shape, annotation, name length, or a multi-line
+  value), a call, effect, or function sits 2 lines down only when it reads
+  or sets what the last declaration holds, and 3 otherwise, even when it
+  uses a declaration higher up, so the spacing never suggests it relates to
+  a line it doesn't touch. See seal-and-shield's `ui/nav.tsx`, whose scroll
+  effect sits 3 below `isaHomBoo` though it sets the state declared above
+  it, and `pages/home/home.tsx`, whose hash effect sits 2 below
+  `navRouFun`, which it calls.
 - **Unrelated (3 blank lines)**: everything else: no real shared data and no
   real shared purpose, including cases that only *look* structurally parallel.
   Two independent "declare + guard clause" pairs that happen to share the same
