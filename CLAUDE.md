@@ -453,6 +453,11 @@ card count.
   used only where one row of every card no longer fits, since the
   user's sites each have a section like this. See tech-geek-support's
   Contact sidebar on a tablet.
+- **Tags and chips aren't cards** (decided 2026-10-22): a wrapping row of
+  tags, chips, or pills, each sized to its own text (seal-and-shield's service
+  area tags in `services.module.css`), reads as a list of labels rather than a
+  grid of cards, so it may leave a short last row, and forcing it into equal
+  columns would only open wide gaps around the short labels.
 - **Existing projects** are brought in line the next time they're worked
   on.
 
