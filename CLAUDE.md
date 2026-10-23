@@ -847,6 +847,14 @@ touched, not swept all at once.
   comment: initialisms keep their capitals and numbers of 1,000 or more take
   thousands separators (`'the social preview image is a 1,200x630 PNG under
   300 KB'`), the same as "### Comments" and "Token value comments" ask.
+- **A test's problem entries are list data** (decided 2026-10-22): the
+  strings a check collects to report a failure (`proLisArr.push( ... )`, then
+  `expect( proLisArr ).toEqual( [] )`) are short findings, read like log lines
+  in the failure's printed list, so each is a lowercase clause with no full
+  stop, most opening with the element it describes (`input "conEmaInp" looks
+  the same focused`, `the page scrolls sideways by 12px`). They still follow
+  every other copy rule: no em dashes, initialisms in capitals, and thousands
+  separators. See seal-and-shield's `tests/interaction/feedback.spec.ts`.
 
 ## Code formatting rules
 
