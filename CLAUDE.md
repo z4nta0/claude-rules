@@ -847,6 +847,14 @@ touched, not swept all at once.
   comment: initialisms keep their capitals and numbers of 1,000 or more take
   thousands separators (`'the social preview image is a 1,200x630 PNG under
   300 KB'`), the same as "### Comments" and "Token value comments" ask.
+- **A page section's name is capitalized in prose** (decided 2026-10-22):
+  wherever a comment, doc, or test title names one of a page's sections by
+  the name its link or heading gives it, that name is capitalized (the About
+  section, the Services, About, and Contact sections), so it reads as a name,
+  and a lowercase "about" can't pass for the preposition. A generic part of a
+  page stays lowercase (the hero, the contact form), and so does a section's
+  id where the text quotes it (`about`). See seal-and-shield's
+  `pages/home/reveal.ts`.
 - **A test's problem entries are list data** (decided 2026-10-22): the
   strings a check collects to report a failure (`proLisArr.push( ... )`, then
   `expect( proLisArr ).toEqual( [] )`) are short findings, read like log lines
