@@ -1954,6 +1954,18 @@ lines apart, however related, is gone.
     these long single-line comments actually readable on screen without
     changing the file's real line structure. Turn it on when working in
     this codebase.
+- **Lists in comments** (decided 2026-10-23): a comment doesn't try to list
+  everywhere something is used or everything a file or section holds, since
+  such a list goes stale the moment a use is added and an audit then finds it
+  incomplete. It names the role or the kind of thing instead, and may add up
+  to 3 common examples, as general kinds rather than specific classes or
+  names: kinds of property (padding, margins, borders, gaps), kinds of element
+  (sections, footers, lists, images), or kinds of page part (the bar, cards,
+  panels). Where nothing has a common example, the role alone is enough. A
+  list that's short and checkable on the spot, such as an element's own
+  children or a function's own steps, may stay a list, and then it names every
+  item. seal-and-shield's comments audit kept finding token roles, file
+  summaries, and suite notes whose lists missed an item, pass after pass.
 - **Size and case words match the styling** (decided 2026-10-22): a comment
   calls text small only when it's set below the body's own size (in
   seal-and-shield, `--fon-siz-bas` against the body's `--fon-siz-p01`), so
@@ -3581,7 +3593,9 @@ still passes.
       What label. seal-and-shield's audit found every use-based scale role
       incomplete in turn (spacing that also sets offsets and motion distances,
       a border width that also draws a focus ring). A scale whose steps each
-      exist for one purpose (the two text widths) keeps naming it.
+      exist for one purpose (the two text widths) keeps naming it. Either kind
+      may add up to 3 common examples of its use, as general kinds, per "Lists
+      in comments" under "### Comments".
     - **Exception, a scale** (decided 2026-09-29): tokens that form a scale of
       steps (font sizes, and every scale like them) are ordered smallest to
       biggest instead of alphabetically, so the steps read in order (`m02`,
