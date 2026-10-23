@@ -3478,12 +3478,8 @@ still passes.
       `left` and `right` use `--spa-hor-*`, and an `inset` covering every
       side is written as two values, vertical then horizontal, unless every
       side takes the same value, which is written once (`inset : 0`,
-      decided 2026-10-18). Decided 2026-10-22: the three-value form (top,
-      then both sides, then bottom) is used only where the top and bottom
-      differ while the two sides match, as seal-and-shield's service card
-      shadow layer covers a thicker top border (`services.module.css`), since
-      its middle value still reads as the horizontal axis; a case that would
-      need four values is raised with the user. An offset
+      decided 2026-10-18), and any other combination follows the four-sided
+      shorthand rule below. An offset
       that mirrors another size references that size's token instead of
       the nearest step: a padding it lines up with, a border width it
       covers, or half an element's own size (e.g. a tooltip arrow at
@@ -3493,6 +3489,19 @@ still passes.
       families, `translateX` reading `--spa-hor-*` and `translateY`
       `--spa-ver-*` (negated with `* -1`), when its nearest step is within
       10%; one that isn't (e.g. a 3px nudge, 10% off `m06`) stays literal.
+    - **A four-sided shorthand uses the shortest form that says it**
+      (decided 2026-10-22): every property whose shorthand sets the four
+      sides (`margin`, `padding`, `inset`, `scroll-margin`, `scroll-padding`,
+      `border-width`, `border-style`, and `border-color`) takes one value
+      when every side matches, two (top and bottom, then left and right) when
+      the top matches the bottom and the left matches the right, three (top,
+      then both sides, then bottom) when the sides match but the top and
+      bottom differ, and four (top, right, bottom, left) only when the left
+      and right differ, the one case the shorter forms can't say. A value is
+      never written longer than it needs to be (`0 auto 0 auto` is `0 auto`).
+      See seal-and-shield's service card shadow layer, whose three-value
+      `inset` covers a thicker top border (`services.module.css`).
+      `border-radius` names corners rather than sides and isn't covered.
     - **JavaScript follows the same scale** (decided 2026-10-01). An icon
       takes its size as a rhythm step name rather than a pixel number
       (`<IcoSvgCom icoNamStr='plus' sizSteStr='bas' />`), which the component
