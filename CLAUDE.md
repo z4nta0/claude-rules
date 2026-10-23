@@ -569,9 +569,16 @@ in the way.
   transition means nothing slides; the small position change is part of the
   feedback, not motion.
 - **Verified**: the test suite checks that every interactive element has a
-  transition or animation on its hover, focus, and pressed states (a
-  computed duration above zero, or an animation that plays), in all three
-  engines, and that reduced motion turns the movement off.
+  transition or animation on its hover, focus, and pressed states, in all
+  three engines, and that reduced motion turns the movement off. Each property
+  a state changes, on the element or anything inside it, has to be eased
+  itself (decided 2026-10-22): listed in that element's transition by name, by
+  a shorthand holding it, or by `all`, with a duration above zero, or an
+  animation that plays. A duration above zero somewhere on the element isn't
+  enough, since the focus ring's outline transition sits on every control. A
+  color inherited from a parent, a border color left as currentColor, and an
+  undrawn border side count as eased with what they follow. See
+  seal-and-shield's `tests/interaction/feedback.spec.ts`.
 - **Existing projects** are brought in line in one pass the next time they're
   worked on, the same way the reduced motion rule was rolled out.
 
