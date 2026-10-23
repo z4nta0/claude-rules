@@ -3397,6 +3397,14 @@ still passes.
   or non-obvious value, or a custom property whose name doesn't make
   clear what it is or why it's used; that one gets its own comment after
   its `;`. Expect this exception to be refined as files get reviewed.
+  - **A rule with a transition names what it eases** (decided 2026-10-23):
+    a rule that carries a `transition` says in its comment what that
+    transition eases, by kind, such as its hover color, press dim, and focus
+    ring, or every change between its looks, and on which curve it leaves
+    when that differs. A reader can then see from the base rule alone which
+    changes move, without tracing every state rule (seal-and-shield's link
+    rules, such as `infValAnc`: "and eases its hover color, press dim, and
+    focus ring").
 - **Token value comments** (decided 2026-10-02): a declaration whose
   value reads a token gets a comment that expands the token's name and
   gives its value, instead of the What/Why/How format: `font-size : var(
