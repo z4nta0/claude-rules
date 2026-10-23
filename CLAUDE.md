@@ -5594,8 +5594,8 @@ reference example:
     was the first shape to appear originally.
   - **Even within the same keyword and the same plain/destructured shape, a
     run further splits by whether each declaration's own VALUE is single-line
-    or spans multiple lines** (an array/object literal, a multi-line
-    `useMemo`/`useCallback`, ...). Two adjacent single-line-valued
+    or spans multiple lines** (an array or object literal, a long
+    calculation, ...). Two adjacent single-line-valued
     declarations still tightly group at 0-blank as normal, but any transition
     where EITHER side of a pair is multi-line-valued breaks out of the run,
     symmetric in both directions (entering a multi-line value, leaving one
@@ -5611,7 +5611,13 @@ reference example:
     staGraNum, gets 2 blank lines, `tab-data.tsx`'s sibling draft handlers
     `canNewFun`/`savNewFun`, two multi-line arrow functions, get 3, as any two
     functions do, and `savNewFun` followed by the unrelated `draCarRef` gets
-    3.
+    3. A value that holds a function body (decided 2026-10-23: a multi-line
+    `useMemo` or `useCallback`, or a call with a multi-line callback, such as
+    seal-and-shield's `const webB64Str = await draPagObj.evaluate( async (
+    ... ) => { ... } )` in `design/logos/render.mts`) counts as a function the
+    same way, under "Functions always sit 3 apart", so it sits 2 from a value
+    it reads and 3 from another function. A multi-line value here means a
+    literal or expression with no function body.
   - **A run also splits when it mixes standard-length (9-char/3-segment)
     names with a non-standard, longer composite name** (e.g. a 4-segment
     Initialism-compression case like `lmsLonPriNum`). Forcing the
