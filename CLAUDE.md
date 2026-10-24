@@ -859,7 +859,9 @@ part of a pre- or post-commit check.
 - **Agents**: at most 3 at once. They read and report, each on its own batch
   of files, and only one of them applies fixes at a time, so no two edit the
   same file. Only one test run happens at a time, since the suites share a
-  port and a dev server.
+  port and a dev server. Readers run as the `audit-reader` agent
+  (`~/.claude/agents/audit-reader.md`, on Sonnet), not `general-purpose`,
+  since readers make up most of an audit's usage (decided 2026-10-23).
 - **Order of projects** (the user's plan): the smallest sites first, to
   measure an audit's real time and token cost, working up to ease-my-life,
   the biggest codebase, last.
