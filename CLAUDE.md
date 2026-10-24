@@ -755,7 +755,10 @@ in the way.
   animation that plays. A duration above zero somewhere on the element isn't
   enough, since the focus ring's outline transition sits on every control. A
   color inherited from a parent, a border color left as currentColor, and an
-  undrawn border side count as eased with what they follow. See
+  undrawn border side count as eased with what they follow. The check reads
+  the properties the project's controls actually change, and grows when a
+  control first changes another (a box-shadow, a filter) or first animates
+  (decided 2026-10-24), rather than probing for looks nothing uses yet. See
   seal-and-shield's `tests/interaction/feedback.spec.ts`.
 - **Existing projects** are brought in line in one pass the next time they're
   worked on, the same way the reduced motion rule was rolled out.
