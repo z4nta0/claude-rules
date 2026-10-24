@@ -202,9 +202,10 @@ alone; only its data router's `<ScrollRestoration />` handles it.
     up (come-hang's 404 page, left 140px down, came back at 26px). The hook
     sets `history.scrollRestoration = 'manual'`, records each history entry's
     position under its location `key` from a passive scroll listener, saves
-    the record to session storage on each scroll (WebKit fires no `pagehide`
-    on a reload), and on a POP jumps to the entry's saved position after its
-    page renders, staying put when none was saved, such as on a first visit.
+    the record to session storage on each scroll (a mobile browser can
+    discard a background tab without firing `pagehide`), and on a POP jumps
+    to the entry's saved position after its page renders, staying put when
+    none was saved, such as on a first visit.
 - **The implementation**: a `useScrTopFun` hook in `ui/scroll-top.ts`,
   called once from the app root inside the router, running a
   `useLayoutEffect` keyed on the location's `key` (which changes on every
