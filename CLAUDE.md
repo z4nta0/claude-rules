@@ -6073,6 +6073,13 @@ gradually alongside the whitespace rules above (started with `src/app.tsx`).
   - **TypeScript is `tye`** (decided 2026-10-21), since `typ` is the Type
     segment every type name ends in: claude-rules' checker loads the compiler
     as `tyeModObj`. Its `What:` expansion reads `TypeScript`.
+  - **A class takes the type segment `Cla`** (decided 2026-10-24): a binding
+    that holds a class, something called with `new` (most often a package's
+    default import, such as axe-core's builder), ends in `Cla` (Class), since
+    it's neither an object instance (`Obj`) nor a plain function (`Fun`):
+    come-hang's `import AxeBuiCla from '@axe-core/playwright';`. Its `What:`
+    expansion reads `Class`. A name a library exports by name (`{ chromium
+    }`) keeps the library's spelling, as with any named import.
 - **Known miscorrections: check every segment against this list before
   finalizing a name.** In practice, segments built from a word with a
   strong, ubiquitous conventional abbreviation (the kind used constantly
