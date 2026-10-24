@@ -758,8 +758,19 @@ in the way.
   undrawn border side count as eased with what they follow. The check reads
   the properties the project's controls actually change, and grows when a
   control first changes another (a box-shadow, a filter) or first animates
-  (decided 2026-10-24), rather than probing for looks nothing uses yet. See
-  seal-and-shield's `tests/interaction/feedback.spec.ts`.
+  (decided 2026-10-24), rather than probing for looks nothing uses yet.
+  - **Focus is probed like hover and press** (decided 2026-10-24): each
+    control is read unfocused and again focused the way a keyboard focuses
+    it, through `element.focus( { focusVisible : true } )`, the one script
+    focus that Chromium, Firefox, and WebKit all draw their keyboard ring for,
+    and every property that changes, its outline included, has to be eased.
+    Finding `outline-width` in the transition list isn't enough: it passes a
+    ring whose offset or color snaps, a zero duration, and a focus look that
+    changes nothing, and it wrongly fails an `outline` shorthand. Every
+    project's feedback spec before come-hang's checked focus that way, and
+    each is brought in line the next time it's worked on.
+  - See come-hang's `tests/interaction/feedback.spec.ts`, whose probe reads
+    each control at rest, hovered, pressed, unfocused, and focused.
 - **Existing projects** are brought in line in one pass the next time they're
   worked on, the same way the reduced motion rule was rolled out.
 
@@ -872,6 +883,16 @@ part of a pre- or post-commit check.
   9. Project requirements: the 404 page, the skip link, SEO, social
      previews, images, card grids, interaction feedback, forms, and the
      security suite, checked partly through the test suites.
+- **A cited example isn't proof** (decided 2026-10-24): a file a rule
+  points to shows the rule's form, but an audit still checks a project's code
+  against the rule's own words, item by item through each Verified list, so
+  matching the cited project is never a reason to set a finding aside. A
+  test is checked for what it actually reads: one that would pass without
+  the behavior it names is a finding. seal-and-shield's audit fixed its
+  feedback probe's hover and press checks but kept a focus check that only
+  searched the transition list, and every later project copied it, since the
+  rule cited that spec, until come-hang's audit compared the check with the
+  rule's "each property a state changes".
 - **The final check**: once every audit is done, the mechanical audits run
   again, then the project's full test suites, accessibility scan included, in
   Chromium, Firefox, and WebKit, proving the fixes changed no behavior.
