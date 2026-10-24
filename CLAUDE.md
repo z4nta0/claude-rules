@@ -5410,33 +5410,32 @@ while ( condition );
   siblings (and the old "a heading always gets 3 blank lines before it"
   rule). Every JSX sibling gets at least 1 blank line before and after it,
   and only these conditions raise that:
-  - **2 blank lines** when one of its block-level children itself contains
-    at least one element (e.g. a `<div>` holding a `<ul>` of `<li>`s).
-  - **3 blank lines** when one of those block-level children in turn
-    contains a block-level element that has elements inside it (e.g. a
-    `<section>` holding a `<div>` holding a `<ul>` of `<li>`s). 3 is the
-    maximum, however deep the nesting goes, the same as the JS tiers.
+  - **2 blank lines** when one of its children holds elements of its own
+    (e.g. a `<div>` holding a `<ul>` of `<li>`s).
+  - **3 blank lines** when one of those children in turn holds a child that
+    holds elements (e.g. a `<section>` holding a `<div>` holding a `<ul>` of
+    `<li>`s). 3 is the maximum, however deep the nesting goes, the same as
+    the JS tiers.
+  - **What counts as holding elements** (redefined 2026-10-24, replacing the
+    earlier block-level list and its special cases for buttons and SVG
+    groups): any child element that stands on its own as part of the
+    structure, whatever its tag, so a `<span>`, `<a>`, `<label>`, `<input>`,
+    or `<g>` counts as much as a `<div>`.
+    - **A text run doesn't count**: an element sitting inside a run of text,
+      sharing its line with the words around it (`Tap <strong>Save</strong>
+      to finish`, a `<br />` between two lines of a paragraph, an icon beside
+      a button's label), is part of that text. An element whose only content
+      is text and such inline elements holds no elements, so a `<p>` with a
+      `<strong>` in it counts the same as a plain `<p>`.
   - **Every custom component** (`<ColDisCom>`, `<CarSurCom>`, ...) gets 3
     blank lines before and after it, self-closing or not, since what it
     renders can't be seen from the call site and frequently holds many
-    elements. Exception: a component sitting inline, among text or inline
-    elements (e.g. an `<IcoSvgCom />` next to a button's label), is part
-    of that inline run instead (see the display exemption below).
-  - **Block-level** means the HTML block-level elements (`div`, `section`,
-    `header`, `footer`, `main`, `nav`, `article`, `aside`, `form`,
-    `fieldset`, `ul`, `ol`, `li`, `p`, `h1`-`h6`, `table`, `details`,
-    `dialog`, `figure`, `blockquote`, `pre`, ...) plus `<svg>`, which
-    counts as block-level here because it usually holds many elements.
-    Inline elements (`span`, `i`, `b`, `strong`, `em`, `a`, `label`,
-    `input`, `select`, `img`, ...) never count. A `<button>` counts as
-    block-level only when its own content is genuinely structured (it
-    holds block-level elements, or elements that themselves hold
-    elements); a button holding just text, or an icon plus text, doesn't.
-    Decided 2026-10-14: an SVG `<g>` counts as block-level when it spans
-    several lines and holds elements (tech-geek-cards' 404 stamp groups).
-    Decided 2026-10-17: so do an SVG's `<defs>` and `<pattern>` under the
-    same condition (reese-roofing's hero grid, whose `<defs>` holds the
-    `<pattern>` its `<rect>` fills).
+    elements. It also counts as a child holding elements, so its parent takes
+    3 as well (decided 2026-10-24, come-hang's 404 `<section>` holding its
+    router `<Link>`), and the gaps around a parent are never smaller than the
+    gaps inside it. Exception: a component sitting in a run of text (e.g. an
+    `<IcoSvgCom />` next to a button's label) is part of that text, under the
+    bullet above (see the display exemption below).
   - **When two neighbors call for different counts, the bigger count
     wins** for the gap between them.
   - **A `{ cond && ( ... ) }` or `.map( ... )` wrapper** holding a
