@@ -195,19 +195,31 @@ alone; only its data router's `<ScrollRestoration />` handles it.
     variant already turns off. A section link's plain click never puts the
     hash in the address, per "## Section Links: No Hash In The Address", so
     this covers an address that arrives with one.
-  - Back and forward (a POP) are left to the browser, which returns the
-    visitor to where they were.
+  - Back, forward, and a reload (a POP) return the visitor to where they
+    were, restored by the hook itself rather than the browser (decided
+    2026-10-24). Firefox restores a position while the page being left is
+    still drawn, so going back from a short page to a long one landed partway
+    up (come-hang's 404 page, left 140px down, came back at 26px). The hook
+    sets `history.scrollRestoration = 'manual'`, records each history entry's
+    position under its location `key` from a passive scroll listener, saves
+    the record to session storage on each scroll (WebKit fires no `pagehide`
+    on a reload), and on a POP jumps to the entry's saved position after its
+    page renders, staying put when none was saved, such as on a first visit.
 - **The implementation**: a `useScrTopFun` hook in `ui/scroll-top.ts`,
   called once from the app root inside the router, running a
   `useLayoutEffect` keyed on the location's `key` (which changes on every
-  navigation, even to the same address), its `hash`, and the navigation type.
-  See the-bernie-bears' `src/ui/scroll-top.ts`. A project on React Router's
-  data router uses `<ScrollRestoration />` instead.
+  navigation, even to the same address), its `hash`, and the navigation type,
+  with the position recorder as the file's module state and module init. See
+  come-hang's `src/ui/scroll-top.ts`. A project on React Router's data router
+  uses `<ScrollRestoration />` instead.
 - **Verified** by the interaction suite in all three engines: a footer link
   clicked at the bottom of each page opens the next page at its top, the
   current page's own link returns to the top, a phone menu link does the
-  same, and back returns near the earlier position. See the-bernie-bears'
-  `tests/interaction/navigation.spec.ts`.
+  same, and back and a reload each return to the exact earlier position,
+  from a page scrolled further than the page in between can scroll, in
+  Firefox too. A test that scrolls by script waits two animation frames
+  before leaving, so the scroll event that records the position has run. See
+  come-hang's `tests/interaction/navigation.spec.ts`.
 - **Existing projects** with more than one route get it the next time
   they're worked on.
 
