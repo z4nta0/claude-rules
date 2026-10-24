@@ -15,8 +15,13 @@ same answer.
   plain-text config comments, CSS sibling regions closer than 3 blank lines,
   and test Hows that never say what they check (a How names the assertions its
   test makes). It loads TypeScript from the project's own `node_modules`.
+- `absolute.ts <project-root>` lists every comment holding an absolute word
+  (every, all, only, always, never, exactly, any), one line per word with the
+  words around it, for the comments audit's dedicated pass under "Comment
+  accuracy". It's a list for a reader rather than a check, so it always exits
+  with 0.
 
-Both are TypeScript, run directly by Node 23.6 or newer, which strips their
+All three are TypeScript, run directly by Node 23.6 or newer, which strips their
 types: `node ~/projects/claude-rules/audit/run.ts <project-root>`. They follow
 every rule in `CLAUDE.md`, the same as project code, so they can be reviewed
 like any other code, and `check.ts` reports nothing when run on this folder.

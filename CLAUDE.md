@@ -843,6 +843,16 @@ part of a pre- or post-commit check.
   go through the next day. The code in question is left as it is, never
   guessed at, and the run keeps going with everything that doesn't depend on
   the answer.
+- **Rule questions settle before the comments audit** (decided 2026-10-24):
+  questions logged by audits 1 to 4 are put to the user before audit 5 starts,
+  where the run's timing allows, since a rule answered partway through the
+  comments audit resets its count. A run that can't wait (overnight) starts
+  audit 5 anyway and treats each later answer as a mid-audit rule change.
+- **The settled list travels with the audit** (decided 2026-10-24): every
+  point a pass raises and the run keeps or dismisses, with its reason, is
+  recorded in the progress file under its audit, and every later reader of
+  that audit is given the list, so a fresh reader doesn't raise the same
+  point again.
 - **Two kinds of audit**:
   - **Mechanical audits** run a script, so the same code always gives the
     same answer: lint and type check, em dashes, file boundaries, quotes,
@@ -859,7 +869,11 @@ part of a pre- or post-commit check.
     user rather than a missed violation. When a rule the audit checks changes
     mid-audit (decided 2026-10-21), its count starts over from 0, both its
     passes and its clean passes, and the first pass under the changed rule is
-    pass 1.
+    pass 1. Decided 2026-10-24: the changed rule is first applied across the
+    whole project as one sweep, its matches found by search and checked, so
+    the passes that follow judge code already under the new rule rather than
+    finding its cases a few at a time. seal-and-shield's comments audit
+    restarted four times as rules changed underneath it.
 - **The audits, in this order**, each covering one rule family, so a later
   audit doesn't undo an earlier one (moving and renaming come before comments,
   and spacing comes last):
@@ -874,7 +888,11 @@ part of a pre- or post-commit check.
   5. Comments: present on every line that needs one, in the right form and
      place, including the JSX self-audit greps, JSDoc, and regions, and
      accurate: each comment says what its code really does, at every width
-     and on every page.
+     and on every page, judged by "Comment accuracy" under "### Comments"
+     (decided 2026-10-24). Before its first pass, a script lists every
+     comment holding an absolute word (every, all, only, always, never,
+     exactly, any), and one dedicated pass checks each against its code, so
+     they're settled at once rather than turning up a few per pass.
   6. CSS values: tokens, token value comments, units, reduced motion,
      `z-index`, and `!important`, with every value a comment quotes matching
      what it resolves to.
@@ -2071,8 +2089,9 @@ lines apart, however related, is gone.
   of property (padding), a kind of element (a footer), or a kind of page part
   (a card). Where nothing has a common example, the role alone is enough. A
   list that's short and checkable on the spot, such as an element's own
-  children or a function's own steps, may stay a list, and then it names every
-  item. seal-and-shield's comments audit kept finding token roles, file
+  children, may stay a list, and then it names every item (a function's steps
+  follow "Don't restate what child comments say" under "Comment accuracy"
+  below). seal-and-shield's comments audit kept finding token roles, file
   summaries, and suite notes whose lists missed an item, pass after pass.
   - **Summaries and imports always name kinds** (decided 2026-10-23): a file
     summary, a section-intro summary, and an import's comment describe what
@@ -2081,16 +2100,54 @@ lines apart, however related, is gone.
     stale with every change (seal-and-shield's contact summary, now "its
     thank-you message and error rise in and sink out", and its test files'
     `expect` imports, now "asserts on what each check reads"). The checkable
-    list allowance above is for a comment about one element or one function,
-    where the whole list is in view, and a shape block still documents every
-    field of its shape.
+    list allowance above is for a comment about one element, where the whole
+    list is in view, and a shape block still documents every field of its
+    shape.
   - **One example is enough** (decided 2026-10-23): when a comment needs an
     example to explain an idea ("such as ..."), it gives one, the single
     example that conveys the idea best, never a run of them. "Such as" marks
     a typical case, not a list, so a second or third example only adds words
     and invites the reader to treat it as complete. A comment about one
-    element or one function may still list what's in view, under the
-    checkable list allowance above.
+    element may still list what's in view, under the checkable list allowance
+    above.
+- **Comment accuracy** (decided 2026-10-24, after the comments audits of
+  reese-roofing, seal-and-shield, tonys-toppers, and come-hang, whose long
+  runs came almost entirely from comments saying more or less than their
+  code rather than from their form). Every claim a comment makes is one more
+  thing that can be wrong, so a comment makes only the claims its code
+  supports:
+  - **What counts as wrong**: a comment is wrong when it states something
+    false about its code, or when a list it presents as complete leaves an
+    item out. A true comment that leaves out a detail isn't wrong, and an
+    audit never adds details to a comment that's already true. come-hang's
+    second comments rerun, whose readers worked to this line, went from 9
+    findings on its fifth pass to one across the next five.
+  - **Absolute words need proof in view**: every, all, only, always, never,
+    exactly, and any are used only where the code right there enforces them
+    (a loop over the whole list, a guard that returns for every other case).
+    Otherwise the comment says what the code does ("probes the reachable
+    links and buttons", not "probes every control"). Most overclaims the
+    audits found hung on one of these words.
+  - **A comment describes its own code**: it says what its own line or block
+    does and why, and doesn't narrate other code, such as its callers, its
+    importers, what another file does, or everything a suite checks, since
+    that goes stale whenever the other code changes. A short pointer is fine
+    ("which the scroll hook restores"), a description of how the other code
+    behaves isn't. This extends the same rule for file summaries and tokens to
+    every comment.
+  - **Don't restate what child comments say**: a test's How gives its
+    approach in a sentence ("scrolls the page down, follows the link, and
+    checks the new page opens at its top"), not every assertion, since each
+    assertion carries its own comment. A function's summary gives its
+    contract, what it takes, returns, and changes, and lists its steps only
+    where their order matters to a caller.
+  - **Claims about outside tools need a basis**: a statement about how a
+    browser, library, tool, or host behaves stays only when it was measured
+    or comes from that tool's own documentation, and then it's stated plainly.
+    One with neither is cut rather than hedged.
+  - **Pronouns and clauses point at one thing**: where it, this, that, or one
+    could mean more than one noun, the comment repeats the noun, and a which,
+    where, or once clause sits right after the noun it describes.
 - **Size and case words match the styling** (decided 2026-10-22): a comment
   calls text small only when it's set below the body's own size (in
   seal-and-shield, `--fon-siz-bas` against the body's `--fon-siz-p01`), so
