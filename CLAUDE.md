@@ -203,9 +203,14 @@ alone; only its data router's `<ScrollRestoration />` handles it.
     sets `history.scrollRestoration = 'manual'`, records each history entry's
     position under its location `key` from a scroll listener, saves the
     record to session storage on each scroll (a mobile browser can discard a
-    background tab without firing `pagehide`), and on a POP jumps to the
-    entry's saved position after its page renders, staying put when none was
-    saved, such as on a first visit.
+    background tab without firing `pagehide`), keeping the most recent
+    entries, and on a POP jumps to the entry's saved position after its page
+    renders. A POP with nothing saved, such as a first visit, is handled like
+    any other navigation (its hash, else the top). Two guards keep it honest
+    (decided 2026-10-24): a saved record is read as untrusted, keeping only
+    well-formed key and position pairs, and a fresh load of an address in the
+    same tab (navigation type `navigate`) forgets the `default` key's
+    position, since a new visit reuses that key.
 - **The implementation**: a `useScrTopFun` hook in `ui/scroll-top.ts`,
   called once from the app root inside the router, running a
   `useLayoutEffect` keyed on the location's `key` (which changes on every
@@ -216,9 +221,10 @@ alone; only its data router's `<ScrollRestoration />` handles it.
 - **Verified** by the interaction suite in all three engines: a footer link
   clicked at the bottom of each page opens the next page at its top, the
   current page's own link returns to the top, a phone menu link does the
-  same, and back and a reload each return to the exact earlier position,
-  from a page scrolled further than the page in between can scroll, in
-  Firefox too. A test that scrolls by script waits two animation frames
+  same, back and a reload each return to the exact earlier position, from a
+  page scrolled further than the page in between can scroll (checked, not
+  assumed), in Firefox too, a fresh load of an address opens at its top, and
+  malformed saved positions raise no error. A test that scrolls by script waits two animation frames
   before leaving, so the scroll event that records the position has run. See
   come-hang's `tests/interaction/navigation.spec.ts`.
 - **Existing projects** with more than one route get it the next time
