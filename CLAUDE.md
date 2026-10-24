@@ -206,7 +206,10 @@ alone; only its data router's `<ScrollRestoration />` handles it.
     background tab without firing `pagehide`), keeping the most recent
     entries, and on a POP jumps to the entry's saved position after its page
     renders. A POP with nothing saved, such as a first visit, is handled like
-    any other navigation (its hash, else the top). Two guards keep it honest
+    any other navigation (its hash, else the top), and so is a POP to a
+    `default`-key entry with a hash, since a hash typed into the address or
+    followed from a plain link adds an entry with no router state, sharing
+    the first entry's key. Two guards keep it honest
     (decided 2026-10-24): a saved record is read as untrusted, keeping only
     well-formed key and position pairs, and a fresh load of an address in the
     same tab (navigation type `navigate`) forgets the `default` key's
@@ -223,8 +226,9 @@ alone; only its data router's `<ScrollRestoration />` handles it.
   current page's own link returns to the top, a phone menu link does the
   same, back and a reload each return to the exact earlier position, from a
   page scrolled further than the page in between can scroll (checked, not
-  assumed), in Firefox too, a fresh load of an address opens at its top, and
-  malformed saved positions raise no error. A test that scrolls by script waits two animation frames
+  assumed), in Firefox too, a fresh load of an address opens at its top, a
+  hash added to the address jumps to its section rather than a saved
+  position, and malformed saved positions raise no error. A test that scrolls by script waits two animation frames
   before leaving, so the scroll event that records the position has run. See
   come-hang's `tests/interaction/navigation.spec.ts`.
 - **Existing projects** with more than one route get it the next time
