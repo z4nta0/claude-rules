@@ -1018,6 +1018,12 @@ touched, not swept all at once.
   comment: initialisms keep their capitals and numbers of 1,000 or more take
   thousands separators (`'the social preview image is a 1,200x630 PNG under
   300 KB'`), the same as "### Comments" and "Token value comments" ask.
+- **"ID" and "UID" are capitalized in prose** (decided 2026-10-24): an
+  identifier is written "ID" ("group ID", "document IDs") and a user
+  identifier "UID", the way standard English and Firebase's own docs write
+  them, even though "ID" shortens a word rather than joining initials. Code
+  keeps its own spelling (`groupId`, `/users/{uid}`, `{ uid: true }`), and so
+  does a field or path quoted in backticks. See come-hang's ARCHITECTURE.md.
 - **A page section's name is capitalized in prose** (decided 2026-10-22):
   wherever a comment, doc, or test title names one of a page's sections by
   the name its link or heading gives it, that name is capitalized (the About
