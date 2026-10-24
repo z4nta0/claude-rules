@@ -5860,11 +5860,21 @@ reference example:
     calls, one type of code, and so is awaiting a promise an earlier step
     started (`await newTabPro;`, the new tab a click opens), so an action and
     the check that follows it, or a check and the next action, sit 1 blank
-    line apart like any two related calls. Consecutive single-line assertions still form one tight run with
-    aligned comments, since each performs the same operation, checking the
-    page, and so do consecutive actions with the same method on different
-    targets (two `.fill()` calls); a different call between them ends the run.
-    See seal-and-shield's `tests/interaction/behavior.spec.ts`.
+    line apart like any two related calls. Consecutive single-line assertions
+    still form one tight run with aligned comments, since each performs the
+    same operation, checking the page, and so do consecutive actions with the
+    same method on different targets (two `.fill()` calls); a different call
+    between them ends the run. See seal-and-shield's
+    `tests/interaction/behavior.spec.ts`. Decided 2026-10-24:
+    - **The method decides, not what it runs**: consecutive calls to the same
+      method form a tight run even when the code they hand it differs, such
+      as a scroll and a two-frame wait both sent through `page.evaluate`.
+    - **Two kinds of assertion form two groups**: in a run of assertions, the
+      awaited kind that retries against the page (`await expect( locator
+      ).toHaveText( ... )`) and the kind that checks a value read once
+      (`expect( await ... ).toBe( ... )`) sit as two tight groups, 1 blank
+      line apart and each aligned on its own, since they check in different
+      ways. See come-hang's `tests/interaction/navigation.spec.ts`.
   - **Animation timeline steps** (decided 2026-10-16): consecutive steps
     added with the same method (`set`, `from`, `to`, `fromTo`, ...) form one
     tight run, with 1 blank line wherever the method changes or another
