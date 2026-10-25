@@ -4483,6 +4483,15 @@ aligned comment columns in a run of `allow` lines. A `#region` holds the
 `rules_version` line, since a file's first real line is a region marker.
 The emulator suite (`npm run test:rules`) is what proves the file still
 parses. See ease-my-life's `firestore.rules`.
+- **A long condition becomes a function of named checks** (decided
+  2026-10-25, in come-hang): an `allow` condition can't hold `let` bindings,
+  so one that the long boolean rule would split (three or more real checks)
+  moves into a small function that names each check in a `let`, combines
+  them in one more, and returns it, while the `allow` line just calls it.
+  The rules language allows at most 10 `let` bindings in a function
+  (measured in the emulator), so a function that needs more splits a group
+  of its checks into a function of their own. See come-hang's
+  `firestore.rules`, whose `addOwnFun` reads `capAccFun` and `newOwnFun`.
 
 ### Arrays and objects
 - **Once an array literal cannot stay on a single line, every one of its
