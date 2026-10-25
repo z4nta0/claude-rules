@@ -167,6 +167,15 @@ default error.
   and for a single-page app the host serves `index.html` for any path it
   doesn't have (Netlify's `_redirects` rule `/* /index.html 200`), so the
   app's router gets the chance to.
+- **Exception, an app that answers at one address** (decided 2026-10-25): an
+  installed app rather than a website, with screens instead of pages to land
+  on (ease-my-life, come-hang), has no 404 page. The host still serves
+  `index.html` for every path, and the app renders itself whatever the path.
+  ease-my-life leaves an unknown path in the address bar, while come-hang's
+  catch-all route renders `<Navigate replace to='/' />`, replacing the
+  address with the root so back never returns to it. Its legal pages are
+  static files at fixed addresses (`/privacy`, `/terms`), served before the
+  rewrite. See come-hang's `src/app.tsx`.
 - **Links from it work**: any link back into a page's sections names the
   page's path (`/#contact`, not `#contact`), since a bare hash would jump
   within the 404 page itself, and goes through the section link handler
@@ -230,7 +239,9 @@ alone; only its data router's `<ScrollRestoration />` handles it.
   hash added to the address jumps to its section rather than a saved
   position, and malformed saved positions raise no error. A test that scrolls by script waits two animation frames
   before leaving, so the scroll event that records the position has run. See
-  come-hang's `tests/interaction/navigation.spec.ts`.
+  come-hang's `tests/interaction/navigation.spec.ts`, whose link and back
+  checks left with its 404 page on 2026-10-25 and return with its first
+  screens (its git history before that date holds them).
 - **Existing projects** with more than one route get it the next time
   they're worked on.
 
@@ -648,7 +659,9 @@ most space and the same kind of division always gets the same space.
   for tier 5, numbered like the horizontal rhythm's steps and split by axis
   like the spacing families they read, so vertical and horizontal stay
   separate under "Gaps follow the direction they run". Unlike other scales,
-  they're listed in tier order, largest first. Each reads one spacing step.
+  they're listed in tier order, largest first. Each reads one spacing step,
+  or one horizontal rhythm step for a horizontal tier in a project with no
+  `--spa-hor-*` family (come-hang).
 - **A control's own padding is outside the tiers** (decided 2026-10-22):
   the space inside a button or a text field shapes the control itself
   rather than separating parts of the page, so it keeps reading spacing
@@ -3849,6 +3862,13 @@ still passes.
       negative margin takes the same step as the padding it cancels,
       written `calc( var( --spa-hor-bas ) * -1 )`. The `-1px` margin of
       the visually-hidden technique isn't spacing and stays literal.
+      Exception (decided 2026-10-25): a project whose horizontal sizing is
+      the horizontal rhythm throughout (come-hang) has no `--spa-hor-*`
+      family, and its horizontal spacing reads `--hor-rhy-*` steps too. A
+      value that gets too small or too big on some screens becomes fluid,
+      `clamp()` with a `--hor-rhy-*` step in the middle and fixed ends written
+      as a vertical rhythm step times `1rem`, and the project's CLAUDE.md
+      records it.
     - **Gaps follow the direction they run** (decided 2026-10-01): a gap
       that only runs horizontally (a flex row that doesn't wrap, or
       `column-gap`) uses `--spa-hor-*`, one that only runs vertically (a
