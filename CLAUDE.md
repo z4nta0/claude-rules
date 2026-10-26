@@ -170,12 +170,14 @@ default error.
 - **Exception, an app that answers at one address** (decided 2026-10-25): an
   installed app rather than a website, with screens instead of pages to land
   on (ease-my-life, come-hang), has no 404 page. The host still serves
-  `index.html` for every path, and the app renders itself whatever the path.
-  ease-my-life leaves an unknown path in the address bar, while come-hang's
-  catch-all route renders `<Navigate replace to='/' />`, replacing the
-  address with the root so back never returns to it. Its legal pages are
-  static files at fixed addresses (`/privacy`, `/terms`), served before the
-  rewrite. See come-hang's `src/app.tsx`.
+  `index.html` for every path, and the app renders itself whatever the path,
+  replacing an unknown address with the root so a mistyped one never stays
+  in the address bar and back never returns to it: come-hang's catch-all
+  route renders `<Navigate replace to='/' />`, and ease-my-life, which has no
+  router, calls `history.replaceState` in `main.tsx` before it mounts,
+  keeping the query and hash (decided 2026-10-26). come-hang's legal pages
+  are static files at fixed addresses (`/privacy`, `/terms`), served before
+  the rewrite. See come-hang's `src/app.tsx`.
 - **Links from it work**: any link back into a page's sections names the
   page's path (`/#contact`, not `#contact`), since a bare hash would jump
   within the 404 page itself, and goes through the section link handler
