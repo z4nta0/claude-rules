@@ -1,7 +1,7 @@
 # User-Level CLAUDE.md
 
 Rules that apply to every project: development servers, language, linting,
-browser testing, security testing, required pages, multi-page scroll position, section links, skip links and modal layers, SEO, social previews, images, card grids, grid layout, spacing tiers, interaction feedback, forms, full project audits, commit messages, copy, and code formatting, naming, and comments. A project's own CLAUDE.md
+browser testing, security testing, required pages, multi-page scroll position, section links, skip links and modal layers, SEO, social previews, images, card grids, grid layout, spacing tiers, interaction feedback, forms, the README's Ko-fi section, full project audits, commit messages, copy, and code formatting, naming, and comments. A project's own CLAUDE.md
 describes that project and adds anything specific to it (scoped naming
 overrides, its own values).
 
@@ -819,6 +819,39 @@ never lost along the way.
 - **Existing projects** with forms are brought in line the next time they're
   worked on.
 
+## README: Ko-fi Support Section
+Decided 2026-10-26. Every project's README invites an optional tip on the
+user's Ko-fi page, as Ko-fi suggests, with this exact section:
+
+```markdown
+## Support
+
+If this project is useful to you, you can support its development with a tip
+on Ko-fi. It's never required, and always appreciated.
+
+[![Support me on Ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/techgeekdev)
+```
+
+- **Word for word**: the heading, the two sentences, their line break, and
+  the badge line stay exactly as written, so every repo reads the same. The
+  badge is the button Ko-fi supplies for GitHub, with its alt text changed
+  from "ko-fi" to "Support me on Ko-fi", so a screen reader announces what
+  the link does.
+- **Placement**: just above the README's License section, or at its end when
+  it has none, so it's there for a reader who reaches the end without getting
+  in the way of the project itself. It appears once, never also as a badge in
+  the header.
+- **A demo or client site is no exception**: the section asks for support of
+  the developer's work, not of the business a site portrays, so it goes in
+  every README.
+- **The Sponsor button comes from the account**: the public `z4nta0/.github`
+  repository's `FUNDING.yml` (`ko_fi: techgeekdev`) is every repo's default,
+  so no project carries its own copy. Each repo still needs **Sponsorships**
+  checked under Settings, General, Features, which only the user can do, so
+  the user is reminded when a new repo is pushed for the first time.
+- **Existing projects** get the section the next time they're worked on. See
+  ease-my-life's README.
+
 ## Full Project Audits
 Decided 2026-10-21. Every so often, a project gets a full audit against every
 rule in this doc, so its code doesn't drift and grow messy over time. An
@@ -914,8 +947,9 @@ part of a pre- or post-commit check.
   7. Spacing and alignment: blank-line tiers, column alignment, and ordering.
   8. Copy rules.
   9. Project requirements: the 404 page, the skip link, SEO, social
-     previews, images, card grids, interaction feedback, forms, and the
-     security suite, checked partly through the test suites.
+     previews, images, card grids, interaction feedback, forms, the
+     README's Ko-fi section, and the security suite, checked partly through
+     the test suites.
 - **A cited example isn't proof** (decided 2026-10-24): a file a rule
   points to shows the rule's form, but an audit still checks a project's code
   against the rule's own words, item by item through each Verified list, so
