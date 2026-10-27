@@ -4528,6 +4528,15 @@ parses. See ease-my-life's `firestore.rules`.
   (measured in the emulator), so a function that needs more splits a group
   of its checks into a function of their own. See come-hang's
   `firestore.rules`, whose `addOwnFun` reads `capAccFun` and `newOwnFun`.
+- **A write checked against many shapes is routed first** (decided
+  2026-10-27, in come-hang): Firestore stops a request at 1,000 evaluated
+  expressions (measured in the emulator, where a batch of several cross-
+  checked writes passed it), so a document that changes in many ways isn't
+  checked against every shape at once. Its update function reads which
+  fields the write touches and hands it to the small group of shapes that
+  touch those fields, and each shape still checks every field itself. See
+  come-hang's `updGroFun`, which routes to `couGroFun`, `ownGroFun`, and
+  `resGroFun`.
 
 ### Arrays and objects
 - **Once an array literal cannot stay on a single line, every one of its
