@@ -4519,6 +4519,14 @@ aligned comment columns in a run of `allow` lines. A `#region` holds the
 `rules_version` line, since a file's first real line is a region marker.
 The emulator suite (`npm run test:rules`) is what proves the file still
 parses. See ease-my-life's `firestore.rules`.
+- **Unicode classes are old** (measured 2026-10-28, in come-hang): a rules
+  pattern's `\p{...}` classes follow Unicode 6.0, so `\p{So}` misses every
+  emoji added since, even 😀, and `\p{L}` misses newer letters. A field
+  that allows emoji lists their blocks by code point (`\x{1F000}-\x{1FAFF}`
+  and the rest), and the app's own check of the same field lists them the
+  same way, since JavaScript's classes are current. RE2's repeat counts
+  also stop at 1,000, so a longer length is checked with `size()`. See
+  come-hang's `namGroFun` and `setTokFun`.
 - **Storage rules follow it too** (decided 2026-10-28, in come-hang): Cloud
   Storage's `storage.rules` is written in the same rules language, so it
   takes this section whole, its header named `storage.rules = Storage
