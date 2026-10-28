@@ -4519,6 +4519,10 @@ aligned comment columns in a run of `allow` lines. A `#region` holds the
 `rules_version` line, since a file's first real line is a region marker.
 The emulator suite (`npm run test:rules`) is what proves the file still
 parses. See ease-my-life's `firestore.rules`.
+- **Storage rules follow it too** (decided 2026-10-28, in come-hang): Cloud
+  Storage's `storage.rules` is written in the same rules language, so it
+  takes this section whole, its header named `storage.rules = Storage
+  Security Rules`. See come-hang's `storage.rules`.
 - **A long condition becomes a function of named checks** (decided
   2026-10-25, in come-hang): an `allow` condition can't hold `let` bindings,
   so one that the long boolean rule would split (three or more real checks)
