@@ -1103,7 +1103,7 @@ function howCheFun ( filPatStr : string, filTexStr : string ) : void {
 	filTexStr.split( '\n' ).forEach( ( linTexStr, linIndNum ) => { // What: Test Line Walk. Why: Each test is declared on its own line. How: This visits every line with its index.
 
 
-		if ( !/^\s*test\(/.test( linTexStr ) ) return; // What: Test Line Guard. Why: Only a test's own line carries its How. How: This skips any line that doesn't open a test call.
+		if ( !/^\s*(test|\w+TesObj)\( '/.test( linTexStr ) ) return; // What: Test Line Guard. Why: Only a test's own line carries its How, whether it's declared with Playwright's test or a test object extended from it (come-hang's pagTesObj). How: This skips any line that doesn't open a call to either with a title.
 
 
 
