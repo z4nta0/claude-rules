@@ -767,6 +767,8 @@ function codCheFun ( filPatStr : string, filTexStr : string ) : void {
 	if ( impDecArr.length ) { // What: Imports Branch. Why: A file without imports has nothing to check. How: This runs the import checks only when there are some.
 
 
+		const linTexArr = filTexStr.split( '\n' ); // What: Line Text Array. Why: Each import's comment and alignment are read on its line. How: This splits the file into lines.
+
 		let preEndNum = -1; // What: Previous End Number. Why: The gap before an import is measured from the last one's end. How: This holds the previous import's last line.
 		let preKinNum = -1; // What: Previous Kind Number. Why: Group order and gaps compare each import with the one before. How: This holds the previous import's group, or -1 before the first.
 		let preNamStr = ''; // What: Previous Name String. Why: Names within a group are alphabetized. How: This holds the previous import's binding name.
@@ -804,6 +806,15 @@ function codCheFun ( filPatStr : string, filTexStr : string ) : void {
 
 
 
+			const comCouNum = ( linTexArr[ posLinFun( impDecObj.end ) - 1 ].match( / \/\/ What: /g ) ?? [] ).length; // What: Comment Count Number. Why: Every import line carries exactly one comment of its own, and one can drift onto a neighbor's line (found in come-hang, 2026-10-29). How: This counts the comments on the import's last line.
+
+
+			if ( comCouNum === 0 ) addFinFun( filPatStr, impLinNum, 'imports', 'import without its comment' ); // What: Missing Comment Check. Why: Every import line gets a comment. How: This records a finding for an import with none.
+
+			else if ( comCouNum > 1 ) addFinFun( filPatStr, impLinNum, 'imports', 'import line holds more than one comment' ); // What: Extra Comment Check. Why: A second comment on an import line belongs to another import. How: This records a finding for more than one.
+
+
+
 			if ( preKinNum >= 0 ) { // What: Previous Import Branch. Why: The first import has nothing before it to compare with. How: This compares every later import with the one before.
 
 
@@ -837,10 +848,6 @@ function codCheFun ( filPatStr : string, filTexStr : string ) : void {
 
 
 		}
-
-
-
-		const linTexArr = filTexStr.split( '\n' ); // What: Line Text Array. Why: Alignment is measured on each import's line. How: This splits the file into lines.
 
 
 		for ( let kinIndNum = 0; kinIndNum < 4; kinIndNum++ ) { // What: Group Alignment Loop. Why: Each group aligns its columns on its own. How: This visits the four groups in order.
