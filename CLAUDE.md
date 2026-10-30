@@ -2130,7 +2130,11 @@ lines apart, however related, is gone.
   object literal with multiple properties packed onto ONE line, chain a
   separate What/Why/How group per property, one after another in the same
   comment: `// What: Prop1... Why: This... How: This... // What: Prop2...
-  Why: This... How: This...`. These comments get long: that's expected
+  Why: This... How: This...`. Decided 2026-10-29: so does an object
+  destructuring that binds several names on one line, one group per binding
+  (tonys-toppers' `fieNamStr` and `fieValStr` in `pages/home/contact.tsx`),
+  while a `useState` pair keeps its one `... And Setter` label. These
+  comments get long: that's expected
   and accepted, not a sign something's wrong.
   - **Editor tip worth knowing**: Alt+Z (Windows/Linux) or Option+Z (Mac)
     toggles soft-wrap in most editors (VS Code included), which makes
