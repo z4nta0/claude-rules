@@ -1136,7 +1136,7 @@ touched, not swept all at once.
   script prints or throws for a person to read (a result line, an error
   message) follows the same conventions, numbers of 1,000 or more printed
   through `toLocaleString( 'en-US' )` (tonys-toppers' `design/og-image/
-  render.mts`, `63,421 bytes`).
+  render.mts`, `63,017 bytes`).
 - **"ID" and "UID" are capitalized in prose** (decided 2026-10-24): an
   identifier is written "ID" ("group ID", "document IDs") and a user
   identifier "UID", the way standard English and Firebase's own docs write
