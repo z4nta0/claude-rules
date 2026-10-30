@@ -3722,6 +3722,14 @@ still passes.
       has no closing brace to end it, so where it sits directly above its own
       variant it would otherwise read as that rule's comment, and a search for
       `Pointer.` lists every one. See seal-and-shield's `contact.module.css`.
+    - **Sibling rows that differ by tag share children the same way**
+      (decided 2026-10-29): when sibling rows are different elements with
+      different classes (link rows and one plain row) whose children share
+      classes, the shared rules sit in the first row's region, and each other
+      row gets a region of its own holding pointers, its own first, even when
+      its own look comes from a rule shared with the first row's class. See
+      tonys-toppers' `contact.module.css`, whose `infRowDiv` region points
+      back to the `infRowAnc` region.
 - **Blank lines between siblings in CSS** mirror the JSX sibling spacing
   rule under "### JSX": 3 blank lines around a section whose element
   contains elements that themselves have children, 2 around a section
