@@ -4035,7 +4035,12 @@ still passes.
       plus a spacing step for any extra room, never the spacing step nearest
       its size, so the two can't drift apart. See seal-and-shield's hero,
       whose top padding is `--nav-bar-hei` (`hero.module.css`), and its 404
-      page, which adds `--spa-ver-p05` to it.
+      page, which adds `--spa-ver-p05` to it. On the root element (decided
+      2026-10-30), where WebKit resolves a rem against the browser's 16px
+      default rather than the root's own size, the length rebuilds the token's
+      sum from the same rhythm steps times `1em`, and its comment says so:
+      tonys-toppers' `html` scroll padding is the bar's height plus step p01,
+      `calc( ( var( --ver-rhy-p01 ) * 3 + var( --ver-rhy-p04 ) ) * 1em )`.
     - **Text measure is font based** (decided 2026-10-01): a paragraph's `max-width` comes from the
       project's main body font, not from either rhythm. Paragraph text
       targets 66 characters per line and must land within 45 to 75; small
