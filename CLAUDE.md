@@ -224,7 +224,13 @@ alone; only its data router's `<ScrollRestoration />` handles it.
     (decided 2026-10-24): a saved record is read as untrusted, keeping only
     well-formed key and position pairs, and a fresh load of an address in the
     same tab (navigation type `navigate`) forgets the `default` key's
-    position, since a new visit reuses that key.
+    position, since a new visit reuses that key. A restore also waits out the
+    fonts (measured 2026-10-29, in tonys-toppers): text in a fallback font
+    sits at a different height, so the fonts arriving moved a reload's
+    restored position, and Chromium's scroll anchoring left it 53px short.
+    The hook jumps again once `document.fonts.ready` settles, and the
+    recorder skips saving until then, so the shifted position never
+    overwrites the one being restored. See tonys-toppers' `ui/scroll-top.ts`.
 - **The implementation**: a `useScrTopFun` hook in `ui/scroll-top.ts`,
   called once from the app root inside the router, running a
   `useLayoutEffect` keyed on the location's `key` (which changes on every
