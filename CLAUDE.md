@@ -1132,6 +1132,11 @@ touched, not swept all at once.
   comment: initialisms keep their capitals and numbers of 1,000 or more take
   thousands separators (`'the social preview image is a 1,200x630 PNG under
   300 KB'`), the same as "### Comments" and "Token value comments" ask.
+- **A script's messages are prose too** (decided 2026-10-29): what a
+  script prints or throws for a person to read (a result line, an error
+  message) follows the same conventions, numbers of 1,000 or more printed
+  through `toLocaleString( 'en-US' )` (tonys-toppers' `design/og-image/
+  render.mts`, `63,421 bytes`).
 - **"ID" and "UID" are capitalized in prose** (decided 2026-10-24): an
   identifier is written "ID" ("group ID", "document IDs") and a user
   identifier "UID", the way standard English and Firebase's own docs write
@@ -6191,7 +6196,11 @@ another, `function` functions (bare, or stored as `const fooFun = function (
 another, assignments (to a variable or a property) another, and blocks (an
 `if`/`else` chain, a loop, a `try`/`catch`) another. Decided 2026-10-21: a
 function stored in a variable is its own type, never a declaration, so a value
-and the arrow function that reads it are two types. A tight run of the
+and the arrow function that reads it are two types. Decided 2026-10-29: a
+TypeScript type spaces like a declaration, so one built on the type above
+it (a field typed by it) sits 1 apart, as connected multi-line declarations
+do, and unrelated types 3 apart (tonys-toppers' `IntOptTyp` and
+`ForStaTyp` in `pages/home/contact.tsx`). A tight run of the
 same type (0 blank lines) and the fixed counts other sections give (returns
 and exit guards, finished constructs, long boolean groups) come first; these
 tiers decide every other gap. Three tiers:
