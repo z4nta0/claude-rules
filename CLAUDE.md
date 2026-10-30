@@ -3166,7 +3166,10 @@ one, whether the motion comes from CSS or from JS.
   instant scroll, the final value, no particles), still running any
   follow-up the motion's own completion would have triggered. The CSS
   media query alone can't stop these, which is why the check lives in
-  JS.
+  JS. Its label reads `Reduced Motion Function` (decided 2026-10-29), as
+  in prefers-reduced-motion, never `Reduce`; tonys-toppers was brought in
+  line, and every other project's `redMotFun` comments and imports are
+  relabelled the next time it's worked on.
 - **Exception, an explicitly requested preview**: an animation the user
   starts on purpose just to see it (Settings' celebration and pick-animation
   previews, played by pressing Play or Preview) keeps its motion under
