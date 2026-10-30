@@ -801,6 +801,13 @@ in the way.
     each is brought in line the next time it's worked on.
   - See come-hang's `tests/interaction/feedback.spec.ts`, whose probe reads
     each control at rest, hovered, pressed, unfocused, and focused.
+  - **Toggled states are probed too** (decided 2026-10-30): a state that
+    switches on and off and changes how something looks (a chosen filter, a
+    menu toggle's cross, an active link) is flipped off, on, and off again by
+    setting the attribute that marks it, and each property it changes either
+    way has to ease, or under reduced motion has to switch at once. See
+    tonys-toppers' `tests/interaction/feedback.spec.ts`, whose `togProFun`
+    reads each kind listed in its `TOG_TAR_ARR`.
 - **Existing projects** are brought in line in one pass the next time they're
   worked on, the same way the reduced motion rule was rolled out.
 
