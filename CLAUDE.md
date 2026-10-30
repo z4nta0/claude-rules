@@ -3183,6 +3183,10 @@ one, whether the motion comes from CSS or from JS.
   own comment say what happens there. See seal-and-shield's scroll reveal,
   whose sections describe their blocks fading in one after another, while
   `reveal.ts`'s timer comment says they appear at once under reduced motion.
+  Decided 2026-10-29: code whose contract relies on how the reduced-motion
+  variant behaves may say so too, such as a hook that waits for an end event
+  noting the event still fires under reduced motion (tonys-toppers'
+  `useNotExiFun` in `pages/home/contact.tsx`).
 - The modules migrated before this rule were brought in line in one
   pass; everything else is checked as its file is next touched.
 
