@@ -1155,7 +1155,11 @@ touched, not swept all at once.
   in double quotes, written as it appears (`This shows "Call or text".`), so
   it can't read as a broken sentence. An id, class, or attribute value the
   text names as code keeps its backticks, and a section named by its
-  heading keeps the capitalized-name rule below rather than quotes.
+  heading keeps the capitalized-name rule below rather than quotes. A
+  filter, tab, or category named by its button's words takes the quotes too,
+  even used as a noun (the "All" list, keeps "Straw Charms" from being empty),
+  while the value the code keys it by keeps its backticks (`all`). See
+  tonys-toppers' `pages/home/products.tsx`.
 - **"ID" and "UID" are capitalized in prose** (decided 2026-10-24): an
   identifier is written "ID" ("group ID", "document IDs") and a user
   identifier "UID", the way standard English and Firebase's own docs write
