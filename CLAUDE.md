@@ -1137,6 +1137,13 @@ touched, not swept all at once.
   message) follows the same conventions, numbers of 1,000 or more printed
   through `toLocaleString( 'en-US' )` (tonys-toppers' `design/og-image/
   render.mts`, `63,017 bytes`).
+- **Quoted on-screen text takes quotation marks** (decided 2026-10-29):
+  where a comment or doc repeats text a page shows or a screen reader
+  announces (a label, a button's words, an accessible name), that text sits
+  in double quotes, written as it appears (`This shows "Call or text".`), so
+  it can't read as a broken sentence. An id, class, or attribute value the
+  text names as code keeps its backticks, and a section named by its
+  heading keeps the capitalized-name rule below rather than quotes.
 - **"ID" and "UID" are capitalized in prose** (decided 2026-10-24): an
   identifier is written "ID" ("group ID", "document IDs") and a user
   identifier "UID", the way standard English and Firebase's own docs write
