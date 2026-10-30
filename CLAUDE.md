@@ -1399,10 +1399,13 @@ can move code between files rather than just within one.
      file use (added 2026-10-05; see "Type placement" below).
   2. **Constants**: `ALL_CAPS` values and lookup tables.
   3. **Module state**: module-level `let` bindings, `window.__` globals
-     and their one-time setup, and a script's startup setup that its
-     helpers read (decided 2026-10-21): reading its command-line arguments,
-     exiting with a usage message when one is missing, loading a module at
-     run time, and building its work list, as claude-rules' `check.ts` does.
+     and their one-time setup, and a script's startup setup (decided
+     2026-10-21): reading its command-line arguments, exiting with a usage
+     message when one is missing, loading a module at run time, and building
+     its work list, as claude-rules' `check.ts` does. Decided 2026-10-29:
+     this holds whether a helper reads the setup or only Module init's own
+     loop does (tonys-toppers' `design/photos/render.mts`, whose
+     `PRO_FIL_ARR` lists the original photos from disk).
   4. **Helpers**: plain, non-component functions (formatters, math,
      comparators, ...).
   5. **Hooks**: this file's own custom `useXxxFun` hooks.
