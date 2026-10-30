@@ -276,7 +276,12 @@ any link on the web does.
   - **on any other page** (the 404 page), navigates to the section's page
     inside the router, with the section's id as the hash, without a full
     page load.
-  - A menu or drawer closes only when the click was handled this way.
+- **A menu or drawer closes on any link click** (decided 2026-10-30,
+  replacing an earlier rule that kept it open for a new tab click): once a
+  visitor chooses a link in it, section link or not, it closes, whether the
+  link opens in place or in a new tab. A middle click arrives as `auxclick`,
+  so each link also closes the menu from an `onAuxClick` handler that checks
+  for the middle button. See tonys-toppers' `ui/nav.tsx`.
 - **A new tab click is left to the browser**: any click with Ctrl, Cmd,
   Shift, or Alt held returns before `preventDefault()`, so the browser opens
   the link's own address its usual way: a new tab for Ctrl or Cmd, a new
@@ -284,8 +289,7 @@ any link on the web does.
   handler at all, since Chromium, Firefox, and WebKit send it as `auxclick`
   rather than `click`, and the browser opens it in a new tab on its own; the
   handler still returns early for any button but the main one, as a
-  safeguard for an engine that does send it (corrected 2026-10-18). The menu
-  or drawer it came from stays as it was.
+  safeguard for an engine that does send it (corrected 2026-10-18).
 - **Arriving with a hash** (a new tab, a bookmark, a shared address, or a
   link from another page): the section's page waits until it has rendered
   and the fonts have loaded, jumps to the section instantly (an arrival,
@@ -297,9 +301,8 @@ any link on the web does.
   a click is a modified one the browser should handle), `useSecLinFun`
   (returns the function that scrolls to a section or navigates to its
   page), and `useSecCliFun` (returns `secCliFun( cliEveObj, secIdeStr )`,
-  the one click handler every section link shares, reporting whether it
-  handled the click so a menu knows to close). Each link calls it from its
-  `onClick`. See hair-designs' `src/ui/section-link.ts`.
+  the one click handler every section link shares). Each link calls it from
+  its `onClick`. See hair-designs' `src/ui/section-link.ts`.
   - **Decide by the path when ids repeat**: hair-designs scrolls in place
     whenever an element with the section's id is on the page. Where another
     page carries the same id (reese-roofing's 404 page has its own `top`
@@ -319,8 +322,8 @@ any link on the web does.
   Ctrl or Cmd click (Playwright's `ControlOrMeta` modifier) and a middle
   click each open a new tab (caught with `context().waitForEvent( 'page'
   )`) that lands on the section and clears its hash, while the page clicked
-  from neither scrolls nor navigates, and a section link on the 404 page
-  reaches the section on its own page. See reese-roofing's
+  from neither scrolls nor navigates and any menu it came from closes, and a
+  section link on the 404 page reaches the section on its own page. See reese-roofing's
   `tests/interaction/behavior.spec.ts`.
 - **Existing projects** with hash links are brought in line the next time
   they're worked on.
