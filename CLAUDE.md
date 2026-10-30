@@ -1449,7 +1449,11 @@ can move code between files rather than just within one.
   See seal-and-shield's `design/icons/render.mts`, whose `SOU_B64_STR` (the
   mark read from disk) sits in Module state, and its
   `design/og-image/render.mts`, whose `OUT_PAT_STR` (a path built from the
-  script's own address) stays in Constants.
+  script's own address) stays in Constants. Decided 2026-10-29: a value the
+  bundler resolves at build time stays in Constants too, even when it lists
+  a folder, since the build turns it into ordinary static imports and nothing
+  is read when the page loads (tonys-toppers' `PRO_URL_OBJ`, an eager
+  `import.meta.glob` of its product photos in `pages/home/catalog.ts`).
 - **Type placement** (decided 2026-10-05). A type sits next to what uses
   it, keeping define-before-use:
   - **Used by one standalone declaration**: the type sits directly above
