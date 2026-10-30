@@ -597,7 +597,13 @@ card count.
   `services.module.css`.
 - **A grid whose card count can change** (a catalog filtered on the page)
   computes its columns from the count instead, as the-bernie-bears' home and
-  about grids do with a `minmax()` built from the card count.
+  about grids do with a `minmax()` built from the card count. Decided
+  2026-10-29: where a filter's count has no column count that fits (a prime
+  count such as 7 or 5), the grid keeps `auto-fill` and centers its
+  leftover cards in the last row at the others' width, the rows above them
+  full, as tonys-toppers' Products grid does: an observer reads the columns
+  the grid laid out, and the leftover cards move across by half the empty
+  columns. Its responsive suite chooses every filter at a few widths.
 - **Verified** by checking the rows at a spread of widths, a pixel either
   side of each breakpoint included, in every engine, and the responsive
   suite covers the widths it already measures.
