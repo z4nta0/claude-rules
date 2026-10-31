@@ -2171,9 +2171,12 @@ lines apart, however related, is gone.
   Why: This... How: This...`. Decided 2026-10-29: so does an object
   destructuring that binds several names on one line, one group per binding
   (tonys-toppers' `fieNamStr` and `fieValStr` in `pages/home/contact.tsx`),
-  while a `useState` pair keeps its one `... And Setter` label. These
-  comments get long: that's expected
-  and accepted, not a sign something's wrong.
+  while a `useState` pair keeps its one `... And Setter` label. Decided
+  2026-10-30: an array destructuring statement of separate values does the
+  same, one group per binding (tonys-toppers' `proNamArr` and `pseNamStr` in
+  `tests/interaction/feedback.spec.ts`), while one inside a loop's header is
+  covered by the loop's own comment. These comments get long: that's
+  expected and accepted, not a sign something's wrong.
   - **Editor tip worth knowing**: Alt+Z (Windows/Linux) or Option+Z (Mac)
     toggles soft-wrap in most editors (VS Code included), which makes
     these long single-line comments actually readable on screen without
