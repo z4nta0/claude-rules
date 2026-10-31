@@ -2168,7 +2168,10 @@ lines apart, however related, is gone.
   object literal with multiple properties packed onto ONE line, chain a
   separate What/Why/How group per property, one after another in the same
   comment: `// What: Prop1... Why: This... How: This... // What: Prop2...
-  Why: This... How: This...`. Decided 2026-10-29: so does an object
+  Why: This... How: This...`, the declared name's own group first when the
+  line declares one. Decided 2026-10-30: this covers a declared object; an
+  object passed straight into a call is covered by the call's comment, like a
+  parameter list. Decided 2026-10-29: so does an object
   destructuring that binds several names on one line, one group per binding
   (tonys-toppers' `fieNamStr` and `fieValStr` in `pages/home/contact.tsx`),
   while a `useState` pair keeps its one `... And Setter` label. Decided
