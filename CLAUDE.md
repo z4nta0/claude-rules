@@ -2175,7 +2175,8 @@ lines apart, however related, is gone.
   2026-10-30: an array destructuring statement of separate values does the
   same, one group per binding (tonys-toppers' `proNamArr` and `pseNamStr` in
   `tests/interaction/feedback.spec.ts`), while one inside a loop's header is
-  covered by the loop's own comment. These comments get long: that's
+  covered by the loop's own comment, and so is a function's destructured
+  parameter list by the function's comment or its JSDoc's `@param` lines. These comments get long: that's
   expected and accepted, not a sign something's wrong.
   - **Editor tip worth knowing**: Alt+Z (Windows/Linux) or Option+Z (Mac)
     toggles soft-wrap in most editors (VS Code included), which makes
