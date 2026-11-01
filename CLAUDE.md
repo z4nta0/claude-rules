@@ -1,7 +1,7 @@
 # User-Level CLAUDE.md
 
 Rules that apply to every project: development servers, language, linting,
-browser testing, security testing, required pages, multi-page scroll position, section links, skip links and modal layers, SEO, social previews, images, card grids, grid layout, spacing tiers, interaction feedback, forms, the README's Ko-fi section, full project audits, commit messages, copy, and code formatting, naming, and comments. A project's own CLAUDE.md
+browser testing, security testing, required pages, multi-page scroll position, section links, skip links and modal layers, SEO, social previews, images, card grids, grid layout, spacing tiers, interaction feedback, forms, the README's Ko-fi section, licenses, full project audits, commit messages, copy, and code formatting, naming, and comments. A project's own CLAUDE.md
 describes that project and adds anything specific to it (scoped naming
 overrides, its own values).
 
@@ -874,6 +874,74 @@ on Ko-fi. It's never required, and always appreciated.
 - **Existing projects** get the section the next time they're worked on. See
   ease-my-life's README.
 
+## Licenses
+Decided 2026-11-01. Every project's repository carries a `LICENSE.md` at its
+root, so anyone reading the code knows what they may do with it. Which
+license depends on whose project it is, and either way the code is licensed
+apart from the assets, since a website's text, photos, and brand matter as
+much as its code and aren't the developer's to give away on a client's site.
+- **The name**: every license names Gary S. Walton as the copyright holder,
+  written plainly, never in brackets, with the year the project began.
+- **The user's own projects** (ease-my-life, the TechGeek sites, the
+  techgeek-design package, come-hang): the code is source available under
+  the [PolyForm Noncommercial License
+  1.0.0](https://polyformproject.org/licenses/noncommercial/1.0.0), free to
+  use, copy, and change for any noncommercial purpose, chosen over a
+  home-made non-commercial clause since it was written by lawyers for exactly
+  this. `LICENSE.md` opens with its Required Notice and a note keeping the
+  assets out of it, then the license text exactly as published:
+
+  ```markdown
+  Required Notice: Copyright 2026 Gary S. Walton (https://github.com/z4nta0)
+
+  The code in this repository is licensed under the PolyForm Noncommercial
+  License 1.0.0 below. Its written content, images, and the [Project] name and
+  marks are not covered by that license, and remain copyright 2026 Gary S.
+  Walton, all rights reserved.
+
+  # PolyForm Noncommercial License 1.0.0
+  ...
+  ```
+
+  - **Never called open source**: a non-commercial license doesn't meet the
+    Open Source Definition, so the project's own pages, README, and comments
+    call it source available (techgeek.dev's Home badge reads "100% Source
+    Available").
+- **Client projects** (and any site built for someone else): the code
+  belongs to Gary S. Walton, all rights reserved, with the client granted
+  full use of it, and the client's assets belong to the client. There are no
+  client contracts, so the grant is what gives the client the right to run
+  their own site. A mockup for a fictional business (reese-roofing) counts as
+  the user's own project, since its assets are the user's too.
+
+  ```markdown
+  Copyright (c) 2026 Gary S. Walton. All rights reserved.
+
+  The code in this repository belongs to Gary S. Walton. [Client] is granted
+  a permanent, free right to use, copy, modify, and host it for their own
+  website, including for their business. Everyone else may view it, but may
+  not copy, modify, or distribute it without written permission.
+
+  [Client]'s name, logos, photos, and written content belong to [Client] and
+  are not covered by this license.
+  ```
+
+- **The README's License section** comes last, just below the Support
+  section, and sums the license up in a sentence or two with a link to
+  `LICENSE.md`: for the user's own projects, "Source available under the
+  [PolyForm Noncommercial License 1.0.0](LICENSE.md): free to use, copy, and
+  change for any noncommercial purpose. The written content, images, and
+  [Project] name and marks aren't covered, and remain all rights reserved.";
+  for a client project, "The code is copyright Gary S. Walton, all rights
+  reserved, with [Client] granted full use of it for their own website.
+  [Client]'s name, logos, photos, and written content belong to [Client]. See
+  [LICENSE.md](LICENSE.md) for the full terms."
+- **Not legal advice**: the client grant is custom wording doing the work a
+  contract would, so it's worth a lawyer's look before relying on it.
+- **Existing projects** get it the next time they're worked on, starting
+  with ease-my-life, whose home-made MIT and non-commercial license was
+  replaced on 2026-11-01. See techgeek.dev's `LICENSE.md`.
+
 ## Full Project Audits
 Decided 2026-10-21. Every so often, a project gets a full audit against every
 rule in this doc, so its code doesn't drift and grow messy over time. An
@@ -970,8 +1038,8 @@ part of a pre- or post-commit check.
   8. Copy rules.
   9. Project requirements: the 404 page, the skip link, SEO, social
      previews, images, card grids, interaction feedback, forms, the
-     README's Ko-fi section, and the security suite, checked partly through
-     the test suites.
+     README's Ko-fi section, the license, and the security suite, checked
+     partly through the test suites.
 - **A cited example isn't proof** (decided 2026-10-24): a file a rule
   points to shows the rule's form, but an audit still checks a project's code
   against the rule's own words, item by item through each Verified list, so
