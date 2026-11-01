@@ -859,10 +859,11 @@ on Ko-fi. It's never required, and always appreciated.
   badge is the button Ko-fi supplies for GitHub, with its alt text changed
   from "ko-fi" to "Support me on Ko-fi", so a screen reader announces what
   the link does.
-- **Placement**: just above the README's License section, or at its end when
-  it has none, so it's there for a reader who reaches the end without getting
-  in the way of the project itself. It appears once, never also as a badge in
-  the header.
+- **Placement** (settled 2026-11-01): second to last, directly above the
+  License section, which always ends the README (see "## Licenses"), so the
+  invitation is there for a reader who reaches the end without getting in the
+  way of the project itself, and the terms close the README as most repos'
+  do. It appears once, never also as a badge in the header.
 - **A demo or client site is no exception**: the section asks for support of
   the developer's work, not of the business a site portrays, so it goes in
   every README.
@@ -926,8 +927,8 @@ much as its code and aren't the developer's to give away on a client's site.
   are not covered by this license.
   ```
 
-- **The README's License section** comes last, just below the Support
-  section, and sums the license up in a sentence or two with a link to
+- **The README's License section** is always its last section, directly
+  below the Support section, and sums the license up in a sentence or two with a link to
   `LICENSE.md`: for the user's own projects, "Source available under the
   [PolyForm Noncommercial License 1.0.0](LICENSE.md): free to use, copy, and
   change for any noncommercial purpose. The written content, images, and
