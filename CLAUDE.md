@@ -5251,6 +5251,11 @@ Decided 2026-10-05, for the TypeScript migration.
     every assertion and what guarantees it. A line holding both kinds gets
     one note of each. On a multi-line construct, the note merges onto the
     line carrying the construct's own comment.
+  - **`as const` takes the note too** (decided 2026-11-03): it narrows
+    rather than overrides, but it's still an `as`, so its line gains a
+    `Type Assertion Note` saying why the literal types are needed, and the
+    one search still finds every assertion. See hair-designs'
+    `tests/interaction/section-link.spec.ts` skip link loop.
 - **Checks that don't narrow use a shared type guard** (decided
   2026-10-05): when a built-in check proves a type without TypeScript
   knowing it (`Number.isInteger( x )` says nothing about `x`'s type), the
