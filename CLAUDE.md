@@ -1256,6 +1256,10 @@ touched, not swept all at once.
   named by its words, so it takes the quotes (the bar's "About" link),
   while the section it leads to keeps its plain capitalized name (the
   About section). See hair-designs' `tests/interaction/section-link.spec.ts`.
+  Decided 2026-11-03: backticks are required only in those cases, an ID,
+  class, or attribute value the text names as code and an ID or field name
+  set off in commas; any other code name a comment mentions (a function, a
+  constant, a keyframe, an attribute name, a CSS keyword) may stay bare.
 - **"ID" and "UID" are capitalized in prose** (decided 2026-10-24): an
   identifier is written "ID" ("group ID", "document IDs") and a user
   identifier "UID", the way standard English and Firebase's own docs write
