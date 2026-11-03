@@ -1540,7 +1540,11 @@ can move code between files rather than just within one.
   that reads a value Module Init creates with a top-level `await`
   (seal-and-shield's icon script's `renPngFun`, which draws in the browser
   page Module Init opens) sits in Module Init right after that value, for the
-  same reason. Decided 2026-10-21: alphabetical order wins over keeping a
+  same reason. Decided 2026-11-03: a helper that reads several of Module
+  Init's values sits right after the last of them, with any statement that
+  doesn't need it moved below it (hair-designs' icon script, whose SVG
+  favicon write moved below `renPngFun` to sit with the PNG writes).
+  Decided 2026-10-21: alphabetical order wins over keeping a
   tight run of declarations together (a test file's settings run included)
   unless an entry's order matters, and then the entries whose order matters
   form their own group first, 1 blank line before the rest. Constants and
