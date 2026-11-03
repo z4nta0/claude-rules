@@ -1051,7 +1051,7 @@ function emdCheFun ( filPatStr : string, filTexStr : string ) : void {
 
 
 
-		const stiLinStr = linTexStr.replace( /\u2014\s+[A-Z][\w&' ]*["'<]?\s*$/, '' ).replace( /(['">])\u2014(['"<])/g, '$1$2' ); // What: Stripped Line String. Why: A quote's attribution and a lone placeholder glyph are allowed. How: This removes an em dash followed by a name at the line's end, and one standing alone between quotes or tags.
+		const stiLinStr = linTexStr.replace( /\u2014\s+[A-Z][\w&;' ]*(?=["'<]|\s*$)/, '' ).replace( /(['">])\u2014(['"<])/g, '$1$2' ); // What: Stripped Line String. Why: A quote's attribution and a lone placeholder glyph are allowed. How: This removes an em dash followed by a name that ends at a quote, a tag, or the line's end, entities such as &amp; included, and one standing alone between quotes or tags.
 
 
 		if ( stiLinStr.includes( '\u2014' ) ) addFinFun( filPatStr, linIndNum + 1, 'em-dash', 'em dash in prose' ); // What: Em Dash Check. Why: Prose never uses an em dash. How: This records a finding when one survives the stripping.
