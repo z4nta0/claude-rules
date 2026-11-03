@@ -1246,7 +1246,12 @@ touched, not swept all at once.
   filter, tab, or category named by its button's words takes the quotes too,
   even used as a noun (the "All" list, keeps "Straw Charms" from being empty),
   while the value the code keys it by keeps its backticks (`all`). See
-  tonys-toppers' `pages/home/products.tsx`.
+  tonys-toppers' `pages/home/products.tsx`. Decided 2026-11-03: a control
+  named by its exact on-screen words takes the quotes (the "Back Home"
+  link), while a role name that only describes it doesn't (the Call button,
+  whose words are "Call 417-988-6239"); and an ID or field name a comment
+  sets off in commas is code, so it keeps its backticks ("Its ID, `home`,
+  ..."). See hair-designs' `pages/not-found/not-found.tsx`.
 - **"ID" and "UID" are capitalized in prose** (decided 2026-10-24): an
   identifier is written "ID" ("group ID", "document IDs") and a user
   identifier "UID", the way standard English and Firebase's own docs write
