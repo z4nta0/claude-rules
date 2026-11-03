@@ -3858,6 +3858,15 @@ still passes.
       its own look comes from a rule shared with the first row's class. See
       tonys-toppers' `contact.module.css`, whose `infRowDiv` region points
       back to the `infRowAnc` region.
+    - **One element's own rule beside a shared one** (decided 2026-11-03):
+      when an element's class joins a rule shared with other elements (a
+      textarea in the inputs' and select's shared field rule) and also has
+      a rule of its own (the textarea's height), the shared rule sits in the
+      first sharing element's parent's region, and the element's own rule
+      sits in its own parent's region, in markup order, like any other
+      rule. See hair-designs' `contact.module.css`, whose `.forFieTex` rule
+      sits in the `forFieDiv` region below the shared field rule in
+      `forRowDiv`.
 - **Blank lines between siblings in CSS** mirror the JSX sibling spacing
   rule under "### JSX": 3 blank lines around a section whose element
   contains elements that themselves have children, 2 around a section
