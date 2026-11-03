@@ -3537,7 +3537,12 @@ still passes.
   than after it. A word naming which instance a rule styles, for a shared
   class styled under different parents or by position, follows the
   expansion (decided 2026-10-18): `Open Toggle Line Span Top`, `Hovered Arrow
-  Icon Span In Drawer Link`. A rule whose selectors style different
+  Icon Span In Drawer Link`. A pseudo-element's rule (`::before`,
+  `::after`) is a part the element draws rather than a state, so a word
+  naming what it draws follows the expansion too, while a state or width
+  variant of it still leads (decided 2026-11-03): hair-designs'
+  `.herLefDiv::after` reads `Hero Left Div Divider` and its 900px variant
+  `Narrow Hero Left Div Divider`. A rule whose selectors style different
   elements together (decided 2026-10-21) is labelled by what they are as a
   group rather than by one class: reese-roofing's `Form Field Controls`, for
   its input, select, and textarea. Existing classes
