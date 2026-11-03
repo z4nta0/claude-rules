@@ -3542,7 +3542,11 @@ still passes.
   naming what it draws follows the expansion too, while a state or width
   variant of it still leads (decided 2026-11-03): hair-designs'
   `.herLefDiv::after` reads `Hero Left Div Divider` and its 900px variant
-  `Narrow Hero Left Div Divider`. A rule whose selectors style different
+  `Narrow Hero Left Div Divider`. An element whose modifier is picked at
+  run time, one of several per row of data (decided 2026-11-03), keeps its
+  base class's label, and its Why or How names the modifiers it can take:
+  hair-designs' Services card icon reads `Card Icon SVG Element`, drawn in
+  "the rose, sage, or mauve its row names". A rule whose selectors style different
   elements together (decided 2026-10-21) is labelled by what they are as a
   group rather than by one class: reese-roofing's `Form Field Controls`, for
   its input, select, and textarea. Existing classes
