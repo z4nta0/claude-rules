@@ -7765,6 +7765,13 @@ gradually alongside the whitespace rules above (started with `src/app.tsx`).
     those would silently break rendering, not just look different. The
     test is always "do I control every reader of this key," not merely
     "is this an object I wrote."
+  - **A lookup keyed by data values keeps them** (decided 2026-11-03): an
+    object whose keys are the values other data names it by (a kind, a
+    file name) is a lookup table, not a record of fields, so its keys stay
+    the plain values the rows carry rather than 6-character names. See
+    hair-designs' `design/icons/render.mts`, whose `icoSvgObj` keys `large`,
+    `small`, and `touch` are the `kinStr` values its icon rows look up, and
+    tonys-toppers' `PHO_ALT_OBJ`, keyed by file name.
   - **Second exemption, an exported namespace object's own properties**:
     this 6-character rule does not apply to the property names of an
     EXPORTED namespace object either (`STORAGE`, `PICKERS`, `TAS_NAM_OBJ`,
