@@ -1732,6 +1732,11 @@ src/
   several other files (`nwmDayFun`, `ordSufFun`, `dimCouFun`, the ISO date
   formatter) live in one shared `utils/date.ts`, alongside the old
   `ui.jsx` date formatters, with `redMotFun` in `utils/motion.ts`.
+  Decided 2026-11-03: a helper file copied from another project keeps only
+  the helpers its project calls, since an export nothing runs can't be
+  tested and its comments go stale unseen; a dropped helper is copied back
+  when a caller needs it. See hair-designs' `utils/rhythm.ts`, which keeps
+  `rhyPixFun` and dropped ease-my-life's `durMilFun`.
 - **Dependency direction.** A folder imports only from itself or from
   folders below it in this order: `tabs/`, `onboarding/`, `help/` (top);
   then `ui/`; then `state/` and `platform/`; then `core/`; then `utils/`
