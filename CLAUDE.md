@@ -7384,6 +7384,11 @@ gradually alongside the whitespace rules above (started with `src/app.tsx`).
   under "Runtime globals on `window`") keeps the `__` prefix and applies
   the normal 9-character/3-segment rule to the rest of the name, e.g.
   `__paletteApplied` → `__palAppBoo` (Palette + Applied + Boolean).
+  Decided 2026-11-03: a value a test puts on `window` for itself to read
+  back (a counter, a recorded list) takes the same `__` prefix, so it can
+  never pass for or collide with a global the page sets. See hair-designs'
+  `__hasChaNum` (`tests/interaction/section-link.spec.ts`) and
+  `__polVioArr` (`tests/security/browser.spec.ts`).
 - **Initialism compression for a "what" that genuinely needs more than 2
   words**: some concepts need 3 (or more) real words just to say what the
   value IS, before even getting to what specific aspect of it matters or
