@@ -6128,6 +6128,10 @@ reference example:
     columns. Several annotated declarations next to each other form one
     group, aligned among themselves. See `state/pending-mutations.ts`'s
     own `curPicObj`, split from `hasPipBoo`/`perRunStr` above it.
+    Decided 2026-11-03: the annotated group follows the plain run, whatever
+    its names sort to, so the split never breaks the run in two
+    (hair-designs' `CLI_KIN_ARR` in `tests/interaction/section-link.spec.ts`
+    sits after `BUT_LIN_ARR` through `PHO_VIE_OBJ`).
   - **This same run gets its `=` signs column-aligned**, the same
     column-alignment mechanism used elsewhere in this doc (named imports,
     object `:` alignment, ...): pad each line's own left-hand side
