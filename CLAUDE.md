@@ -3687,6 +3687,9 @@ still passes.
   on its own `@keyframes` line. Its steps (`from`, `to`, `50%`, ...) get
   no comment of their own, are indented one tab, get the usual 2 blank
   lines of padding, aligned colons, and 1 blank line between steps.
+  Decided 2026-11-03: two keyframes one element plays sit 1 blank line
+  apart, as sibling rules do (hair-designs' tooltip fade in and fade out
+  in `contact.module.css`).
   A module exports its keyframe names on `cssModObj` alongside its class
   keys, so a keyframe whose name equals a class's camelCase key (e.g.
   keyframes `holidayRowEnter` beside the class `.holiday-row--enter`)
