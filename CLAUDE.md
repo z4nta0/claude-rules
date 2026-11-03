@@ -63,6 +63,14 @@ rule check runs before anything else (see "### Pre-commit rule check").
   minus the four React Compiler readiness rules. A project changes only what
   doesn't apply to it (its own ignores, comments naming the other app), and a
   real difference in rules is recorded in its own CLAUDE.md.
+- **Two config comments to correct** (measured 2026-11-03, in hair-designs):
+  ESLint's flat config does match brace globs (`'{dist,tests/output}/**'`
+  skipped both folders), so the copied ignores comment "one glob each,
+  since braces break ESLint's matching here" is false and is cut; and the
+  four turned-off React Compiler rules each say only that they're
+  compiler readiness rules the Linting rule leaves off, rather than
+  describing what each rule flags. Each project's config is brought in line
+  the next time it's worked on. See hair-designs' `eslint.config.ts`.
 - **Versions follow the ecosystem, not the latest release**: ESLint and
   TypeScript are upgraded only once every lint package's peer range
   supports the new version. As of 2026-10-07 that holds ESLint at 9
