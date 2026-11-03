@@ -1559,8 +1559,8 @@ can move code between files rather than just within one.
   page Module Init opens) sits in Module Init right after that value, for the
   same reason. Decided 2026-11-03: a helper that reads several of Module
   Init's values sits right after the last of them, with any statement that
-  doesn't need it moved below it (hair-designs' icon script, whose SVG
-  favicon write moved below `renPngFun` to sit with the PNG writes).
+  doesn't need it moved below it (hair-designs' icon script, whose
+  `renPngFun` sits right under `draPagObj`, the one value it reads).
   Decided 2026-11-03: when dependencies and alphabetical order pull apart,
   each place goes to the alphabetically first declaration whose
   dependencies already sit above it, so any set of declarations has one
