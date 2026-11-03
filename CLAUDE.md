@@ -3546,11 +3546,11 @@ still passes.
   run time, one of several per row of data (decided 2026-11-03), keeps its
   base class's label, and its Why or How names the modifiers it can take:
   hair-designs' Services card icon reads `Card Icon SVG Element`, drawn in
-  "the rose, sage, or mauve its row names". A rule whose selectors style different
-  elements together (decided 2026-10-21) is labelled by what they are as a
-  group rather than by one class: reese-roofing's `Form Field Controls`, for
-  its input, select, and textarea. Existing classes
-  keep their current names while they move into modules; renaming them
+  "the rose, sage, or mauve its row names". A rule whose selectors style
+  different elements together (decided 2026-10-21) is labelled by what they
+  are as a group rather than by one class: reese-roofing's `Form Field
+  Controls`, for its input, select, and textarea. Existing classes keep
+  their current names while they move into modules; renaming them
   to this rule belongs to the design-system pass.
   - **One element rendered as different tags** (decided 2026-10-02):
     when one class sits on an element that renders as different tags
