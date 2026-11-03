@@ -1251,7 +1251,11 @@ touched, not swept all at once.
   link), while a role name that only describes it doesn't (the Call button,
   whose words are "Call 417-988-6239"); and an ID or field name a comment
   sets off in commas is code, so it keeps its backticks ("Its ID, `home`,
-  ..."). See hair-designs' `pages/not-found/not-found.tsx`.
+  ..."). See hair-designs' `pages/not-found/not-found.tsx`. Decided
+  2026-11-03: a link whose words are a section's name is still a control
+  named by its words, so it takes the quotes (the bar's "About" link),
+  while the section it leads to keeps its plain capitalized name (the
+  About section). See hair-designs' `tests/interaction/section-link.spec.ts`.
 - **"ID" and "UID" are capitalized in prose** (decided 2026-10-24): an
   identifier is written "ID" ("group ID", "document IDs") and a user
   identifier "UID", the way standard English and Firebase's own docs write
