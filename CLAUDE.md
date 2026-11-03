@@ -1557,6 +1557,11 @@ can move code between files rather than just within one.
   Init's values sits right after the last of them, with any statement that
   doesn't need it moved below it (hair-designs' icon script, whose SVG
   favicon write moved below `renPngFun` to sit with the PNG writes).
+  Decided 2026-11-03: when dependencies and alphabetical order pull apart,
+  each place goes to the alphabetically first declaration whose
+  dependencies already sit above it, so any set of declarations has one
+  order (hair-designs' `tests/support/states.ts`: `tipOpeFun`, then
+  `waiSetFun`, then `opeStaFun`, which reads `waiSetFun`).
   Decided 2026-10-21: alphabetical order wins over keeping a
   tight run of declarations together (a test file's settings run included)
   unless an entry's order matters, and then the entries whose order matters
