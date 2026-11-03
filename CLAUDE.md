@@ -4599,6 +4599,10 @@ Decided 2026-10-03, for the HTML pass that follows the CSS pass.
   authored (`charset` first; favicon links from most to least preferred
   format; a light `theme-color` before its dark one); otherwise tags are
   alphabetized by their identifying attribute (`name`, `property`, `rel`).
+  Decided 2026-11-03: a section mixing kinds of tag sorts by kind first, in
+  the order its list names them (the Search section's `name` metas, then
+  its `canonical` link), and alphabetizes within each kind, so the metas
+  stay together. See hair-designs' `index.html`.
 - **Head tags stay one per line**: unlike body elements, a head tag keeps
   its attributes inline whatever their count, followed by its one-line
   comment. A run of same-shape tags column-aligns its attributes by
