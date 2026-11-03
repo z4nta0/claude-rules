@@ -2224,6 +2224,10 @@ lines apart, however related, is gone.
   instead of an expansion). This includes the type segment: expand it to
   its real word too (`Ref` → `Reference`, `Obj` → `Object`, `Ele` →
   `Element`, ...), don't leave it abbreviated while expanding the others.
+  Decided 2026-11-03: a segment expands to the form of its word the name
+  was made from, plural where the thing holds several (hair-designs'
+  `styNamDiv`, the stylists' names together, reads `Stylist Names Div`
+  beside one name's `styNamSpa`, `Stylist Name Span`).
   A clarifying word beyond the strict segment expansion is fine, but only
   APPENDED after all the real segment words, never inserted between them
   (e.g. `Indicator Record Object And Setter` is fine; `Left Offset Number`
