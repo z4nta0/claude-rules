@@ -2596,7 +2596,7 @@ lines apart, however related, is gone.
       "Token value comments" in "### CSS modules and JS hooks" (the
       token's expanded name and its value), on the line that reads it: a
       `var( --token )` string (in a `style` object, a `setProperty` call,
-      or a config row), a `rhyPxlFun( '<step>' )` or `durMilFun( '<step>'
+      or a config row), a `rhyPixFun( '<step>' )` or `durMilFun( '<step>'
       )` call (a Vertical Rhythm or Duration step), and an icon's
       `sizSteStr='<step>'`. On a line that already has its What/Why/How
       comment, the token comment follows it as its own `// ...` (or `{ /*
@@ -4105,7 +4105,7 @@ still passes.
       turns into `calc( var( --ver-rhy-<step> ) * 1rem )`. Layout math that
       works in pixels (placing a tooltip or tour card, a scroll offset, a
       sticky fallback) reads a step through `utils/rhythm.ts`'s own
-      `rhyPxlFun( '<step>' )`, which computes the step's pixel size from
+      `rhyPixFun( '<step>' )`, which computes the step's pixel size from
       the root font size and the core design number with the same formula
       `styles.css` uses, so the two can never drift apart. A number that
       only tunes behavior rather than spacing (a "moved more than N px"
@@ -4122,7 +4122,7 @@ still passes.
       follows the layout when the token changes. A helper resolves a length
       token to pixels the way the page does, through a hidden probe sized by
       it, since a computed custom property comes back unresolved
-      (seal-and-shield's `utils/rhythm.ts` `tokPxlFun( '--nav-bar-hei' )`).
+      (seal-and-shield's `utils/rhythm.ts` `tokPixFun( '--nav-bar-hei' )`).
       Its line carries the usual token value comment. A number that only
       tunes behavior, with no part of the layout to clear (a 40px "has
       scrolled" check, a drag distance), stays literal, as above. See
@@ -4386,7 +4386,7 @@ are renamed to this as their files come up in the design-system pass.
   corner size changes in one place. Values that mean a shape rather than a
   size stay as they are: `999px` (a fully rounded pill), `50%` (a circle),
   `0`, and `inherit`. JavaScript reads a radius the same way as any other
-  step, through `rhyPxlFun`.
+  step, through `rhyPixFun`.
 - **Durations use a scale on the core design number** (decided
   2026-10-01): every step is a power of the core design number in milliseconds, the
   same way every length is a power of it in rem. The base step is the 18th
@@ -7262,6 +7262,12 @@ gradually alongside the whitespace rules above (started with `src/app.tsx`).
     tonys-toppers; until then the older examples here, such as ease-my-life's
     `HolRcdTyp`, still show the old spelling. Note `rec` already means
     Rect/Rectangle (`indRecObj`, `butRecObj`); context disambiguates)
+  - `pxl` → `pix` (Pixel, decided 2026-11-03: a vowel drop in the rhythm
+    helpers' names, `rhyPxlFun`, `rooPxlNum`, and seal-and-shield's
+    `tokPxlFun`, which this doc's own examples once showed. It's renamed
+    project by project as each one comes up, starting with hair-designs, so
+    ease-my-life, seal-and-shield, tonys-toppers, and tech-geek-cards still
+    show the old spelling until then)
   - `hed` → `hea` (Head, found in the-bernie-bears' `pagHedSec` and its SEO
     suite's `PAG_HED_ARR`/`hedCheFun`/`hedRowObj`, which check each page's
     head tags; `Hed` is reserved for the `<header>` tag's class segment, never
