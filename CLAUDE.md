@@ -816,6 +816,18 @@ in the way.
     way has to ease, or under reduced motion has to switch at once. See
     tonys-toppers' `tests/interaction/feedback.spec.ts`, whose `togProFun`
     reads each kind listed in its `TOG_TAR_ARR`.
+  - **What the probe reads** (decided 2026-11-03, in the-bernie-bears):
+    a control's `::before` and `::after` count as "anything inside" it, so
+    a shadow layer that cross-fades on hover is read with the control, and
+    a property an endless animation drives (a bouncing logo mark) is left
+    out, since it changes on its own. See the-bernie-bears'
+    `tests/support/feedback.ts`.
+  - **A border that appears with a state** (decided 2026-11-03, in
+    the-bernie-bears): an element that gains a border in one state (a
+    current link's outline) keeps a clear border of the same width in every
+    other state, so the state only changes the border's color, which eases,
+    rather than drawing a border at once and growing the element. See
+    the-bernie-bears' `ui/nav.module.css` `.navLinAnc`.
 - **Existing projects** are brought in line in one pass the next time they're
   worked on, the same way the reduced motion rule was rolled out.
 
@@ -1763,6 +1775,10 @@ src/
   tested and its comments go stale unseen; a dropped helper is copied back
   when a caller needs it. See hair-designs' `utils/rhythm.ts`, which keeps
   `rhyPixFun` and dropped ease-my-life's `durMilFun`.
+  Decided 2026-11-03: a test suite's helper files live in `tests/support/`
+  even when only one spec reads one, since a second spec can share it
+  later (the-bernie-bears' `tests/support/feedback.ts`, which hair-designs'
+  tooltip spec shares there).
 - **Dependency direction.** A folder imports only from itself or from
   folders below it in this order: `tabs/`, `onboarding/`, `help/` (top);
   then `ui/`; then `state/` and `platform/`; then `core/`; then `utils/`
@@ -2259,6 +2275,11 @@ lines apart, however related, is gone.
   was made from, plural where the thing holds several (hair-designs'
   `styNamDiv`, the stylists' names together, reads `Stylist Names Div`
   beside one name's `styNamSpa`, `Stylist Name Span`).
+  Decided 2026-11-03: a segment taken from an attribute or element name
+  expands to the words that name stands for, not its spelling: `rel` is
+  `Relationship`, `href` is `Hypertext-Reference`, `tabindex` is
+  `Tab-Index`, and a sitemap's `loc` is `Location` (the-bernie-bears'
+  `socHreArr`, `Social Hypertext-Reference Array`).
   A clarifying word beyond the strict segment expansion is fine, but only
   APPENDED after all the real segment words, never inserted between them
   (e.g. `Indicator Record Object And Setter` is fine; `Left Offset Number`
@@ -3366,6 +3387,11 @@ animation and transition, CSS or JS-driven (an `Element.animate` call, a
   color change (a hover's `color`, `background-color`, or
   `border-color`) has no compositor equivalent and is fine as is, since
   it only repaints the one element.
+  Decided 2026-11-03: a `box-shadow` that changes only when the page
+  changes (a current link's shadow, set as a navigation lands) may ease
+  directly rather than through cross-faded layers, since it repaints once
+  per navigation; its line says so. See the-bernie-bears' `ui/nav.module.css`
+  `.navLinAnc`.
 - **Decide on `will-change` deliberately.** For every animation, check
   whether the hint helps, and add it when it does:
   - **Use it** when JS moves an element frame by frame through
@@ -3918,6 +3944,13 @@ still passes.
       rule. See hair-designs' `contact.module.css`, whose `.forFieTex` rule
       sits in the `forFieDiv` region below the shared field rule in
       `forRowDiv`.
+    - **A modifier only a later section uses** (decided 2026-11-03, in
+      the-bernie-bears): a modifier of a shared class stays beside its base
+      rules in the first parent's region, even when only a later section's
+      element carries it, so rules the variants share (one multi-selector
+      shadow rule) stay whole; the later section's region holds the pointer.
+      See the-bernie-bears' `home.module.css`, whose `.butBasAnc--white`
+      sits in the `herActDiv` region.
 - **Blank lines between siblings in CSS** mirror the JSX sibling spacing
   rule under "### JSX": 3 blank lines around a section whose element
   contains elements that themselves have children, 2 around a section
@@ -6510,6 +6543,10 @@ gradually alongside the whitespace rules above (started with `src/app.tsx`).
     come-hang's `import AxeBuiCla from '@axe-core/playwright';`. Its `What:`
     expansion reads `Class`. A name a library exports by name (`{ chromium
     }`) keeps the library's spelling, as with any named import.
+  - **A Buffer takes `Obj`** (decided 2026-11-03, in the-bernie-bears): a
+    Node `Buffer` is an object, so its type segment is `Obj`, leaving `Buf`
+    free as a descriptor (`pngBufObj`, `jpeBufObj`, `icoHeaObj`), never a
+    type segment of its own.
 - **Known miscorrections: check every segment against this list before
   finalizing a name.** In practice, segments built from a word with a
   strong, ubiquitous conventional abbreviation (the kind used constantly
