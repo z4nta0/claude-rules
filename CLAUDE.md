@@ -2802,7 +2802,9 @@ under the old rule keeps it only if it passes the test below.
   limit (i.e. never reaching column 80), never splitting a word across
   lines. This limit applies throughout the whole JSDoc block, not just
   `@summary`: every line inside it, `@param`/`@returns` continuation
-  lines included, stays at 79 characters or fewer.
+  lines included, stays at 79 characters or fewer. Decided 2026-11-05: 79 is a
+  ceiling, not a fill target, so a line that breaks a word or two early,
+  at a natural phrase, stays as written.
 - **Tabs count as 4 columns** toward every 79-character limit in this doc
   (decided 2026-10-07), the width VS Code shows them at, so a tab-indented
   comment block (an HTML section summary, a nested JSDoc) wraps earlier
