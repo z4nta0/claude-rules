@@ -587,7 +587,11 @@ allows it.
     original at 3x zoom (seal-and-shield's full logo at 0.95). The exception
     is a format fixed by where the image is used: the social preview image
     (PNG or JPG, per "## Social Previews"), and the favicon PNGs, ICO, and
-    `apple-touch-icon`, which browsers and apps require.
+    `apple-touch-icon`, which browsers and apps require. Decided 2026-11-05:
+    artwork whose only original is a JPEG is encoded as a photograph, lossy,
+    since its source already carries JPEG noise that lossless only preserves
+    at great cost (the-bernie-bears' cartoon came to 423 KB lossless against
+    48 KB lossy).
   - **Markup**: its intrinsic `width` and `height` attributes, so the page
     doesn't shift while it loads, and `loading='lazy'` when it starts below
     the fold. An image Vite inlines as a data URI (one under its 4 KB limit)
