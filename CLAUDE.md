@@ -2400,11 +2400,12 @@ lines apart, however related, is gone.
     browser, library, tool, or host behaves stays only when it was measured
     or comes from that tool's own documentation, and then it's stated plainly.
     One with neither is cut rather than hedged. Decided 2026-11-06: so is a
-    claim about how visitors or a platform's audience behave ("most visitors
-    land here", "short clips reach the most new fans"), while a Why that says
-    what the brand is or does, matching what the page shows, is the site's own
-    copy and stands as written ("the girls are known for their costumes").
-    See the-bernie-bears' `pages/about/about.tsx` fact rows.
+    claim only data could back, such as traffic or a platform's reach ("most
+    visitors land here", "short clips reach the most new fans"), while a Why
+    that describes the brand or its community, as the page's own copy does,
+    stands as written ("the girls are known for their costumes", "families
+    follow along together"). See the-bernie-bears' `pages/about/about.tsx`
+    fact rows.
   - **Pronouns and clauses point at one thing**: where it, this, that, or one
     could mean more than one noun, the comment repeats the noun, and a which,
     where, or once clause sits right after the noun it describes.
