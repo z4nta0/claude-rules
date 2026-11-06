@@ -647,6 +647,11 @@ card count.
   area tags in `services.module.css`), reads as a list of labels rather than a
   grid of cards, so it may leave a short last row, and forcing it into equal
   columns would only open wide gaps around the short labels.
+- **Equal tiles are a grid** (decided 2026-11-05): a wrapping row of tiles
+  that are all one size (the-bernie-bears' six menu icons) isn't a row of
+  chips, since nothing is sized to its own text, so it steps through column
+  counts that divide its tile count like any grid of cards, and the row
+  check covers it. See the-bernie-bears' `ui/nav.module.css` `.menSocDiv`.
 - **Existing projects** are brought in line the next time they're worked
   on.
 
