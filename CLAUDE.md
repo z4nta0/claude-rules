@@ -3830,7 +3830,9 @@ still passes.
     counts, widths, file sizes); a number that names something rather than
     measuring it stays as written (decided 2026-10-22): a port (`5197`), a
     year (`2026`), a version, a status code, or a hex color, as in
-    seal-and-shield's `tests/playwright.config.ts`.
+    seal-and-shield's `tests/playwright.config.ts`. Decided 2026-11-05: a CSS
+    font weight is one too, a named step on a fixed scale (the-bernie-bears'
+    Nunito, "200 to 1000" in `styles/fonts.css`).
   - A declaration that also needs a real explanation (the tricky-value
     exception above) keeps both: the token comment first, then the
     What/Why/How in its own `/* */` right after it on the same line.
