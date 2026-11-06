@@ -524,7 +524,13 @@ pitch changes.
   since it's the same tag.
 - **The image** (`public/og-image.png`, per the directory rules):
   - 1200x630 PNG (or JPG for a photograph), under 300 KB so WhatsApp shows it
-    at all.
+    at all. Decided 2026-11-05: the size limit outranks the format, so a card
+    that can't get under 300 KB as a PNG ships as a JPEG, at the lowest
+    quality that shows no difference at 3x zoom, and the project's CLAUDE.md
+    records it (the-bernie-bears' card, 337 KB as a PNG and 45 KB as a JPEG).
+    The 300 KB figure is widely reported by site owners whose WhatsApp
+    previews went missing above it; WhatsApp's own figure has been quoted
+    as 600 KB, so 300 KB keeps a safe margin.
   - Built from the site's own logo, fonts, and colors, so the card looks like
     the site, with text no smaller than about 40px so it reads at thumbnail
     size.
