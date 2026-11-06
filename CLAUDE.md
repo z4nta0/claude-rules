@@ -2371,7 +2371,10 @@ lines apart, however related, is gone.
     that goes stale whenever the other code changes. A short pointer is fine
     ("which the scroll hook restores"), a description of how the other code
     behaves isn't. This extends the same rule for file summaries and tokens to
-    every comment.
+    every comment. Decided 2026-11-05: a precondition a function relies on is stated as
+    its own contract ("It expects the state already open and settled"), never
+    as what its caller does ("The caller opens the state first"). See
+    the-bernie-bears' `tests/accessibility/axe.spec.ts`.
   - **Don't restate what child comments say**: a test's How gives its
     approach in a sentence ("scrolls the page down, follows the link, and
     checks the new page opens at its top"), not every assertion, since each
