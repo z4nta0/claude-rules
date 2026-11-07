@@ -782,6 +782,13 @@ in the way.
     decelerating curve both ways, the same as every button's lift, while a
     shadow that fades in with it is an indicator, arriving on decelerate and
     leaving on accelerate (seal-and-shield's service cards).
+    - **Content stepped in place only arrives** (decided 2026-11-07, in
+      come-hang): where a control swaps one item for the next of its kind in
+      the same spot (a photo viewer stepping to the next photo), only the
+      arriving item animates, on the decelerating curve, and the item it
+      replaces goes at once, since an exit would hold the next item back or
+      overlap two items of different shapes. See come-hang's
+      `screens/event-photos.module.css` `.vieImaIma--next`.
   - Movement stays small: a few pixels of travel, and scales within a few
     percent, except an element opening from nothing.
   - **They govern feedback only** (decided 2026-10-22): motion that isn't a
