@@ -1,7 +1,7 @@
 # User-Level CLAUDE.md
 
 Rules that apply to every project: development servers, language, linting,
-browser testing, security testing, required pages, multi-page scroll position, section links, skip links and modal layers, SEO, social previews, images, card grids, grid layout, spacing tiers, interaction feedback, forms, the README's Ko-fi section, licenses, full project audits, commit messages, copy, and code formatting, naming, and comments. A project's own CLAUDE.md
+browser testing, security testing, required pages, multi-page scroll position, section links, skip links and modal layers, SEO, social previews, images, card grids, grid layout, spacing tiers, interaction feedback, forms, the README's Ko-fi section, licenses, full project audits, version bumps and pushes, commit messages, copy, and code formatting, naming, and comments. A project's own CLAUDE.md
 describes that project and adds anything specific to it (scoped naming
 overrides, its own values).
 
@@ -1121,6 +1121,26 @@ part of a pre- or post-commit check.
   the machine from sleeping before the 4:00 AM shutdown and leaves the
   session's window open. A usage limit reached overnight pauses the run, and
   the progress file carries it to the next session.
+
+## Versions And Pushes
+Decided 2026-11-07, after tech-geek-dev's audit set techgeek-design's version
+to 0.5.0 in a commit while the user bumped it to 0.6.0 and tagged that
+release. The user handles every version change and everything that leaves
+the machine; Claude handles branches and commits.
+- **Claude creates branches and commits**: a branch for each piece of work
+  and a commit for each verified step, in the usual one-line format.
+- **The user bumps every version**: Claude never edits a `version` field,
+  runs `npm version`, or writes a version into a changelog or a commit's
+  `What:` as a release, in any project or package. Where a change calls for
+  a new version (a package other sites install by tag), Claude says so and
+  names the bump it suggests, and the user makes it.
+- **The user does every push and tag**: Claude never runs `git push`,
+  creates or moves a tag, opens or merges a pull request, or publishes a
+  package. It reminds the user what's ready to push, per "### Backing up at
+  the end of a session".
+- **A dependency on a tagged release waits for the tag**: until the user says
+  a tag is up, a site keeps its local install, and Claude switches it to the
+  tag only once told the tag's name.
 
 ## Commit messages
 
