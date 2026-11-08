@@ -789,6 +789,15 @@ in the way.
       replaces goes at once, since an exit would hold the next item back or
       overlap two items of different shapes. See come-hang's
       `screens/event-photos.module.css` `.vieImaIma--next`.
+    - **A highlight after a jump lingers** (decided 2026-11-08, in
+      come-hang): a ring or tint marking where a jump landed (a notice's
+      Review opening a section at one item) guides the eye to a place rather
+      than answering a press, so it may fade over about a second, still on
+      the duration scale (come-hang's step p07, about 1,130ms) and outside
+      the 400ms limit. It plays once, only leaves, on the accelerating curve,
+      and under reduced motion it holds whole and then goes at once, still
+      ending on time so any script waiting on its end runs. See come-hang's
+      `styles/styles.css` `[data-jump-flash-active]` and `itemJumpFadeOut`.
   - Movement stays small: a few pixels of travel, and scales within a few
     percent, except an element opening from nothing.
   - **They govern feedback only** (decided 2026-10-22): motion that isn't a
