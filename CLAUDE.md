@@ -867,6 +867,11 @@ never lost along the way.
   region itself; one that only changes a focused control's label, which screen
   readers don't announce, gets a visually hidden region beside it. See
   reese-roofing's `forStaPar` in `pages/home/contact.tsx`.
+  Decided 2026-11-07: a region that sits empty inside a laid-out column, where
+  even an empty element would add a gap, takes `position : absolute` while
+  `:empty`, leaving the layout until its message arrives, rather than
+  `display : contents`, whose role some engines drop from the accessibility
+  tree. See tech-geek-dev's `errAleDiv` in `pages/contact/contact.module.css`.
 - **An in-progress label needs no region of its own** (decided 2026-10-22):
   a label that only shows while the request is out (a submit button reading
   "Sending..."), and gives way to a result that is announced, isn't a status
