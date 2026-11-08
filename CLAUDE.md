@@ -2642,6 +2642,14 @@ lines apart, however related, is gone.
       element/fragment's children list (not the direct `? (`/`: (`/`&&
       (`/`.map((x) => (`/`return (` boundary), the comment is a live bug
       and must be converted.
+    - **A third grep, for a wrapped opening tag** (decided 2026-11-08,
+      after come-hang's chat avatars showed their comments as text): also
+      run `grep -nE "^\s*>\s*//"`, the closing `>` of a multi-line opening
+      tag followed by a bare `//`. Every hit is a live bug, with no
+      boundary to trace, since anything after a container's `>` is its
+      first child even when the element itself sits in an expression; the
+      expression exception covers a comment after a self-closing `/>` or
+      after the closing tag, never after `>`.
   - The closing tag itself still gets nothing, same as always.
   - **Inline phrasing elements inside text need no comment of their
     own**: a `<strong>`, `<b>`, `<em>`, `<i>`, `<br />`, or similar
