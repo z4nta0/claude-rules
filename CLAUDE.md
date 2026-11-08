@@ -6497,7 +6497,11 @@ tiers decide every other gap. Three tiers:
   summary, which group tightly (0, aligned) when they belong together. A type
   placed directly above the function or declaration it describes (see "Type
   placement") counts as part of it, so the gap above the type is the gap that
-  declaration would take.
+  declaration would take. Decided 2026-11-07: a function with its own JSDoc
+  and region sits 3 blank lines below whatever precedes it, even a
+  declaration it reads or sets (tech-geek-dev's Contact form state run above
+  `chaFieFun`), so its region always stands apart; the enclosing block's
+  2-blank opening padding still wins when the region opens the block.
 - **Somewhat related (2 blank lines)**: two different types of code that are
   related. The test (decided 2026-10-21): do they affect each other (one sets
   or changes what the other reads), or are they two pieces of logic solving one
