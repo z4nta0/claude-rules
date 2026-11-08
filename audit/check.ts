@@ -1349,7 +1349,9 @@ function regCheFun ( filPatStr : string, filTexStr : string ) : void {
  * Checks every line of a file for trailing whitespace, and every line of a
  * script, stylesheet, or HTML page for indentation with spaces, since
  * indentation uses tabs. A space after the tabs is allowed only before a
- * block comment's star column. Each break is recorded as a finding.
+ * block comment's star column, and inside a script's multi-line template
+ * literal, whose spaces are part of the string, so "### Rendered output
+ * always wins" keeps them. Each break is recorded as a finding.
  *
  * @author z4nta0 <https://github.com/z4nta0>
  *
@@ -1371,6 +1373,46 @@ function whiCheFun ( filPatStr : string, filTexStr : string ) : void {
 
 	const extNamStr = extname( filPatStr );   // What: Extension Name String. Why: Markdown keeps its trailing spaces, and only source is held to tabs. How: This reads the path's extension.
 	const souFilBoo = isaSouFun( extNamStr ); // What: Source File Boolean. Why: Only source files are indented with tabs. How: This checks for a script, stylesheet, or HTML page.
+	const temLinSet = new Set< number >();    // What: Template Line Set. Why: A multi-line template literal's later lines are string text, not indentation. How: This collects their 1-based line numbers.
+
+
+
+	if ( COD_EXT_SET.has( extNamStr ) ) { // What: Template Line Branch. Why: Only scripts hold template literals. How: This parses the script and records the lines inside each multi-line template.
+
+
+		const scrKinNum = extNamStr === '.tsx' || extNamStr === '.jsx' ? tyeModObj.ScriptKind.TSX : tyeModObj.ScriptKind.TS;  // What: Script Kind Number. Why: JSX only parses in TSX mode. How: This picks TSX for a .tsx or .jsx file and TS for the rest.
+		const souFilObj = tyeModObj.createSourceFile( filPatStr, filTexStr, tyeModObj.ScriptTarget.Latest, true, scrKinNum ); // What: Source File Object. Why: The template literals are found in the parsed syntax tree. How: This parses the text with parent links set.
+
+
+		const visTemFun = ( curNodObj : TyeModTyp.Node ) : void => { // What: Visit Template Function. Why: Template literals can sit anywhere in the tree. How: This records each one's later lines, then walks its children.
+
+
+			if ( tyeModObj.isNoSubstitutionTemplateLiteral( curNodObj ) || tyeModObj.isTemplateExpression( curNodObj ) ) { // What: Template Node Branch. Why: Both kinds of template literal can span lines. How: This records every line after the template's first through its last.
+
+
+				const endLinNum = linNumFun( filTexStr, curNodObj.end );        // What: End Line Number. Why: The template's text runs to its closing backtick. How: This reads that position's line.
+				const staLinNum = linNumFun( filTexStr, curNodObj.getStart() ); // What: Start Line Number. Why: The template's first line holds code before its backtick, so it's still checked. How: This reads the opening backtick's line.
+
+
+				for ( let temLinNum = staLinNum + 1; temLinNum <= endLinNum; temLinNum++ ) temLinSet.add( temLinNum ); // What: Template Line Loop. Why: Each later line is string text. How: This adds every line from the second through the last.
+
+
+			}
+
+
+
+			tyeModObj.forEachChild( curNodObj, visTemFun ); // What: Child Walk Call. Why: A template can sit inside another node. How: This visits each child node in turn.
+
+
+		};
+
+
+
+		visTemFun( souFilObj ); // What: Template Walk Call. Why: The set has to be filled before the lines are checked. How: This walks the whole file.
+
+
+	}
+
 
 
 	filTexStr.split( '\n' ).forEach( ( linTexStr, linIndNum ) => { // What: Whitespace Line Walk. Why: Each line is judged on its own. How: This visits every line with its index.
@@ -1380,7 +1422,7 @@ function whiCheFun ( filPatStr : string, filTexStr : string ) : void {
 
 
 
-		if ( souFilBoo && /^\t* +\S/.test( linTexStr ) && !/^\t* +\*/.test( linTexStr ) ) addFinFun( filPatStr, linIndNum + 1, 'indent', 'indented with spaces, not tabs' ); // What: Space Indent Check. Why: Source is indented with tabs. How: This records a finding for a line whose indentation holds spaces, unless they lead to a block comment's star column.
+		if ( souFilBoo && /^\t* +\S/.test( linTexStr ) && !/^\t* +\*/.test( linTexStr ) && !temLinSet.has( linIndNum + 1 ) ) addFinFun( filPatStr, linIndNum + 1, 'indent', 'indented with spaces, not tabs' ); // What: Space Indent Check. Why: Source is indented with tabs. How: This records a finding for a line whose indentation holds spaces, unless they lead to a block comment's star column or sit inside a template literal.
 
 
 	} );
