@@ -2235,6 +2235,13 @@ lines apart, however related, is gone.
         tiering the next bullet describes, since a step object can carry
         more than one kind of outlier at once (most commonly `bodEle`
         alongside a `runFun`).
+        Decided 2026-11-07: the same holds for every table of
+        repeated-shape objects written multi-line, not only GuidedTour
+        steps: a field holding the row's prose (a description, a body)
+        always joins the outlier group, in every row and however short,
+        so sibling rows never order their fields differently. See
+        tech-geek-dev's `TIM_MIL_ARR` (`pages/about/about.tsx`), whose
+        shorter 2013 and 2004 descriptions sit last like the rest.
       - **A property whose value is a genuinely multi-line construct, a
         function (e.g. a step object's own `runFun`), an array literal,
         or an object literal, is a long outlier too, even when its own
