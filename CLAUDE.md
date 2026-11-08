@@ -1801,6 +1801,9 @@ src/
   even when only one spec reads one, since a second spec can share it
   later (the-bernie-bears' `tests/support/feedback.ts`, which hair-designs'
   tooltip spec shares there).
+  Decided 2026-11-07: that covers code helpers; a static file one suite's
+  spec reads (a stylesheet it injects, beside its baselines) stays in that
+  suite's folder (tech-geek-dev's `tests/rendering/hide-patterns.css`).
 - **Dependency direction.** A folder imports only from itself or from
   folders below it in this order: `tabs/`, `onboarding/`, `help/` (top);
   then `ui/`; then `state/` and `platform/`; then `core/`; then `utils/`
