@@ -3829,6 +3829,14 @@ still passes.
   shadows that class, and the element silently gets a class with no
   rule. Such a keyframe is renamed right away under the keyframe naming
   rule below (`holidayRowEnterFadeIn`), even during the module move.
+- **`@property` rules** (decided 2026-11-08, in tech-geek-dev) register a
+  custom property so a transition can ease it (a mask's offset, a gradient
+  stop). One that only one module's element declares sits in that module,
+  directly after that element's variants, the way a module keyframe does,
+  with one What/Why/How comment on its `@property` line and its descriptors
+  formatted like declarations; one several modules share goes in the global
+  sheet's Tokens region. Two sit 1 blank line apart, as sibling rules do. See
+  tech-geek-dev's `pages/work/work.module.css` `--fad-lef-off`.
 - **Keyframe names** follow the 3-segment naming rule with no fixed
   character count (within reason): segment 1 identifies what animates
   (the element's own class when it's for one specific element, or the
