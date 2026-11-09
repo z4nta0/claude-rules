@@ -800,7 +800,13 @@ in the way.
       arriving item animates, on the decelerating curve, and the item it
       replaces goes at once, since an exit would hold the next item back or
       overlap two items of different shapes. See come-hang's
-      `screens/event-photos.module.css` `.vieImaIma--next`.
+      `screens/event-photos.module.css` `.vieImaIma--next`. Decided
+      2026-11-08, in tech-geek-dev: the same holds for one view swapped for
+      a different one in the same spot (a form and the thank-you that
+      replaces it, an error the next send clears), while a control's own
+      label that changes with its state (a submit button reading
+      "Sending...") still cross-fades, as a result of the action. See
+      tech-geek-dev's `pages/contact/contact.module.css`.
     - **A highlight after a jump lingers** (decided 2026-11-08, in
       come-hang): a ring or tint marking where a jump landed (a notice's
       Review opening a section at one item) guides the eye to a place rather
