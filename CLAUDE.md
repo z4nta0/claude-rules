@@ -763,7 +763,8 @@ in the way.
   Decided 2026-11-08, in tech-geek-dev: only card-like items lift. An item
   is card-like when it's drawn as a surface of its own (its own background,
   border, or shadow around padded content) and repeats beside siblings of the
-  same shape, such as a process step, a skill group, or a timeline entry. The
+  same shape, such as a process step. Items set straight on the page with no
+  surface of their own (a timeline's entries, a heading over its tags), the
   cells of one band, divided by rules or spacing rather than each drawn as a
   box (a strip of stats figures), the rows of a list, and chips aren't cards,
   so they take no hover look unless they're controls. See tech-geek-dev's
