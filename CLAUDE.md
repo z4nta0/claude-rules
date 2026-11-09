@@ -760,6 +760,14 @@ in the way.
   card, a form's panel) doesn't lift, since moving a whole panel, or a form
   under every field it holds, reads as the layout shifting rather than as
   feedback. See seal-and-shield's About info card and quote panel.
+  Decided 2026-11-08, in tech-geek-dev: only card-like items lift. An item
+  is card-like when it's drawn as a surface of its own (its own background,
+  border, or shadow around padded content) and repeats beside siblings of the
+  same shape, such as a process step, a skill group, or a timeline entry. The
+  cells of one band, divided by rules or spacing rather than each drawn as a
+  box (a strip of stats figures), the rows of a list, and chips aren't cards,
+  so they take no hover look unless they're controls. See tech-geek-dev's
+  Work process steps beside its Home stats strip.
 - **The flair**: one small, purposeful touch per element at most, such as an
   arrow that slides on hover, a gentle overshoot on something opening, or a
   check that pops in once. It never repeats on its own, loops, bounces
