@@ -778,7 +778,10 @@ in the way.
     100 to 300ms, and only a deliberate moment (a success state, a drawer)
     runs longer, up to about 400ms.
   - Easing comes from the easing tokens: decelerate for things arriving,
-    accelerate for things leaving, and the gentle overshoot for flair. The
+    accelerate for things leaving, and the gentle overshoot for flair. Every
+    transition names its curve's token (decided 2026-11-08, in
+    tech-geek-dev's design package), the standard one included, rather than
+    leaving the browser's default `ease`, so each curve reads as chosen. The
     strong bounce is kept for rare celebrations. An indicator that appears
     and disappears with a state (an active dot, a hover underline) arrives
     and leaves too (decided 2026-10-22): its shown state's rule carries the
