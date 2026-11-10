@@ -253,7 +253,11 @@ alone; only its data router's `<ScrollRestoration />` handles it.
   page scrolled further than the page in between can scroll (checked, not
   assumed), in Firefox too, a fresh load of an address opens at its top, a
   hash added to the address jumps to its section rather than a saved
-  position, and malformed saved positions raise no error. A test that scrolls by script waits two animation frames
+  position, and malformed saved positions raise no error. Decided
+  2026-11-10, in tech-geek-dev: the reload check also reads
+  `history.scrollRestoration` as `manual`, since Chromium and WebKit restore
+  a reload's position on their own and the position alone can't show the
+  hook did it. A test that scrolls by script waits two animation frames
   before leaving, so the scroll event that records the position has run. See
   come-hang's `tests/interaction/navigation.spec.ts`, whose link and back
   checks left with its 404 page on 2026-10-25 and return with its first
@@ -400,6 +404,10 @@ straight to its main content, which also settles that check.
   link that slides in on focus is judged where it lands; and the feedback
   probe focuses a control that only appears on focus before hovering it. See
   seal-and-shield's `ui/nav.tsx` and `tests/interaction/behavior.spec.ts`.
+  Decided 2026-11-10, in tech-geek-dev: a Tab walk run under reduced motion,
+  where the link appears at once, is enough when the interaction suite checks
+  the whole link is in view after the first Tab (`toBeInViewport( { ratio :
+  1 } )`) and the feedback probe hovers it with motion allowed.
 - **Existing projects** get it the next time they're worked on.
 
 ## SEO
@@ -448,7 +456,11 @@ or business details change.
     - **Checked** by the SEO suite: the raw page, fetched without a browser,
       carries the home page's full title and description, and every route has
       exactly one description and its own title. See the-bernie-bears'
-      `tests/seo/head.spec.ts`.
+      `tests/seo/head.spec.ts`. Decided 2026-11-10, in tech-geek-dev: the
+      raw page checks (its title, description, and social preview tags)
+      fetch it from the production build (`vite preview`), since scrapers
+      read the shipped page, which the build-only plugin under "### HTML"
+      minifies.
   - One `h1` per page, headings in order, descriptive link text, and alt
     text, which the accessibility scan already covers.
   - A canonical URL (per route on a site with several, as above), plus the
@@ -581,7 +593,10 @@ allows it.
   - **Size**: no more than three times the largest size it's displayed at,
     and never enlarged (decided 2026-10-18, up from twice): the densest
     phone screens draw 3 device pixels per CSS pixel, so 3x keeps an image
-    sharp there. See seal-and-shield's logos.
+    sharp there. See seal-and-shield's logos. Decided 2026-11-10, in
+    tech-geek-dev: the largest size is measured in all three engines across
+    the widths, and three times it is rounded down, so a box worked out from
+    rounded figures can't run a fraction over.
   - **Format**: WebP, lossless for flat artwork such as a logo and lossy for
     a photograph, at the lowest quality that shows no difference from the
     original at 3x zoom (seal-and-shield's full logo at 0.95). The exception
@@ -769,6 +784,21 @@ in the way.
   box (a strip of stats figures), the rows of a list, and chips aren't cards,
   so they take no hover look unless they're controls. See tech-geek-dev's
   Work process steps beside its Home stats strip.
+  Decided 2026-11-10, in tech-geek-dev: panels that each hold different
+  information are one-off panels even when several share a shape and stack
+  together (a contact page's sidebar cards, two fact cards at a portrait's
+  corners), so they don't lift; repeating means items of one kind, such as
+  a grid of projects. A row of a label and a value drawn as its own tinted
+  tile that lifts on hover (a contact page's email and profile rows) counts
+  as styled as a button, so it presses by scaling. An icon link in a row of
+  links (a footer's profile icons) is a link in a row, so its hover shifts
+  color only.
+  Decided 2026-11-10, in tech-geek-dev: an icon inside a control takes
+  `pointer-events : none`, so a press on it lands on the control, and its
+  comment gives that plain reason. Measured that day in all three engines, a
+  press landing on an SVG inside a link or button registers either way, so
+  the older comments claiming WebKit misses it (the-bernie-bears' and those
+  copied from it) are reworded the next time each project is worked on.
 - **The flair**: one small, purposeful touch per element at most, such as an
   arrow that slides on hover, a gentle overshoot on something opening, or a
   check that pops in once. It never repeats on its own, loops, bounces
@@ -1427,6 +1457,15 @@ itself gets its own mandatory self-check.
     every link and button in the accessibility tree, a Tab walk checking
     focus order, no keyboard traps, and visible focus, reflow at 320px wide
     with no horizontal scrolling, and motion stopping under reduced motion.
+    Decided 2026-11-10, in tech-geek-dev: a main state is any look a
+    visitor reaches through a control and can stay on, such as a filter's
+    narrowed result or a form after the browser refuses a send, while a
+    look no action can reach (an empty result no filter can produce) is
+    left out. The Tab walk also lists every enabled, drawn, non-inert
+    element Tab should reach from its first stop on, and fails one it never
+    reached, since a trap that cycles back to the first stop or holds focus
+    on one control ends the walk the way an ordinary end does. See
+    tech-geek-dev's `tests/accessibility/scripted.spec.ts`.
   - **It passes at zero violations**: every axe violation is fixed before
     the commit, and anything axe marks as needing review is listed for the
     user to check by hand, since automated tools catch only part of real
@@ -4333,6 +4372,14 @@ still passes.
       sum from the same rhythm steps times `1em`, and its comment says so:
       tonys-toppers' `html` scroll padding is the bar's height plus step p01,
       `calc( ( var( --ver-rhy-p01 ) * 3 + var( --ver-rhy-p04 ) ) * 1em )`.
+      Decided 2026-11-10, in tech-geek-dev: a page's own sticky strip
+      under the fixed bar (a filter bar) is cleared too, since a link
+      scrolled into view at the top can land behind it. A strip whose
+      height comes from its content has no token to read, so the page
+      measures it and hands the height to the links below it as their
+      `scroll-margin-top`, and a test walks back through them with
+      Shift+Tab checking each lands below the strip. See tech-geek-dev's
+      `pages/work/work.tsx` and `tests/interaction/filter.spec.ts`.
     - **Text measure is font based** (decided 2026-10-01): a paragraph's `max-width` comes from the
       project's main body font, not from either rhythm. Paragraph text
       targets 66 characters per line and must land within 45 to 75; small
