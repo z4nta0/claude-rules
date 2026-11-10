@@ -1,7 +1,7 @@
 # User-Level CLAUDE.md
 
 Rules that apply to every project: development servers, language, linting,
-browser testing, security testing, required pages, multi-page scroll position, section links, skip links and modal layers, SEO, social previews, images, card grids, grid layout, spacing tiers, interaction feedback, forms, the README's Ko-fi section, licenses, full project audits, version bumps and pushes, commit messages, copy, and code formatting, naming, and comments. A project's own CLAUDE.md
+browser testing, security testing, required pages, multi-page scroll position, section links, skip links and modal layers, new tab links, SEO, social previews, images, card grids, grid layout, spacing tiers, interaction feedback, forms, the README's Ko-fi section, licenses, full project audits, version bumps and pushes, commit messages, copy, and code formatting, naming, and comments. A project's own CLAUDE.md
 describes that project and adds anything specific to it (scoped naming
 overrides, its own values).
 
@@ -408,6 +408,30 @@ straight to its main content, which also settles that check.
   where the link appears at once, is enough when the interaction suite checks
   the whole link is in view after the first Tab (`toBeInViewport( { ratio :
   1 } )`) and the feedback probe hovers it with motion allowed.
+- **Existing projects** get it the next time they're worked on.
+
+## New Tab Links: Say So
+Decided 2026-11-10, in tech-geek-dev. A link that opens a new tab
+(`target='_blank'`) tells screen reader users so in its announced name, so
+nobody is moved to a new tab without warning. A sighted visitor usually sees
+where a link leads, but a screen reader user only hears its name, and then
+lands somewhere the Back button can't undo.
+- **Applies to** every link that opens a new tab, in every project, the
+  shared design package's included: a profile icon, a project's live site, a
+  support button.
+- **The note**: the link's name ends in "(opens in a new tab)", optionally
+  naming where it goes ("(opens Ko-fi in a new tab)") when the link's own
+  words don't. A link with visible text carries it as a visually hidden span
+  after the text; an icon link named by `aria-label` adds it to the label.
+  The note stays visually hidden, so the design doesn't change.
+- **A link that only sometimes opens one** (a list whose email row opens the
+  mail app while its profile rows open new tabs) adds the note only where
+  the link does.
+- **Verified** by the accessibility suite's names check in all three
+  engines: every shown link with a blank target has a name ending in the
+  note. See tech-geek-dev's `tests/accessibility/scripted.spec.ts`
+  `TAB_HIN_REG`, which proved it against the design package's footer icons
+  before they carried it.
 - **Existing projects** get it the next time they're worked on.
 
 ## SEO
@@ -1141,10 +1165,10 @@ part of a pre- or post-commit check.
      what it resolves to.
   7. Spacing and alignment: blank-line tiers, column alignment, and ordering.
   8. Copy rules.
-  9. Project requirements: the 404 page, the skip link, SEO, social
-     previews, images, card grids, interaction feedback, forms, the
-     README's Ko-fi section, the license, and the security suite, checked
-     partly through the test suites.
+  9. Project requirements: the 404 page, the skip link, new tab links,
+     SEO, social previews, images, card grids, interaction feedback, forms,
+     the README's Ko-fi section, the license, and the security suite,
+     checked partly through the test suites.
 - **A cited example isn't proof** (decided 2026-10-24): a file a rule
   points to shows the rule's form, but an audit still checks a project's code
   against the rule's own words, item by item through each Verified list, so
