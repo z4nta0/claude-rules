@@ -823,6 +823,9 @@ in the way.
   press landing on an SVG inside a link or button registers either way, so
   the older comments claiming WebKit misses it (the-bernie-bears' and those
   copied from it) are reworded the next time each project is worked on.
+  Decided 2026-11-13, in tech-geek-cards: an icon here means an SVG or
+  image; a text glyph such as an arrow (→) in a span is part of its control's
+  text and needs no `pointer-events : none`.
 - **The flair**: one small, purposeful touch per element at most, such as an
   arrow that slides on hover, a gentle overshoot on something opening, or a
   check that pops in once. It never repeats on its own, loops, bounces
