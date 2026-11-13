@@ -3558,6 +3558,10 @@ animation and transition, CSS or JS-driven (an `Element.animate` call, a
   directly rather than through cross-faded layers, since it repaints once
   per navigation; its line says so. See the-bernie-bears' `ui/nav.module.css`
   `.navLinAnc`.
+  Decided 2026-11-13, in tech-geek-cards: an animated `clip-path` is a heavy
+  paint property too, so its line says why a transform won't do (a photo
+  uncovered from one edge stays in place, where a transform would move it).
+  See tech-geek-cards' `ui/family-card.tsx` grid wipe.
 - **Decide on `will-change` deliberately.** For every animation, check
   whether the hint helps, and add it when it does:
   - **Use it** when JS moves an element frame by frame through
