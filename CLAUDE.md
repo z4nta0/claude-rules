@@ -6735,6 +6735,13 @@ gradually alongside the whitespace rules above (started with `src/app.tsx`).
     come-hang's `import AxeBuiCla from '@axe-core/playwright';`. Its `What:`
     expansion reads `Class`. A name a library exports by name (`{ chromium
     }`) keeps the library's spelling, as with any named import.
+  - **A JSX tag takes the type segment `Tag`** (decided 2026-11-13, in
+    tech-geek-cards): a variable JSX renders as an element whose tag is
+    chosen at run time (`const SnoTitTag = isaPraBoo ? 'h2' : 'h1';`, then
+    `<SnoTitTag>`) is PascalCase, since JSX reads a lowercase name as an HTML
+    tag, and ends in `Tag`, since it names an element rather than holding
+    text. Its `What:` expansion reads `Tag`. See tech-geek-cards'
+    `cards/christmas/christmas-card.tsx`.
   - **A Buffer takes `Obj`** (decided 2026-11-03, in the-bernie-bears): a
     Node `Buffer` is an object, so its type segment is `Obj`, leaving `Buf`
     free as a descriptor (`pngBufObj`, `jpeBufObj`, `icoHeaObj`), never a
