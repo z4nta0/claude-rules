@@ -817,6 +817,11 @@ in the way.
   as styled as a button, so it presses by scaling. An icon link in a row of
   links (a footer's profile icons) is a link in a row, so its hover shifts
   color only.
+  Decided 2026-11-14, in tech-geek-cards: an icon link drawn on a tinted tile
+  of its own (a phone menu's profile icons) counts as styled as a button, so
+  it lifts on hover and presses by scaling, even in a row; only a bare icon
+  in a row of links shifts color only. See techgeek-design's
+  `ui/nav.module.css` `.menSocAnc` beside its footer's `.fooIcoAnc`.
   Decided 2026-11-10, in tech-geek-dev: an icon inside a control takes
   `pointer-events : none`, so a press on it lands on the control, and its
   comment gives that plain reason. Measured that day in all three engines, a
@@ -874,7 +879,12 @@ in the way.
       ending on time so any script waiting on its end runs. See come-hang's
       `styles/styles.css` `[data-jump-flash-active]` and `itemJumpFadeOut`.
   - Movement stays small: a few pixels of travel, and scales within a few
-    percent, except an element opening from nothing.
+    percent, except an element opening from nothing. Decided 2026-11-14, in
+    tech-geek-cards: a hover that fans a stack open (an envelope's cards
+    spreading) counts as something opening, so its travel may be larger,
+    while content swapped in place on each choice (a filter's results) keeps
+    to a few pixels. See tech-geek-cards' `pages/home/home.module.css`
+    envelope and `pages/gallery/gallery.module.css` `resultSwapFadeUp`.
   - **They govern feedback only** (decided 2026-10-22): motion that isn't a
     response to a control, such as a page's entrance on load, content
     revealed on scroll, or an ambient loop like a slow pulse, falls outside
@@ -899,7 +909,11 @@ in the way.
   animation that plays. A duration above zero somewhere on the element isn't
   enough, since the focus ring's outline transition sits on every control. A
   color inherited from a parent, a border color left as currentColor, and an
-  undrawn border side count as eased with what they follow. The check reads
+  undrawn border side count as eased with what they follow, and so does a
+  discrete property (`visibility`, `display`) switched behind a fade by a
+  zero-length transition delayed until the fade ends, the usual way to keep
+  a fade visible (decided 2026-11-14, in tech-geek-cards, techgeek-design's
+  drawer and scrim), so the probe needn't read it. The check reads
   the properties the project's controls actually change, and grows when a
   control first changes another (a box-shadow, a filter) or first animates
   (decided 2026-10-24), rather than probing for looks nothing uses yet.
@@ -965,7 +979,12 @@ never lost along the way.
   form replaced by a thank-you panel), focus moves to what replaces it, the
   panel given `tabIndex={ -1 }` and a heading, and back to the form's first
   field when the form returns. Moving focus to the panel announces it as well,
-  so there it can stand in for the live region.
+  so there it can stand in for the live region. Decided 2026-11-14, in
+  tech-geek-cards: such a panel drops its focus ring (`:focus { outline :
+  none }`), the same as `<main>`, since it takes focus by script to be
+  announced rather than as a control, and a ring around a whole panel would
+  only confuse. See tech-geek-cards' `pages/contact/contact.module.css`
+  `.thaYouDiv`.
 - **Verified** by the accessibility suite in all three engines: the region is
   in the page and empty on load and holds the message once the form is sent,
   and where something disappears, focus lands on its replacement.
