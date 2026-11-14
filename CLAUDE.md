@@ -1205,6 +1205,43 @@ part of a pre- or post-commit check.
   the machine from sleeping before the 4:00 AM shutdown and leaves the
   session's window open. A usage limit reached overnight pauses the run, and
   the progress file carries it to the next session.
+- **Notes: keeping the suites fast** (suggestions, not rules, measured
+  2026-11-13 in tech-geek-cards, whose full run had grown past 2.5 hours).
+  An audit runs the suites many times, so a slow suite costs the whole run.
+  When a run drags, look at Playwright's "Slow test file" lines first: there,
+  one spec (the feedback probe) took about 52 of the interaction suite's 55
+  minutes in each engine.
+  - **Wait on the animations, not the clock**: a probe that pauses a fixed
+    time before each read (400ms there, five reads per control) pays for it
+    on every control, even one with nothing easing, and pays it again in
+    the reduced-motion pass, where nothing eases at all. Waiting two
+    animation frames, so the change is styled and its transitions have
+    started, then on `getAnimations()` for the element, everything inside
+    it, and each of its ancestors (an ancestor's fading color reaches the
+    element), leaving out endless ones, reads each look as soon as it
+    settles. A passing run shows no read came too early, and breaking a
+    transition shows the probe still catches a snap. See tech-geek-cards'
+    `aniFinFun` in `tests/interaction/feedback.spec.ts`.
+  - **Let independent tests run in parallel**: with `fullyParallel : false`,
+    a spec file's tests run one after another in a single worker, so one big
+    file sets the pace for everything. A spec whose tests each open their
+    own state can call `test.describe.configure( { mode : 'parallel' } )`.
+    Playwright's `workers` count is separate from the 3-agent limit under
+    "Agents": tech-geek-cards' runs at 6 on a 24-core, 31 GB machine. Both
+    changes together took the feedback spec from about 52 minutes per engine
+    to 10.2 minutes for all three.
+  - **Keep the dev server's watcher off the test output**: Vite ignores
+    `test-results` but not `tests/output`, and retained traces from killed
+    runs had filled it with 5.5 GB of screencast frames, which kept every
+    dev server watching the project busy. A `server.watch.ignored` list
+    (`'**/*.log'`, `'**/dist/**'`, `'**/tests/output/**'`, plus any large
+    folder of originals) stops it, as come-hang's and tech-geek-cards'
+    `vite.config.ts` do. Clearing `tests/output/results` before a long run
+    keeps old traces from piling up.
+  - **Never pipe a long run through `tail` alone**: the output then shows
+    nothing until the run ends, and a summary can hide timeouts. Write the
+    full output to a file, and rerun failures with `--last-failed` to tell a
+    load timeout from a real failure.
 
 ## Versions And Pushes
 Decided 2026-11-07, after tech-geek-dev's audit set techgeek-design's version
