@@ -817,12 +817,20 @@ in the way.
   as styled as a button, so it presses by scaling. An icon link in a row of
   links (a footer's profile icons) is a link in a row, so its hover shifts
   color only.
+  Decided 2026-11-14, in tech-geek-cards: an icon link drawn on a tinted tile
+  of its own (a phone menu's profile icons) counts as styled as a button, so
+  it lifts on hover and presses by scaling, even in a row; only a bare icon
+  in a row of links shifts color only. See techgeek-design's
+  `ui/nav.module.css` `.menSocAnc` beside its footer's `.fooIcoAnc`.
   Decided 2026-11-10, in tech-geek-dev: an icon inside a control takes
   `pointer-events : none`, so a press on it lands on the control, and its
   comment gives that plain reason. Measured that day in all three engines, a
   press landing on an SVG inside a link or button registers either way, so
   the older comments claiming WebKit misses it (the-bernie-bears' and those
   copied from it) are reworded the next time each project is worked on.
+  Decided 2026-11-13, in tech-geek-cards: an icon here means an SVG or
+  image; a text glyph such as an arrow (→) in a span is part of its control's
+  text and needs no `pointer-events : none`.
 - **The flair**: one small, purposeful touch per element at most, such as an
   arrow that slides on hover, a gentle overshoot on something opening, or a
   check that pops in once. It never repeats on its own, loops, bounces
@@ -871,7 +879,12 @@ in the way.
       ending on time so any script waiting on its end runs. See come-hang's
       `styles/styles.css` `[data-jump-flash-active]` and `itemJumpFadeOut`.
   - Movement stays small: a few pixels of travel, and scales within a few
-    percent, except an element opening from nothing.
+    percent, except an element opening from nothing. Decided 2026-11-14, in
+    tech-geek-cards: a hover that fans a stack open (an envelope's cards
+    spreading) counts as something opening, so its travel may be larger,
+    while content swapped in place on each choice (a filter's results) keeps
+    to a few pixels. See tech-geek-cards' `pages/home/home.module.css`
+    envelope and `pages/gallery/gallery.module.css` `resultSwapFadeUp`.
   - **They govern feedback only** (decided 2026-10-22): motion that isn't a
     response to a control, such as a page's entrance on load, content
     revealed on scroll, or an ambient loop like a slow pulse, falls outside
@@ -896,7 +909,11 @@ in the way.
   animation that plays. A duration above zero somewhere on the element isn't
   enough, since the focus ring's outline transition sits on every control. A
   color inherited from a parent, a border color left as currentColor, and an
-  undrawn border side count as eased with what they follow. The check reads
+  undrawn border side count as eased with what they follow, and so does a
+  discrete property (`visibility`, `display`) switched behind a fade by a
+  zero-length transition delayed until the fade ends, the usual way to keep
+  a fade visible (decided 2026-11-14, in tech-geek-cards, techgeek-design's
+  drawer and scrim), so the probe needn't read it. The check reads
   the properties the project's controls actually change, and grows when a
   control first changes another (a box-shadow, a filter) or first animates
   (decided 2026-10-24), rather than probing for looks nothing uses yet.
@@ -962,7 +979,12 @@ never lost along the way.
   form replaced by a thank-you panel), focus moves to what replaces it, the
   panel given `tabIndex={ -1 }` and a heading, and back to the form's first
   field when the form returns. Moving focus to the panel announces it as well,
-  so there it can stand in for the live region.
+  so there it can stand in for the live region. Decided 2026-11-14, in
+  tech-geek-cards: such a panel drops its focus ring (`:focus { outline :
+  none }`), the same as `<main>`, since it takes focus by script to be
+  announced rather than as a control, and a ring around a whole panel would
+  only confuse. See tech-geek-cards' `pages/contact/contact.module.css`
+  `.thaYouDiv`.
 - **Verified** by the accessibility suite in all three engines: the region is
   in the page and empty on load and holds the message once the form is sent,
   and where something disappears, focus lands on its replacement.
@@ -1202,6 +1224,43 @@ part of a pre- or post-commit check.
   the machine from sleeping before the 4:00 AM shutdown and leaves the
   session's window open. A usage limit reached overnight pauses the run, and
   the progress file carries it to the next session.
+- **Notes: keeping the suites fast** (suggestions, not rules, measured
+  2026-11-13 in tech-geek-cards, whose full run had grown past 2.5 hours).
+  An audit runs the suites many times, so a slow suite costs the whole run.
+  When a run drags, look at Playwright's "Slow test file" lines first: there,
+  one spec (the feedback probe) took about 52 of the interaction suite's 55
+  minutes in each engine.
+  - **Wait on the animations, not the clock**: a probe that pauses a fixed
+    time before each read (400ms there, five reads per control) pays for it
+    on every control, even one with nothing easing, and pays it again in
+    the reduced-motion pass, where nothing eases at all. Waiting two
+    animation frames, so the change is styled and its transitions have
+    started, then on `getAnimations()` for the element, everything inside
+    it, and each of its ancestors (an ancestor's fading color reaches the
+    element), leaving out endless ones, reads each look as soon as it
+    settles. A passing run shows no read came too early, and breaking a
+    transition shows the probe still catches a snap. See tech-geek-cards'
+    `aniFinFun` in `tests/interaction/feedback.spec.ts`.
+  - **Let independent tests run in parallel**: with `fullyParallel : false`,
+    a spec file's tests run one after another in a single worker, so one big
+    file sets the pace for everything. A spec whose tests each open their
+    own state can call `test.describe.configure( { mode : 'parallel' } )`.
+    Playwright's `workers` count is separate from the 3-agent limit under
+    "Agents": tech-geek-cards' runs at 6 on a 24-core, 31 GB machine. Both
+    changes together took the feedback spec from about 52 minutes per engine
+    to 10.2 minutes for all three.
+  - **Keep the dev server's watcher off the test output**: Vite ignores
+    `test-results` but not `tests/output`, and retained traces from killed
+    runs had filled it with 5.5 GB of screencast frames, which kept every
+    dev server watching the project busy. A `server.watch.ignored` list
+    (`'**/*.log'`, `'**/dist/**'`, `'**/tests/output/**'`, plus any large
+    folder of originals) stops it, as come-hang's and tech-geek-cards'
+    `vite.config.ts` do. Clearing `tests/output/results` before a long run
+    keeps old traces from piling up.
+  - **Never pipe a long run through `tail` alone**: the output then shows
+    nothing until the run ends, and a summary can hide timeouts. Write the
+    full output to a file, and rerun failures with `--last-failed` to tell a
+    load timeout from a real failure.
 
 ## Versions And Pushes
 Decided 2026-11-07, after tech-geek-dev's audit set techgeek-design's version
@@ -3558,6 +3617,10 @@ animation and transition, CSS or JS-driven (an `Element.animate` call, a
   directly rather than through cross-faded layers, since it repaints once
   per navigation; its line says so. See the-bernie-bears' `ui/nav.module.css`
   `.navLinAnc`.
+  Decided 2026-11-13, in tech-geek-cards: an animated `clip-path` is a heavy
+  paint property too, so its line says why a transform won't do (a photo
+  uncovered from one edge stays in place, where a transform would move it).
+  See tech-geek-cards' `ui/family-card.tsx` grid wipe.
 - **Decide on `will-change` deliberately.** For every animation, check
   whether the hint helps, and add it when it does:
   - **Use it** when JS moves an element frame by frame through
@@ -6731,6 +6794,13 @@ gradually alongside the whitespace rules above (started with `src/app.tsx`).
     come-hang's `import AxeBuiCla from '@axe-core/playwright';`. Its `What:`
     expansion reads `Class`. A name a library exports by name (`{ chromium
     }`) keeps the library's spelling, as with any named import.
+  - **A JSX tag takes the type segment `Tag`** (decided 2026-11-13, in
+    tech-geek-cards): a variable JSX renders as an element whose tag is
+    chosen at run time (`const SnoTitTag = isaPraBoo ? 'h2' : 'h1';`, then
+    `<SnoTitTag>`) is PascalCase, since JSX reads a lowercase name as an HTML
+    tag, and ends in `Tag`, since it names an element rather than holding
+    text. Its `What:` expansion reads `Tag`. See tech-geek-cards'
+    `cards/christmas/christmas-card.tsx`.
   - **A Buffer takes `Obj`** (decided 2026-11-03, in the-bernie-bears): a
     Node `Buffer` is an object, so its type segment is `Obj`, leaving `Buf`
     free as a descriptor (`pngBufObj`, `jpeBufObj`, `icoHeaObj`), never a
