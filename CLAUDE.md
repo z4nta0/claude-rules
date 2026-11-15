@@ -3959,6 +3959,15 @@ still passes.
   lookup such as `[data-element-name-hook~="..."]:not(:disabled)`) is a
   string value, not CSS, and stays as written, the same as a JS query
   string.
+- **A container's name is its element's class** (decided 2026-11-14, in
+  tech-geek-cards): an element that serves as a named query container takes
+  its own class name, spelled exactly, as its `container-name`
+  (`container-name : scrBoxDiv`, queried as `@container scrBoxDiv (
+  orientation : portrait )`), so a query leaves no doubt which element it
+  measures, and the class already says what that element is. See
+  tech-geek-cards' `cards/turkeys-away/turkeys-away-card.module.css`.
+  Existing container names (ease-my-life's `app`) are brought in line the
+  next time each project is worked on.
 - **`@media` blocks**: a `@media` override is a variant of the element it
   styles, so it sits directly under that element's base rule with its other
   variants. The block gets its own What/Why/How comment after its `{` and the
@@ -4732,6 +4741,13 @@ are renamed to this as their files come up in the design-system pass.
   `--bor-wid-xla` (`m05`, about 3.572px), each a rhythm step times 1rem. A
   step is picked so it snaps to the intended width: `m06` (about 2.696px)
   would draw as 2px, so 3px takes `m05`.
+  Decided 2026-11-14, in tech-geek-cards: a border that belongs to lettering
+  sized by its container (a `cqmin` length) scales with it, clamped between
+  border width steps so it can't vanish on a small screen or grow heavy on a
+  large one, the same way fluid spacing snaps its ends to steps:
+  `clamp( var( --bor-wid-bas ), calc( var( --cdn-pow-002-rec ) * 1cqmin ),
+  var( --bor-wid-xla ) )`. See tech-geek-cards' Turkeys Away bulletin edge,
+  `.newTexPar`.
 - **Border radii use a five-step scale** (decided 2026-10-01):
   `--rad-bor-xsm` (`m05`, about 3.57px), `--rad-bor-sma` (`m02`, about
   8.30px), `--rad-bor-med` (`m01`, 11px), `--rad-bor-lar` (`bas`, about
