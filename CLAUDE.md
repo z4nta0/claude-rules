@@ -1,7 +1,7 @@
 # User-Level CLAUDE.md
 
 Rules that apply to every project: development servers, language, linting,
-browser testing, security testing, required pages, multi-page scroll position, section links, skip links and modal layers, new tab links, SEO, social previews, images, card grids, grid layout, spacing tiers, interaction feedback, forms, pop-ups, the README's Ko-fi section, licenses, full project audits, change audits, version bumps and pushes, commit messages, copy, and code formatting, naming, and comments. A project's own CLAUDE.md
+browser testing, security testing, required pages, multi-page scroll position, section links, skip links and modal layers, new tab links, SEO, social previews, images, card grids, grid layout, spacing tiers, interaction feedback, forms, pop-ups, dropdown arrows, the README's Ko-fi section, licenses, full project audits, change audits, version bumps and pushes, commit messages, copy, and code formatting, naming, and comments. A project's own CLAUDE.md
 describes that project and adds anything specific to it (scoped naming
 overrides, its own values).
 
@@ -115,11 +115,12 @@ below, and an app adds the app checks, its suite growing with the app.
   - **The headers policy**: the hosting headers file (Netlify's `_headers`)
     sends a Content-Security-Policy with `default-src 'self'`, `object-src
     'none'`, `base-uri` and `form-action` limited, `frame-ancestors 'none'`,
-    and no `'unsafe-eval'`, nor `'unsafe-inline'` unless the project's
-    CLAUDE.md records why it's needed; plus `X-Frame-Options: DENY`,
-    `Strict-Transport-Security` of at least a year with `includeSubDomains`,
-    `X-Content-Type-Options: nosniff`, a `Referrer-Policy`, and a
-    `Permissions-Policy`.
+    no `'unsafe-eval'`, nor `'unsafe-inline'` unless the project's
+    CLAUDE.md records why it's needed, and no `data:` image source (decided
+    2026-11-15, per "## Dropdown Arrows: An SVG File"); plus
+    `X-Frame-Options: DENY`, `Strict-Transport-Security` of at least a year
+    with `includeSubDomains`, `X-Content-Type-Options: nosniff`, a
+    `Referrer-Policy`, and a `Permissions-Policy`.
   - **The policy in practice**: every page and state, loaded from the
     production build (`vite preview`, since the dev server injects inline
     scripts a strict policy blocks) with the headers file's headers applied to
@@ -633,9 +634,9 @@ allows it.
     48 KB lossy).
   - **Markup**: its intrinsic `width` and `height` attributes, so the page
     doesn't shift while it loads, and `loading='lazy'` when it starts below
-    the fold. An image Vite inlines as a data URI (one under its 4 KB limit)
-    needs no `loading`, since there's nothing to fetch (decided 2026-10-18,
-    reese-roofing's footer logo mark).
+    the fold. Vite never inlines an image as a data URI (decided 2026-11-15,
+    `assetsInlineLimit : 0`, per "## Dropdown Arrows: An SVG File"), so every
+    image is a file to fetch.
 - **Rendered by a script, not by hand**: the originals are kept outside the
   served tree (e.g. `design/photos/`), per the directory rules on source
   artwork, and a script beside them writes the optimized copies into `src/`,
@@ -1010,6 +1011,37 @@ keyboard user moves on to (WCAG 2.2's 2.4.11 Focus Not Obscured).
 - **Existing projects** with such pop-ups are brought in line the next time
   they're worked on.
 
+## Dropdown Arrows: An SVG File
+Decided 2026-11-15, in tech-geek-support's audit, after a survey found the
+user's sites drawing a select's arrow three ways: a `data:` SVG written into
+the stylesheet (tech-geek-dev, tech-geek-support, reese-roofing), the
+browser's own arrow (tech-geek-cards, tonys-toppers), and none at all
+(hair-designs). Every select draws its own arrow from an SVG file, so it
+matches the site's design in every engine and the security policy never
+needs `data:`.
+- **The arrow**: the select takes `appearance : none`, a `background-image`
+  reading the file (`url( './select-arrow.svg' )`) set `no-repeat` at its
+  right edge, and enough right padding that its text never runs under the
+  arrow. The file is a small chevron drawn in the site's muted text color,
+  kept next to the module that reads it (or in `src/assets/` when two
+  features share it), per "### Directory structure".
+- **Never inlined**: Vite inlines any asset under 4 KB as a `data:` URI, so
+  every project's `vite.config.ts` sets `build : { assetsInlineLimit : 0 }`,
+  as tech-geek-cards' and tonys-toppers' do, and every imported asset ships
+  as its own file.
+- **No `data:` in the policy**: with nothing inlined, the Content-Security-
+  Policy's `img-src` (or `default-src`, where `img-src` isn't named) allows
+  `'self'` without `data:`, and the security suite's headers check fails a
+  `data:` source.
+- **A color in the file is literal**: an SVG file can't read a custom
+  property, so its stroke is the role's value written out, and the select's
+  rule carries a note naming the role it stands in for.
+- **Verified** by the security suite in all three engines (zero CSP
+  violations on the form's page with no `data:` allowed) and by the
+  rendering baselines, which show the arrow.
+- **Existing projects** with selects are brought in line the next time
+  they're worked on.
+
 ## README: Ko-fi Support Section
 Decided 2026-10-26. Every project's README invites an optional tip on the
 user's Ko-fi page, as Ko-fi suggests, with this exact section:
@@ -1208,8 +1240,8 @@ part of a pre- or post-commit check.
   8. Copy rules.
   9. Project requirements: the 404 page, the skip link, new tab links,
      SEO, social previews, images, card grids, interaction feedback, forms,
-     pop-ups, the README's Ko-fi section, the license, and the security
-     suite, checked partly through the test suites.
+     pop-ups, dropdown arrows, the README's Ko-fi section, the license, and
+     the security suite, checked partly through the test suites.
 - **A cited example isn't proof** (decided 2026-10-24): a file a rule
   points to shows the rule's form, but an audit still checks a project's code
   against the rule's own words, item by item through each Verified list, so
@@ -4676,9 +4708,9 @@ are renamed to this as their files come up in the design-system pass.
     transparency), `transparent` and `currentColor`, a preview that has
     to show a fixed palette whatever the active theme (the theme picker's
     rows), and seed data in JS. Decided 2026-10-17: so is a color inside an
-    inline data URI (reese-roofing's select arrow), which can't read a custom
-    property; its declaration carries a note saying so and naming the role
-    the color stands in for. In ease-my-life the theme system writes
+    SVG file a stylesheet reads (a select's arrow, per "## Dropdown Arrows:
+    An SVG File"), which can't read a custom property; its declaration
+    carries a note saying so and naming the role the color stands in for. In ease-my-life the theme system writes
     only the original eight roles, so the newer ones keep one value across
     every theme for now.
   - **Shades of a role are tokens too** (decided 2026-10-02): a lighter
