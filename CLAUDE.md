@@ -2068,7 +2068,11 @@ src/
   another tab's folder. The tour bus and the onboarding sample, stats, and
   checklist data live in `state/`, since `store.ts` and the shared
   reminders editor in `ui/` both read them, and neither may import upward
-  from `onboarding/`.
+  from `onboarding/`. Decided 2026-11-15, in tech-geek-support's audit: a
+  website's `pages/` folders aren't tabs, so a page may import another page
+  whole (the article page shows the 404 page for an unknown article from
+  `pages/not-found/`), while a part one page builds that another page needs
+  still moves to `ui/`.
 - **No redundant prefixes.** A file inside a folder drops whatever prefix
   the folder already says (`onboarding/onboarding-tour-runner.jsx` becomes
   `onboarding/tour-runner.tsx`), the same reasoning as the naming rule that
