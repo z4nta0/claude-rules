@@ -1,7 +1,7 @@
 # User-Level CLAUDE.md
 
 Rules that apply to every project: development servers, language, linting,
-browser testing, security testing, required pages, multi-page scroll position, section links, skip links and modal layers, new tab links, SEO, social previews, images, card grids, grid layout, spacing tiers, interaction feedback, forms, the README's Ko-fi section, licenses, full project audits, version bumps and pushes, commit messages, copy, and code formatting, naming, and comments. A project's own CLAUDE.md
+browser testing, security testing, required pages, multi-page scroll position, section links, skip links and modal layers, new tab links, SEO, social previews, images, card grids, grid layout, spacing tiers, interaction feedback, forms, the README's Ko-fi section, licenses, full project audits, change audits, version bumps and pushes, commit messages, copy, and code formatting, naming, and comments. A project's own CLAUDE.md
 describes that project and adds anything specific to it (scoped naming
 overrides, its own values).
 
@@ -1261,6 +1261,33 @@ part of a pre- or post-commit check.
     nothing until the run ends, and a summary can hide timeouts. Write the
     full output to a file, and rerun failures with `--last-failed` to tell a
     load timeout from a real failure.
+
+## Change Audits
+Decided 2026-11-14, in tech-geek-cards, after its Turkeys Away card branch.
+A change audit runs the full audit's process over one branch's changes, so a
+feature branch's new code gets the repeated, fresh-eyed passes that the
+pre-commit rule check's single read can't give it.
+- **Only on request**, the same as a full audit: the user asks for a change
+  audit of a branch, usually before it merges, and the request is also the
+  go-ahead to dispatch agents for it.
+- **Its scope is the branch's diff** (`git diff main...HEAD`): every file the
+  branch adds, and in every file it changes, the changed lines plus whatever
+  they directly affect, the same reach as the pre-commit rule check's Scope.
+  Untouched code elsewhere is out of scope; anything noticed there is logged
+  in the report rather than fixed.
+- **It runs on the branch itself**, with no audit branch of its own, and the
+  same progress file and report as a full audit, each audit's section headed
+  as a change audit with its date.
+- **Everything else follows "## Full Project Audits"**: the mechanical audits
+  run once clean, each judgment audit repeats with fresh readers in a
+  different order until 3 consecutive passes find nothing, with the same
+  10-pass limit, order of audits, settled list, rule-question handling, and
+  4:00 AM shutdown, committing as it goes. It ends with the final check: the
+  mechanical audits, then the project's full test suites in all three
+  engines.
+- **Readers get the scope in their brief**: each batch names the changed files
+  and, for a changed existing file, the line ranges in scope, so a reader
+  reads those ranges with enough of the file around them to judge them.
 
 ## Versions And Pushes
 Decided 2026-11-07, after tech-geek-dev's audit set techgeek-design's version
@@ -3932,6 +3959,15 @@ still passes.
   lookup such as `[data-element-name-hook~="..."]:not(:disabled)`) is a
   string value, not CSS, and stays as written, the same as a JS query
   string.
+- **A container's name is its element's class** (decided 2026-11-14, in
+  tech-geek-cards): an element that serves as a named query container takes
+  its own class name, spelled exactly, as its `container-name`
+  (`container-name : scrBoxDiv`, queried as `@container scrBoxDiv (
+  orientation : portrait )`), so a query leaves no doubt which element it
+  measures, and the class already says what that element is. See
+  tech-geek-cards' `cards/turkeys-away/turkeys-away-card.module.css`.
+  Existing container names (ease-my-life's `app`) are brought in line the
+  next time each project is worked on.
 - **`@media` blocks**: a `@media` override is a variant of the element it
   styles, so it sits directly under that element's base rule with its other
   variants. The block gets its own What/Why/How comment after its `{` and the
@@ -4705,6 +4741,13 @@ are renamed to this as their files come up in the design-system pass.
   `--bor-wid-xla` (`m05`, about 3.572px), each a rhythm step times 1rem. A
   step is picked so it snaps to the intended width: `m06` (about 2.696px)
   would draw as 2px, so 3px takes `m05`.
+  Decided 2026-11-14, in tech-geek-cards: a border that belongs to lettering
+  sized by its container (a `cqmin` length) scales with it, clamped between
+  border width steps so it can't vanish on a small screen or grow heavy on a
+  large one, the same way fluid spacing snaps its ends to steps:
+  `clamp( var( --bor-wid-bas ), calc( var( --cdn-pow-002-rec ) * 1cqmin ),
+  var( --bor-wid-xla ) )`. See tech-geek-cards' Turkeys Away bulletin edge,
+  `.newTexPar`.
 - **Border radii use a five-step scale** (decided 2026-10-01):
   `--rad-bor-xsm` (`m05`, about 3.57px), `--rad-bor-sma` (`m02`, about
   8.30px), `--rad-bor-med` (`m01`, 11px), `--rad-bor-lar` (`bas`, about
@@ -5241,6 +5284,20 @@ parses. See ease-my-life's `firestore.rules`.
       single variable name to sort by, they're alphabetized by the
       expression's own source text exactly as written inside the
       brackets, compared case-insensitively.
+  - **Shorthand properties form their own group** (decided 2026-11-14, in
+    tech-geek-cards): in an object that mixes shorthand properties
+    (`redMotBoo,`) with `key : value` ones, the shorthand ones form a group
+    of their own, placed after any computed and expression key groups and
+    ahead of the keyed properties, so a long shorthand name never sits past
+    the keyed group's `:` column. Each group is alphabetized and aligned on
+    its own, 1 blank line apart, and the long outliers still follow the
+    keyed group. The order runs from the simplest form to the most complex:
+    spreads where they're written, computed keys, expression keys,
+    shorthand, keyed properties, long one-line values, then multi-line
+    values. A destructuring pattern that mixes plain and renamed bindings
+    (`{ a, b : c }`) stays one alphabetized list, since it has no values to
+    align. See tech-geek-cards' `cards/turkeys-away/turkeys-away-card.tsx`
+    schedule return and scene options.
   - **Exception, skip when the current order is actually relied on**:
     before reordering a given object, check whether anything reads it
     via `Object.keys()`/`Object.entries()`/`Object.values()`/a
