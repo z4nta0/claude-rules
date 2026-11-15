@@ -5284,6 +5284,20 @@ parses. See ease-my-life's `firestore.rules`.
       single variable name to sort by, they're alphabetized by the
       expression's own source text exactly as written inside the
       brackets, compared case-insensitively.
+  - **Shorthand properties form their own group** (decided 2026-11-14, in
+    tech-geek-cards): in an object that mixes shorthand properties
+    (`redMotBoo,`) with `key : value` ones, the shorthand ones form a group
+    of their own, placed after any computed and expression key groups and
+    ahead of the keyed properties, so a long shorthand name never sits past
+    the keyed group's `:` column. Each group is alphabetized and aligned on
+    its own, 1 blank line apart, and the long outliers still follow the
+    keyed group. The order runs from the simplest form to the most complex:
+    spreads where they're written, computed keys, expression keys,
+    shorthand, keyed properties, long one-line values, then multi-line
+    values. A destructuring pattern that mixes plain and renamed bindings
+    (`{ a, b : c }`) stays one alphabetized list, since it has no values to
+    align. See tech-geek-cards' `cards/turkeys-away/turkeys-away-card.tsx`
+    schedule return and scene options.
   - **Exception, skip when the current order is actually relied on**:
     before reordering a given object, check whether anything reads it
     via `Object.keys()`/`Object.entries()`/`Object.values()`/a
