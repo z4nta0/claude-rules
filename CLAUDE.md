@@ -1,7 +1,7 @@
 # User-Level CLAUDE.md
 
 Rules that apply to every project: development servers, language, linting,
-browser testing, security testing, required pages, multi-page scroll position, section links, skip links and modal layers, new tab links, SEO, social previews, images, card grids, grid layout, spacing tiers, interaction feedback, forms, the README's Ko-fi section, licenses, full project audits, change audits, version bumps and pushes, commit messages, copy, and code formatting, naming, and comments. A project's own CLAUDE.md
+browser testing, security testing, required pages, multi-page scroll position, section links, skip links and modal layers, new tab links, SEO, social previews, images, card grids, grid layout, spacing tiers, interaction feedback, forms, pop-ups, the README's Ko-fi section, licenses, full project audits, change audits, version bumps and pushes, commit messages, copy, and code formatting, naming, and comments. A project's own CLAUDE.md
 describes that project and adds anything specific to it (scoped naming
 overrides, its own values).
 
@@ -991,6 +991,25 @@ never lost along the way.
 - **Existing projects** with forms are brought in line the next time they're
   worked on.
 
+## Pop-Ups: Close When Focus Moves On
+Decided 2026-11-15, in tech-geek-support's audit, after its Tab walk found a
+pinned help tip's bubble covering the email field that Tab moved to next. A
+pop-up that doesn't hold focus (a help tip's bubble, a tooltip, a dropdown
+or popover that isn't a modal layer) closes when focus moves outside it, as
+well as on Escape and on a press elsewhere, so it never covers the control a
+keyboard user moves on to (WCAG 2.2's 2.4.11 Focus Not Obscured).
+- **How**: while it's open, the pop-up listens for `focusin` on the document
+  and closes when focus lands outside its own wrapper (its trigger and
+  bubble), alongside its Escape and outside press listeners, and removes all
+  three when it closes. See tech-geek-support's
+  `pages/contact/help-tip.tsx`.
+- **A modal layer is different**: it holds focus inside itself on purpose,
+  per "## Skip Link And Modal Layers", so focus can't leave it.
+- **Verified** by the accessibility suite in all three engines: the Tab walk
+  runs with each pop-up open and fails a stop covered by another element.
+- **Existing projects** with such pop-ups are brought in line the next time
+  they're worked on.
+
 ## README: Ko-fi Support Section
 Decided 2026-10-26. Every project's README invites an optional tip on the
 user's Ko-fi page, as Ko-fi suggests, with this exact section:
@@ -1189,8 +1208,8 @@ part of a pre- or post-commit check.
   8. Copy rules.
   9. Project requirements: the 404 page, the skip link, new tab links,
      SEO, social previews, images, card grids, interaction feedback, forms,
-     the README's Ko-fi section, the license, and the security suite,
-     checked partly through the test suites.
+     pop-ups, the README's Ko-fi section, the license, and the security
+     suite, checked partly through the test suites.
 - **A cited example isn't proof** (decided 2026-10-24): a file a rule
   points to shows the rule's form, but an audit still checks a project's code
   against the rule's own words, item by item through each Verified list, so
