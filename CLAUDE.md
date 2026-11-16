@@ -1349,6 +1349,11 @@ release. The user handles every version change and everything that leaves
 the machine; Claude handles branches and commits.
 - **Claude creates branches and commits**: a branch for each piece of work
   and a commit for each verified step, in the usual one-line format.
+- **Except the claude-rules repo, which takes no branches** (decided
+  2026-11-16): it's one file of plain text, so a branch only adds a merge
+  with nothing to review, and every rule change is committed straight to
+  `main`. A repo whose changes reach code other projects run
+  (techgeek-design, which three sites install) keeps its branches.
 - **The user bumps every version**: Claude never edits a `version` field,
   runs `npm version`, or writes a version into a changelog or a commit's
   `What:` as a release, in any project or package. Where a change calls for
