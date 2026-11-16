@@ -1021,7 +1021,9 @@ matches the site's design in every engine and the security policy never
 needs `data:`.
 - **The arrow**: the select takes `appearance : none`, a `background-image`
   reading the file (`url( './select-arrow.svg' )`) set `no-repeat` at its
-  right edge, and enough right padding that its text never runs under the
+  right edge, a `background-size` read from a rhythm step (the file's own
+  pixel size would ignore the visitor's text size, per "### Units: rem
+  first"), and enough right padding that its text never runs under the
   arrow. The file is a small chevron drawn in the site's muted text color,
   kept next to the module that reads it (or in `src/assets/` when two
   features share it), per "### Directory structure".
