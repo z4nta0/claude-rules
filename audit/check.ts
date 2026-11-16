@@ -28,9 +28,9 @@ import type * as TyeModTyp from 'typescript'; // What: TypeScript Module Type. W
  * answer: em dashes, file boundaries, trailing whitespace and space
  * indentation, quotes, parentheses spacing, import grouping and alignment,
  * exports at the end, JSON format, comment block widths, plain-text config
- * comments, CSS sibling regions closer than 3 blank lines, and test Hows that
- * never say what they check. Lint and type check run separately, through
- * run.ts.
+ * comments, CSS sibling regions closer than 3 blank lines, test Hows that
+ * never say what they check, and block lines with no comment. Lint and type
+ * check run separately, through run.ts.
  *
  * Run it as node ~/projects/claude-rules/audit/check.ts <project-root>. It
  * prints one finding per line as file:line: [check] message, then a count,
@@ -342,6 +342,61 @@ function stiCssFun ( filTexStr : string ) : string {
 
 
 // #region File Checks
+
+// #region blkCheFun
+
+/**
+ * blkCheFun = Block Check Function
+ *
+ * @summary
+ * Checks that each line opening or continuing a statement block in a script
+ * carries its own comment: an if, else, for, while, switch, try, catch,
+ * finally, or do line, compact or multi-line. Readers skim past these lines
+ * as plain control flow, so a missing comment there is easy to miss. A line
+ * counts as commented when it holds a What label in a line or block comment.
+ * Any file that isn't a script is skipped, and each uncommented line is
+ * recorded as a finding.
+ *
+ * @author z4nta0 <https://github.com/z4nta0>
+ *
+ * @param filPatStr - File Path String: The file's path relative to the
+ *                    project root.
+ * @param filTexStr - File Text String: The file's full text.
+ *
+ * @returns This function does not return anything.
+ *
+ * @example
+ * ```ts
+ * blkCheFun('src/app.tsx', filTexStr) // => void
+ * ```
+ *
+*/
+
+function blkCheFun ( filPatStr : string, filTexStr : string ) : void {
+
+
+	if ( !COD_EXT_SET.has( extname( filPatStr ) ) ) return; // What: Script Guard. Why: Only scripts hold statement blocks. How: This skips any other file.
+
+
+
+	filTexStr.split( '\n' ).forEach( ( linTexStr, linIndNum ) => { // What: Block Line Walk. Why: Each block line is judged on its own. How: This visits every line with its index.
+
+
+		const blkLinBoo = /^\s*(?:(?:if|for(?:\s+await)?|while|switch|catch)\s*\(|else\b|(?:try|finally|do|catch)\s*\{)/.test( linTexStr );  // What: Block Line Boolean. Why: These keywords open or continue a block. How: This checks the line's start for one, followed by its condition or its brace.
+		const comLinBoo = /(?:\/\/|\/\*) What:/.test( linTexStr );                                                                           // What: Commented Line Boolean. Why: A block line's comment follows its code on the same line. How: This checks the line for a What label in either comment form.
+
+
+		if ( blkLinBoo && !comLinBoo ) addFinFun( filPatStr, linIndNum + 1, 'block-comment', 'block line has no comment' ); // What: Block Comment Check. Why: Every line of code gets a comment, block lines included. How: This records a finding for a block line with no What label.
+
+
+	} );
+
+
+}
+
+// #endregion blkCheFun
+
+
 
 // #region bouCheFun
 
@@ -1529,6 +1584,7 @@ for ( const filPatStr of filLisArr ) { // What: File Loop. Why: Every check runs
 	codCheFun( filPatStr, filTexStr ); // What: Code Check Call. Why: Scripts follow the quote, parenthesis, import, and export rules. How: This parses and checks scripts.
 	plaCheFun( filPatStr, filTexStr ); // What: Plain-Text Check Call. Why: Config comments sit on lines of their own. How: This checks plain-text configs.
 	howCheFun( filPatStr, filTexStr ); // What: How Check Call. Why: A test's How names what it asserts. How: This checks spec files.
+	blkCheFun( filPatStr, filTexStr ); // What: Block Check Call. Why: Every block line carries its own comment. How: This checks scripts.
 	regCheFun( filPatStr, filTexStr ); // What: Region Check Call. Why: Sibling CSS regions sit 3 blank lines apart. How: This checks stylesheets.
 
 
