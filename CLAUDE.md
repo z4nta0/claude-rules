@@ -1228,6 +1228,33 @@ part of a pre- or post-commit check.
 - **The audits, in this order**, each covering one rule family, so a later
   audit doesn't undo an earlier one (moving and renaming come before comments,
   and spacing comes last):
+  0. Dependencies (decided 2026-11-19, in ease-my-life), first, so every
+     later audit and the final check run on the updated tools. `npm audit`
+     over every dependency, dev tools included, and `npm outdated`, then
+     each available update is judged before it's taken:
+     - **Safe updates only**: a patch or minor update is taken once its
+       release notes (the changelog or GitHub releases between the current
+       and new versions) show no breaking change, and every package that
+       depends on it still accepts it in its peer range, per "Versions
+       follow the ecosystem" under "## Linting: ESLint". A major update,
+       an update whose notes list a breaking change, and `npm audit fix
+       --force` (which can downgrade or cross majors) are never taken by
+       the audit; they're logged for the user with what would change.
+     - **An advisory with no safe update** is fixed by an `overrides`
+       entry pinning the patched version of the nested package, when the
+       package that pulls it in accepts that version, or else logged for
+       the user. A dependency stuck behind a parent that has dropped it in
+       a newer safe release (ease-my-life's `basic-ftp`, gone from
+       `firebase-tools` 15.35.0) is fixed by updating the parent.
+     - **Proven by the suites**: after the updates, the build, lint, type
+       check, and the project's full test suites run in all three engines,
+       and an update that breaks one is rolled back and logged rather than
+       worked around.
+     - **Reported**: the report lists every update taken (from and to
+       versions), every one left (and why), and the audit counts before and
+       after. It's a mechanical audit: one clean run after the updates is
+       enough. The `version` fields of the project itself still belong to
+       the user, per "## Versions And Pushes".
   1. Lint, type check, and the scripted format checks (mechanical).
   2. File structure: section order, file placement, folder dependencies, and
      file size.
