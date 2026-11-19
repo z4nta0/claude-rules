@@ -1875,6 +1875,11 @@ can move code between files rather than just within one.
   The order follows the dependency direction: types describe everything
   below them, constants feed helpers, helpers feed hooks, hooks feed
   components.
+  Decided 2026-11-19, in ease-my-life: an ambient declaration file (a
+  `.d.ts`, such as `globals.d.ts`) is one section of type declarations,
+  its `declare const` included, since that only gives the type of a value
+  defined elsewhere (a build-time constant), so it takes no section
+  regions and isn't split into Types and Constants.
 - **Order within a section: define before use.** Anything a declaration reads
   sits above it, so a reader never has to scroll down to learn what a name
   means, and a `const` is never read before its own line. When two
