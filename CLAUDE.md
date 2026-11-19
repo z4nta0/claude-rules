@@ -832,6 +832,15 @@ in the way.
   Decided 2026-11-13, in tech-geek-cards: an icon here means an SVG or
   image; a text glyph such as an arrow (→) in a span is part of its control's
   text and needs no `pointer-events : none`.
+- **A control a click can't change stays still** (decided 2026-11-18, in
+  ease-my-life): a current or selected control that a click still changes
+  (a filter or switch that toggles off) keeps its hover look, while one a
+  click does nothing to (the current tab, the chosen theme row, an already
+  chosen range pill, a tip standing in for a disabled control) takes no
+  hover look, so a hover never promises an action that isn't there. Its
+  press and focus feedback stay. The feedback probe leaves those still
+  states out of its hover check. See ease-my-life's
+  `tests/interaction/feedback.spec.ts` `stiConFun`.
 - **The flair**: one small, purposeful touch per element at most, such as an
   arrow that slides on hover, a gentle overshoot on something opening, or a
   check that pops in once. It never repeats on its own, loops, bounces
@@ -1870,6 +1879,14 @@ can move code between files rather than just within one.
   types (`ALL_CAPS` and `PascalCase` names) never share one run. See
   reese-roofing's `tests/responsive/layout.spec.ts`, whose drawer limit,
   layout cases, and width list sit in that order.
+  Decided 2026-11-19, in ease-my-life: declarations that one
+  design-rationale block explains together sort as one unit, by the first
+  of them, so the block stays attached to every declaration it explains
+  (ease-my-life's `ui/bg-flourish.tsx` `COL_WID_NUM` with `ROW_HEI_NUM`).
+  Also decided 2026-11-19: where a section is divided into purpose regions
+  (ease-my-life's `platform/pwa.ts`, whose Helpers run subscribers, then
+  install detection, then requests), the regions keep their purpose order
+  and the tie-break sorts within each region, never across them.
 - **A constant computed at load sits by where its value comes from**
   (decided 2026-10-22). An `ALL_CAPS` value worked out purely from what's
   already in the code stays in Constants, even though it runs code to get
@@ -2063,6 +2080,12 @@ src/
   Decided 2026-11-07: that covers code helpers; a static file one suite's
   spec reads (a stylesheet it injects, beside its baselines) stays in that
   suite's folder (tech-geek-dev's `tests/rendering/hide-patterns.css`).
+  Decided 2026-11-19, in ease-my-life: a helper or constant two or more
+  specs repeat moves into `tests/support/` once, and each spec imports it,
+  the way a shared sub-component moves to a shared file. A spec run by a
+  different runner that can't import the shared file (ease-my-life's
+  payments test, under Node's own runner) keeps its copy, and its comment
+  says why.
 - **Dependency direction.** A folder imports only from itself or from
   folders below it in this order: `tabs/`, `onboarding/`, `help/` (top);
   then `ui/`; then `state/` and `platform/`; then `core/`; then `utils/`
