@@ -1887,6 +1887,12 @@ can move code between files rather than just within one.
   (ease-my-life's `platform/pwa.ts`, whose Helpers run subscribers, then
   install detection, then requests), the regions keep their purpose order
   and the tie-break sorts within each region, never across them.
+  Also decided 2026-11-19: the tie-break orders a file's top-level
+  sections and the purpose regions in them, not the declarations inside a
+  function or component body, which keep define-before-use and the order
+  a reader meets them (ease-my-life's `tabs/today/group-header.tsx`, whose
+  name edit runs start, finish, commit, then cancel), since a body's hook
+  calls never move and its handlers follow the flow they serve.
 - **A constant computed at load sits by where its value comes from**
   (decided 2026-10-22). An `ALL_CAPS` value worked out purely from what's
   already in the code stays in Constants, even though it runs code to get
