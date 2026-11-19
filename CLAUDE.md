@@ -2138,7 +2138,13 @@ src/
   (bottom). `utils/` never imports anything from `src/`; `core/` never
   imports React; no tab imports from another tab. `main.tsx`, `app.tsx`,
   and `constants.ts` sit outside the order: `app.tsx` may import from any
-  folder, and `constants.ts` may be imported by any. Decided 2026-09-27:
+  folder, and `constants.ts` may be imported by any. Decided 2026-11-19,
+  in ease-my-life: a dependency-free file that separate bundles share (a
+  value the app, a Netlify function, and the tests all read, where
+  `constants.ts` reads build-time values a bundled function can't) sits at
+  the `src/` root beside it, with no imports and no build-time values, and
+  may be imported by any folder too (ease-my-life's `emulator-project.ts`).
+  Decided 2026-09-27:
   folders on the same tier may import each other (a tab uses `help/` and
   `onboarding/`, `store.ts` uses `pwa.ts`), except that no tab imports from
   another tab's folder. The tour bus and the onboarding sample, stats, and
