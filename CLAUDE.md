@@ -2079,6 +2079,13 @@ src/
   tested and its comments go stale unseen; a dropped helper is copied back
   when a caller needs it. See hair-designs' `utils/rhythm.ts`, which keeps
   `rhyPixFun` and dropped ease-my-life's `durMilFun`.
+  Decided 2026-11-19, in ease-my-life: a constant or helper that two or
+  more source files repeat is declared once, in the file the placement
+  rules give it (an app-agnostic one in `utils/`, a domain one in its
+  owning module), and each file imports it, the same as the date helpers
+  above. See ease-my-life's day-name list, once copied into
+  `core/cadence.ts`, `core/tasks.ts`, and `ui/cadence-control.tsx`, now in
+  `utils/date.ts`.
   Decided 2026-11-03: a test suite's helper files live in `tests/support/`
   even when only one spec reads one, since a second spec can share it
   later (the-bernie-bears' `tests/support/feedback.ts`, which hair-designs'
