@@ -2085,7 +2085,13 @@ src/
   owning module), and each file imports it, the same as the date helpers
   above. See ease-my-life's day-name list, once copied into
   `core/cadence.ts`, `core/tasks.ts`, and `ui/cadence-control.tsx`, now in
-  `utils/date.ts`.
+  `utils/date.ts`. This covers a repeated expression written inline too
+  (an id minted the same way at many sites becomes one helper), the same
+  code closing over each module's own state (a small factory in `utils/`
+  builds each module's copy), separate bundles where a dependency-free
+  file both can import exists (`constants.ts`), and the setup repeated
+  across standalone scripts (a helper module beside them, which each
+  still runs on its own with).
   Decided 2026-11-03: a test suite's helper files live in `tests/support/`
   even when only one spec reads one, since a second spec can share it
   later (the-bernie-bears' `tests/support/feedback.ts`, which hair-designs'
