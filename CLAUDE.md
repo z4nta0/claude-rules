@@ -1925,6 +1925,15 @@ can move code between files rather than just within one.
   a reader meets them (ease-my-life's `tabs/today/group-header.tsx`, whose
   name edit runs start, finish, commit, then cancel), since a body's hook
   calls never move and its handlers follow the flow they serve.
+  Also decided 2026-11-19: types written in different syntax group by
+  kind, so the lines that share a shape sit together and their columns
+  and comments line up: in a Types section holding more than one kind
+  (one-line union types, multi-line record types, aliases of another
+  type), each kind takes its own purpose region (`Union Types`, `Record
+  Types`), the tie-break orders the types inside each region, and the
+  regions follow a logical order where one applies (a kind the others
+  read comes first), otherwise alphabetical. See ease-my-life's
+  `core/data-model.ts`.
 - **A constant computed at load sits by where its value comes from**
   (decided 2026-10-22). An `ALL_CAPS` value worked out purely from what's
   already in the code stays in Constants, even though it runs code to get
