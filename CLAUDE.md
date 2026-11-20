@@ -1224,7 +1224,11 @@ part of a pre- or post-commit check.
     whole project as one sweep, its matches found by search and checked, so
     the passes that follow judge code already under the new rule rather than
     finding its cases a few at a time. seal-and-shield's comments audit
-    restarted four times as rules changed underneath it.
+    restarted four times as rules changed underneath it. Decided
+    2026-11-20, in ease-my-life: once every audit has run, each judgment
+    audit that stopped at the 10-pass limit runs again from pass 1, so the
+    items it was still finding get a second look against the finished
+    code.
 - **The audits, in this order**, each covering one rule family, so a later
   audit doesn't undo an earlier one (moving and renaming come before comments,
   and spacing comes last):
@@ -2140,7 +2144,18 @@ src/
   file too, placed by define-before-use, the same as across files. So
   does a JSX block repeated within one file (two branches drawing the
   same selects), which becomes one private component there, taking props
-  for whatever the copies change.
+  for whatever the copies change. Decided 2026-11-20, in ease-my-life: a
+  JSX block repeated across files becomes one shared component in the
+  folder the placement rules give it (`ui/`, or the feature's folder when
+  one feature uses it), taking props, callbacks included, for whatever the
+  copies change (ease-my-life's filter rails and date-mode picker). A
+  single element repeated within one component becomes a const element
+  there (ease-my-life's `ancHinEle` in `ui/schedule-editor.tsx`). Also
+  decided 2026-11-20: the rule reaches a block of two or more statements
+  and an expression that encodes a decision, such as an id minting rule
+  or a fallback value (a default holiday list, a fallback radius), while
+  a plain lookup or a short idiom (a find by id, a sort's tie-break)
+  stays inline wherever it's written.
   Decided 2026-11-03: a test suite's helper files live in `tests/support/`
   even when only one spec reads one, since a second spec can share it
   later (the-bernie-bears' `tests/support/feedback.ts`, which hair-designs'
