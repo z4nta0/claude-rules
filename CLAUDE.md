@@ -7846,7 +7846,10 @@ gradually alongside the whitespace rules above (started with `src/app.tsx`).
     renamed project by project as each one comes up, starting with
     tonys-toppers; until then the older examples here, such as ease-my-life's
     `HolRcdTyp`, still show the old spelling. Note `rec` already means
-    Rect/Rectangle (`indRecObj`, `butRecObj`); context disambiguates)
+    Rect/Rectangle (`indRecObj`, `butRecObj`); context disambiguates.
+    Decided 2026-11-20: ease-my-life is the exception, keeping `rcd` for
+    Record under its own scoped override, since Record and Rect are both
+    heavy there and `rec` means Rect alone)
   - `pxl` → `pix` (Pixel, decided 2026-11-03: a vowel drop in the rhythm
     helpers' names, `rhyPxlFun`, `rooPxlNum`, and seal-and-shield's
     `tokPxlFun`, which this doc's own examples once showed. It's renamed
