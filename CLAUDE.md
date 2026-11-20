@@ -2137,7 +2137,10 @@ src/
   across standalone scripts (a helper module beside them, which each
   still runs on its own with). Decided 2026-11-19: code repeated within
   one file (a block two helpers both write) becomes one helper in that
-  file too, placed by define-before-use, the same as across files.
+  file too, placed by define-before-use, the same as across files. So
+  does a JSX block repeated within one file (two branches drawing the
+  same selects), which becomes one private component there, taking props
+  for whatever the copies change.
   Decided 2026-11-03: a test suite's helper files live in `tests/support/`
   even when only one spec reads one, since a second spec can share it
   later (the-bernie-bears' `tests/support/feedback.ts`, which hair-designs'
