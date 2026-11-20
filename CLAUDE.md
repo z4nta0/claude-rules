@@ -7902,8 +7902,11 @@ gradually alongside the whitespace rules above (started with `src/app.tsx`).
     the middle one with the next letter of the referenced name's second
     word, then its later letters in turn. E.g. `CodConCom`'s props would
     be `CccProTyp`, already `CadConCom`'s, so "Con" gives `o` and they
-    became `CocProTyp`. Any other clash follows the usual
-    Naming-conflict resolution.
+    became `CocProTyp`. Decided 2026-11-20, in ease-my-life: once the
+    second word's letters are used up, the middle letter steps through the
+    first word's later letters (`DowSelCom`'s props became `DwcProTyp`,
+    since `Dsc`, `Dec`, and `Dlc` were taken). Any other clash follows the
+    usual Naming-conflict resolution.
   - **Documented like a variable**: a type gets the same one-line
     What/Why/How comment a variable does, expanding its name (`What:
     Escape Entry Type.`); a multi-line object type gets that comment on its
