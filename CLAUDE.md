@@ -3482,8 +3482,8 @@ later, but don't invent one for anything else yet:
 - **Sectioning by purpose.** Replaces (2026-09-26) the earlier
   function-body cluster rule and its 25-line/3-blank-gap conditions; applied
   during the final file-by-file pass. A manual, judgment-call process, never
-  a mechanical scan; see `TabBarCom`'s "Active Tab Indicator" region in
-  `src/app.tsx` for an example.
+  a mechanical scan; see `InfTipCom`'s "Tip Positioning" and "Tip Closing"
+  regions in `src/ui/info-tip.tsx` for an example.
   - **What a section is**: a run of consecutive statements that together
     serve one nameable purpose. Any kind of statement counts
     (declarations, local functions, `if` blocks, effects, calls), and there
