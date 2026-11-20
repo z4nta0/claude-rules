@@ -8006,6 +8006,10 @@ gradually alongside the whitespace rules above (started with `src/app.tsx`).
     single-word expansion, then expand the remaining segments normally,
     e.g. `__tatIdeNum` → `What: Theme-Animation-Timeout Identifier
     Number.`
+  - **A number may stand in an initialism** (decided 2026-11-20, in
+    ease-my-life): where one of the words is a step or position number, its
+    digit takes that word's place, and is preferred, since it says which one
+    plainly (ease-my-life's `buiTs1Fun`, "Build Tour-Step-1 Function").
   - This is a last resort for the genuinely hard case, not a shortcut to
     reach for whenever 2 words feels like a squeeze; the normal "drop a
     less-essential word, keep 2 concepts + a real type" resolution from
