@@ -3500,6 +3500,9 @@ later, but don't invent one for anything else yet:
     category sections (see "### File structure"). A scope that serves
     one purpose throughout gets no regions, since wrapping all of it in
     one region adds nothing.
+    Decided 2026-11-19, in ease-my-life: neither does a scope whose only
+    section is one run beside lone statements, since lone statements
+    aren't sections and a single region divides nothing.
   - **Statements that don't belong stay outside**: sectioning is never
     forced. A statement that doesn't share a purpose with its neighbors
     (an opening guard, the final `return`, a lone call) stays unwrapped
